@@ -71,19 +71,6 @@ From the history menu, you can select `Export History to File` and then choose `
 
 You can always edit the record metadata directly from the Zenodo sandbox web interface. Once you are satisfied with the record, you can publish it, generating a DOI that others can use to cite your research. Of course, in the case of the sandbox instance, the DOI is not minted and your data is not stored permanently. But the experience is the same as with the production instance.
 
-# New Improvements in the Galaxy 25.0 Release
-
-Compared to the integration in earlier Galaxy releases, several improvements have been made in the Galaxy 25.0 release. Managing external data sources is now more user-friendly and customizable, ensuring a smoother experience when importing and exporting research data.
-
-Some of the limitations of the previous integration, such as the limited number of records that could be listed, the lack of support for pagination, and the inability to use the Export datasets tool with InvenioRDM repositories have also been addressed.
-
-## Advantages
-
-- **Decluttered Interface**: A more focused list of integration, instead of an overwhelming list of all possible sources that may or may not be relevant to you. Galaxy instances will still provide publicly available integrations globally, but those requiring credentials will be managed by you. The old integrations will still be available for some time but will gradually be phased out and removed from the interface.
-- **Customization**: You can tailor your integrations to your needs, giving your own names and descriptions to easily identify.
-- **Faster Access**: Your configured integrations are prioritized when importing/exporting, making them easier to find.
-- **Easier Management**: You can update or remove integrations anytime from `User Preferences`, reducing the need to search for the right place to enter credentials.
-
 # References
 
 This FAQ is based on the following Galaxy News articles by David López:
