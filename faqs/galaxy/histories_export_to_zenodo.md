@@ -23,10 +23,6 @@ Any InvenioRDM-compatible repository can be connected to Galaxy, offering a stre
 
 It's worth noting that [Zenodo, in October 2023, migrated to InvenioRDM as its underlying technical platform](https://blog.zenodo.org/2023/10/13/2023-10-13-zenodo-rdm/). This move not only makes this integration fully compatible with Zenodo but also signals a commitment to enhanced features and scalability, further bolstering the integration's potential benefits for researchers.
 
-# How does it work?
-
-Your Galaxy administrator needs to configure the InvenioRDM plugin to connect to a compatible InvenioRDM repository, like Zenodo or your institution's InvenioRDM instance. Once the plugin is configured, users can import files from InvenioRDM repositories into Galaxy or export files from Galaxy to InvenioRDM records.
-
 # Getting started
 
 For testing purposes, you can use the [Zenodo sandbox instance](https://sandbox.zenodo.org/) to explore the functionality of the plugin.
