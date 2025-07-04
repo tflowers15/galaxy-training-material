@@ -73,8 +73,6 @@ You can always edit the record metadata directly from the Zenodo sandbox web int
 
 # References
 
-This FAQ is based on the following Galaxy News articles by David López:
-
 1. [InvenioRDM and Zenodo integration in Galaxy](https://galaxyproject.org/news/2024-05-03-inveniordm-integration/)
 2. [Updates to your InvenioRDM and Zenodo integration in Galaxy
    ](https://galaxyproject.org/news/2025-03-10-inveniordm-integration-update/)
