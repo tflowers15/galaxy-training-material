@@ -1,7 +1,6 @@
 ---
 layout: tutorial_hands_on
 title: Best Practice for Citing Galaxy
-zenodo_link: https://zenodo.org/uploads/15756328
 tags:
 - fair
 - introduction
