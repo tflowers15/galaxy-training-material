@@ -4,6 +4,7 @@ title: Best Practice for Citing Galaxy
 tags:
 - fair
 - introduction
+level: Introductory
 questions:
 - How to cite Galaxy in Publications?
 objectives:
@@ -13,6 +14,7 @@ time_estimation: 10m
 key_points:
 - Cite the primary Galaxy Project publication.
 - Reference the specific Galaxy server that was used.
+subtopic: core
 contributors:
 - tflowers15
 - GarethPrice-Aus
@@ -22,6 +24,7 @@ funding:
 - unimelb
 - melbournebioinformatics
 - AustralianBioCommons
+- SURF
 
 ---
 
