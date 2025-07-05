@@ -71,7 +71,7 @@ We recommend including the relevant service name and DOI link into your Methods.
 
 
 ### Acknowledging a Service
-Each public Galaxy service is provided through a complex mixture of funding, governance and infrastructure providers. As such, each service provides a cut/paste **Acknowledgement** statement that supports their particular configuration and this can be found on each service. If your publication supports Acknowledgements, we strongly recommend your include the service recommended **Acknowledgements**.
+Each public Galaxy service is provided through a complex mixture of funding, governance and infrastructure providers. As such, each service provides a cut/paste **Acknowledgement** statement that supports their particular configuration and this can be found on each service. If your publication supports Acknowledgements, we strongly recommend you include the service-recommended **Acknowledgements**.
 
 
 # Writing a Methods section based on your Galaxy work
@@ -93,6 +93,9 @@ We also suggest providing a description/context of the History in the `History A
 
 {% snippet faqs/galaxy/histories_annotation.md %}
 
+Users can add tags to their Galaxy histories to organise and connect them to specific analyses. Tags improve the findability and traceability of your work, aligning with the FAIR principles. Applying relevant tags before publishing your history is recommended to enhance its clarity and usefulness for both yourself and others.
+
+{% snippet faqs/galaxy/histories_tagging.md %}
 ### Sharing a History
 
 Galaxy provides a number of options for sharing histories which allows others to import and access the datasets, parameters, and steps of your history.
