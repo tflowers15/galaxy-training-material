@@ -108,6 +108,10 @@ Integration of InvenioRDM and Zenodo into Galaxy now enables you to export your 
 
 {% snippet faqs/galaxy/histories_export_to_zenodo.md %}
 
+For instructions on connecting to Zenodo and preparing your history, see the following tutorial on the Galaxy Training Network:
+
+- [Integrating InvenioRDM-compatible Repositories with Galaxy](https://training.galaxyproject.org/training-material/topics/fair/tutorials/inveniordm-integration/tutorial.html)
+
 ## Making a Workflow public
 
 If you used a workflow in your analysis, we recommend publishing this alongside your data and in your article. 
@@ -121,12 +125,11 @@ For instructions on preparing your workflow, see the following tutorial on the G
 
 - [Annotate, prepare tests and publish Galaxy workflows in workflow registries](https://training.galaxyproject.org/training-material/topics/galaxy-interface/tutorials/workflow-fairification/tutorial.html)
 
-
 ## Citing Public Data
 
 If you used a public data source in your work, we recommend you cite both the data source publication DOI and the repository accession code.
 
-## How to Extract Tool Citations from a Galaxy History
+## Extract Tool Citations from a Galaxy History
 
 Galaxy can provide a list of the tools used in your history using the following steps.
 
@@ -134,7 +137,14 @@ Galaxy can provide a list of the tools used in your history using the following 
 
 **Hint:** You will also get the Galaxy Project publication in all History citation exports!
  
+# Conclusion
 
+In this tutorial, we have covered how to cite Galaxy Project and the specific Galaxy server that you used. We also discussed how to prepare your methodology based on your Galaxy History including:
+
+1. Publishing your Galaxy History
+2. Publishing your Galaxy Workflow
+3. Citing public data used in your analysis
+4. Extracting Tool Citations
 
 
 
