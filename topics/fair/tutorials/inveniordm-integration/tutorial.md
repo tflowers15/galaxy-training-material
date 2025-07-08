@@ -12,6 +12,7 @@ objectives:
 - Learn how to export Galaxy Histories to Zenodo
 time_estimation: 30m
 key_points:
+- InvenioRDM-compatible repositories can be connected to Galaxy
 - Records and files can be imported into Galaxy
 - You can export your Galaxy Histories to Zenodo
 subtopic: core
@@ -22,6 +23,9 @@ funding:
 - unimelb
 - melbournebioinformatics
 - AustralianBioCommons
+- uni-freiburg
+- eurosciencegateway
+- mwk
 
 ---
 
@@ -96,7 +100,18 @@ The new `Manage Your Remote File Sources` section is available under `User → P
 {: .hands_on}
 
 
-**Note:** If you want to integrate the "real" Zenodo instance, we recommend using the Zenodo integration instead of InvenioRDM. This will improve the integration further by making it more prominent in some parts of the Galaxy interface.
+> <comment-title></comment-title>
+> If you want to integrate the "real" Zenodo instance, we recommend using the Zenodo integration instead of InvenioRDM. This will improve the integration further by making it more prominent in some parts of the Galaxy interface.
+>
+{: .comment}
+
+
+> <details-title>Do you want to add a different repository to Galaxy?</details-title>
+>   There are a number of additional repository types that you can connect to Galaxy and use to importing and exporting data.
+>
+>    {% snippet faqs/galaxy/manage_your_repositories.md %}
+>
+{: .details}
 
 # Importing records and files into Galaxy
 
