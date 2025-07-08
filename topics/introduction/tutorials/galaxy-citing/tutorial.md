@@ -106,8 +106,6 @@ Galaxy provides a number of options for sharing histories which allows others to
 
 Integration of InvenioRDM and Zenodo into Galaxy now enables you to export your history directly to Zenodo. Publishing your history on Zenodo will generate a DOI for your history which you can include in your publication and can be used by other researchers to cite your work.
 
-{% snippet faqs/galaxy/histories_export_to_zenodo.md %}
-
 For instructions on connecting to Zenodo and preparing your history, see the following tutorial on the Galaxy Training Network:
 
 - [Integrating InvenioRDM-compatible Repositories with Galaxy](https://training.galaxyproject.org/training-material/topics/fair/tutorials/inveniordm-integration/tutorial.html)
@@ -135,7 +133,10 @@ Galaxy can provide a list of the tools used in your history using the following 
 
 {% snippet faqs/galaxy/cite-tools-used-in-a-history.md %}
 
-**Hint:** You will also get the Galaxy Project publication in all History citation exports!
+> <comment-title></comment-title>
+> You will also get the Galaxy Project publication in all History citation exports!
+>
+{: .comment}
  
 # Conclusion
 
