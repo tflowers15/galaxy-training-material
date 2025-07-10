@@ -12,8 +12,11 @@ objectives:
 - Advice on how to prepare your methodology section based on your Galaxy Histories.
 time_estimation: 10m
 key_points:
-- Cite the primary Galaxy Project publication.
+- Please remember to cite the primary Galaxy Project publication.
 - Reference the specific Galaxy server that was used.
+- When preparing your methodology we recommend publishing your Galaxy Histories and Workflows.
+- Remember to cite any public data used in your analysis.
+- You can extract a list of tool citations from your Galaxy History.
 subtopic: core
 contributors:
 - tflowers15
@@ -140,12 +143,7 @@ Galaxy can provide a list of the tools used in your history using the following 
  
 # Conclusion
 
-In this tutorial, we have covered how to cite Galaxy Project and the specific Galaxy server that you used. We also discussed how to prepare your methodology based on your Galaxy History including:
-
-1. Publishing your Galaxy History
-2. Publishing your Galaxy Workflow
-3. Citing public data used in your analysis
-4. Extracting Tool Citations
+In this tutorial, we have covered how to cite Galaxy Project and the specific Galaxy server that you used and how to prepare your methodology based on your Galaxy History.
 
 
 
