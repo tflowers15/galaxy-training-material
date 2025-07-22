@@ -98,19 +98,33 @@ We provide the following recommendations and process for making your History per
 
 We recommend cleaning up your History when preparing to make your History public.
 
-- `Delete` and `Delete (permanently)` (purge) any failed jobs.
-- `Delete` and `Delete (permanently)` (purge) any datasets/job outputs that were used for testing and are not required for the final, published analysis.
-- `Delete` and `Delete (permanently)` (purge) any datasets that you don't want to share publicly (e.g. restricted data, unpublished results) - but make sure you save them to a private history first.
-
-{% snippet faqs/galaxy/datasets_deleting.md %}
+> <hands-on-title>Clean up Unneeded Datasets</hands-on-title>
+>
+> - `Delete` and `Delete (permanently)` (purge) any failed jobs.
+> - `Delete` and `Delete (permanently)` (purge) any datasets/job outputs that were used for testing and are not required for the final, published analysis.
+> - `Delete` and `Delete (permanently)` (purge) any datasets that you don't want to share publicly (e.g. restricted data, unpublished results) - but make sure you save them to a private history first.
+> 
+> {% snippet faqs/galaxy/datasets_deleting.md %}
+>
+> 
+{: .hands_on}
 
 We also suggest providing a description/context of the History in the `History Annotation`.
 
-{% snippet faqs/galaxy/histories_annotation.md %}
+> <hands-on-title>Annotating a History</hands-on-title>
+>
+> {% snippet faqs/galaxy/histories_annotation.md %}
+>
+{: .hands_on}
 
 Users can add tags to their Galaxy histories to organise and connect them to specific analyses. Tags improve the findability and traceability of your work, aligning with the FAIR principles. Applying relevant tags before publishing your history is recommended to enhance its clarity and usefulness for both yourself and others.
 
-{% snippet faqs/galaxy/histories_tagging.md %}
+> <hands-on-title>Adding Tags to a History</hands-on-title>
+>
+> {% snippet faqs/galaxy/histories_tagging.md %}
+>
+{: .hands_on}
+
 ### Sharing a History
 
 Galaxy provides a number of options for sharing histories which allows others to import and access the datasets, parameters, and steps of your history.
