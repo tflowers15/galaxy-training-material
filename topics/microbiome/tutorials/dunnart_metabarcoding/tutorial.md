@@ -36,7 +36,7 @@ What is the influence of captivity on gut microbiota of the fat-tailed dunnart?
 
 ## The Players
 
-![dunnart](./images/dunnart.jpg)
+![dunnart](./images/dunnart_images/dunnart.jpg)
 (Photo credit: Emily Scicluna)
 
 
@@ -238,7 +238,7 @@ TL;DR: when quality plots are essentially straight lines, truncation is less abo
 >   - Download `trimmed_sequences.qzv` to your local computer and view in [QIIME 2 View](https://view.qiime2.org) (q2view).
 >   - [Click to view the **`trimmed_sequences.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/AAF9YHZ2oAZQ48Kl-k1Jvyo/trimmed_sequences.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
 >   - Make sure to switch between the "Overview" and "Interactive Quality Plot" tabs in the top left hand corner. Click and drag on the plot to zoom in. Double click to zoom back out to full size. Hover over a box to see the parametric seven-number summary of the quality scores at the corresponding position.
->   ![OverviewQualPlotTabs](./images/q2view_OverviewQualPlotTabs.png)
+>   ![OverviewQualPlotTabs](./images/dunnart_images/q2view_OverviewQualPlotTabs.png)
 >
 {: .hands_on}
 
@@ -367,7 +367,7 @@ A [metadata file](https://use.qiime2.org/en/stable/references/metadata.html) is 
 >   - Download `summary_table.qzv ` to your local computer and view in QIIME 2 View (q2view).
 >   - [Click to view the **`summary.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/ADpnQOqVK-JD1zIkLejSfmY/summary_table/summary.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
 >   - Make sure to switch between the "Overview" and "Feature Detail" tabs in the top left hand corner. 
->    ![ASV_detailPNG](./images/q2view_ASV_detail.png)
+>    ![ASV_detailPNG](./images/dunnart_images/q2view_ASV_detail.png)
 >
 {: .hands_on}
 
@@ -444,7 +444,6 @@ A classifier has already been trained for you for the V4 region of the bacterial
 
 
 ## Generate a viewable summary file of the taxonomic assignments.
-
 
 > <hands-on-title>Tabulate Taxonomic Assignments</hands-on-title>
 >
@@ -524,6 +523,280 @@ The newest version of the [SILVA](https://www.arb-silva.de/) database (v138) can
 >  - *"r_primer: Str"*: `REVERSE_PRIMER_SEQUENCE`
 >
 > 4. Rename the output to: `silva_138_marker_gene_classifier.qza `
+>
+{: .hands_on}
+
+
+
+# Build a phylogenetic tree
+
+The next step does the following:
+
+1. Perform an alignment on the representative sequences.
+2. Mask sites in the alignment that are not phylogenetically informative.
+3. Generate a phylogenetic tree.
+4. Apply mid-point rooting to the tree.
+
+A phylogenetic tree is necessary for any analyses that incorporates information on the relative relatedness of community members, by incorporating phylogenetic distances between observed organisms in the computation. This would include any beta-diversity analyses and visualisations from a weighted or unweighted Unifrac distance matrix.
+
+
+> <hands-on-title>Tabulate Taxonomic Assignments</hands-on-title>
+>
+> 1. {% tool [`qiime2 phylogeny align-to-tree-mafft-fasttree`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__phylogeny__align_to_tree_mafft_fasttree/qiime2__phylogeny__align_to_tree_mafft_fasttree/2026.1.0+q2galaxy.2026.1.0) %}: 
+>   - *"sequences: FeatureData[Sequence]"*: `dada2out_representative_sequences.qza`
+>
+> 2. Rename the `rooted_tree.qza` output to: `16s_rooted_tree.qza`
+> 
+> 3. Rename the `tree.qza` output to: `16s_unrooted_tree.qza`
+> 
+> 4. Rename the `masked_alignment.qza` output to: `masked_aligned_16s_representative_seqs.qza`
+> 
+> 5. Rename the `alignment.qza` output to: `aligned_16s_representative_seqs.qza`
+> 
+{: .hands_on}
+
+
+# Basic Visualisations and Statistics
+
+## ASV relative abundance bar charts
+
+Create bar charts to compare the relative abundance of ASVs across samples.
+
+> <hands-on-title>Taxonamy Barplot</hands-on-title>
+>
+> 1. {% tool [`qiime2 taxa barplot`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__taxa__barplot/qiime2__taxa__barplot/2026.1.0+q2galaxy.2026.1.0) %}: 
+>  - *"table: FeatureTable[Frequency | PresenceAbsence]"*: `16s_table_filtered.qza`
+>  - *"Click here for additional options"*
+>  - *"taxonomy: FeatureData[Taxonomy]"*: `taxonomy_classification.qza`
+>  - *"1: metadata: Metadata"*
+>     - *"metadata: Metadata"*: `Metadata from TSV`
+>     - *"Metadata Source"*: `dunnart_metadata.tsv`
+>
+> 2. Rename the output to: `barchart.qzv`
+> 
+> 3. Visualisation: Taxonomy Barplots
+> 
+>   - Download `barchart.qzv` to your local computer and view in QIIME 2 View (q2view). Try selecting different taxonomic levels and metadata-based sample sorting.
+>   - [Click to view the **`barchart.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/APrHWMBRZRFHT5GCxr_2NR0/barchart.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
+>   - Increase the "Bar Width", select "Captivity" in "Sort Samples By" drop-down menu and explore the resulting barplots by changing the levels in the "Change Taxonomic Level" dropdown menu (Select Level 1, then Level 3, and then Level 5 for example).  
+>
+>   ![barplot1](./images/dunnart_images/q2view_barplot_levels.png)
+>
+{: .hands_on}
+
+
+### Rarefaction curves
+Generate rarefaction curves to determine whether the samples have been sequenced deeply enough to capture all the community members. The max depth setting will depend on the number of sequences in your samples.
+
+
+> <discussion></discussion>
+> 
+> #### Things to look for:
+>
+> 1. Do the curves for each sample plateau? If they don’t, the samples haven’t been sequenced deeply enough to capture the full diversity of the bacterial communities, which is shown on the y-axis.
+>
+> 2. At what sequencing depth (x-axis) do your curves plateau? This value will be important for downstream analyses, particularly for alpha diversity analyses.
+>
+{: .discussion}
+
+
+
+> <callout></callout>
+> 
+> The value that you provide for --p-max-depth should be determined by reviewing the “Frequency per sample” information presented in the summary.qzv file that was created above after filtering. In general, choosing a value that is somewhere around the median frequency seems to work well, but you may want to increase that value if the lines in the resulting rarefaction plot don’t appear to be levelling out, or decrease that value if you seem to be losing many of your samples due to low total frequencies closer to the minimum sampling depth than the maximum sampling depth.
+>
+{: .callout}
+
+
+
+> <hands-on-title>Alpha Diversity Rarefaction</hands-on-title>
+>
+> 1. {% tool [`qiime2 diversity alpha-rarefaction`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__diversity__alpha_rarefaction/qiime2__diversity__alpha_rarefaction/2026.1.0+q2galaxy.2026.1.0) %}: 
+>  - *"table: FeatureTable[Frequency]"*: `16s_table_filtered.qza`
+>  - *"max_depth: Int % Range(1, None)"*: `200000`
+>  - *"Click here for additional options"*
+>  - *"phylogeny: Phylogeny[Rooted]"*: `16s_rooted_tree.qza`
+>  - *"1: metadata: Metadata"*
+>     - *"metadata: Metadata"*: `Metadata from TSV`
+>     - *"Metadata Source"*: `dunnart_metadata.tsv`
+>  - *"min_depth: Int % Range(1, None)"*: `500`
+>  - *"steps: Int % Range(2, None)"*: `40`
+>
+> 2. Rename the output to: `16s_alpha_rarefaction.qzv`
+> 
+> 3. Visualisation: Rarefaction
+> 
+>   - Download `16s_alpha_rarefaction.qzv` to your local computer and view in QIIME 2 View (q2view). Try selecting different taxonomic levels and metadata-based sample sorting.
+>   - [Click to view the **`16s_alpha_rarefaction.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/APhv6-MkB307twQ0bCWkrkY/16s_alpha_rarefaction.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
+>
+>   - Select "Animal" in the "Sample Metadata Column" and "observed_features" under "Metric":
+> 
+>   ![rarefaction](./images/dunnart_images/q2view_rarefaction.png)
+>
+{: .hands_on}
+
+
+
+
+### Alpha and beta diversity analysis
+
+The following is taken  from the [Moving Pictures tutorial](https://amplicon-docs.qiime2.org/en/stable/tutorials/moving-pictures.html) and adapted for this data set. QIIME 2’s diversity analyses are available through the `q2-diversity` plugin, which supports computing alpha- and beta- diversity metrics, applying related statistical tests, and generating interactive visualisations. We’ll first apply the core-metrics-phylogenetic method, which rarefies a FeatureTable[Frequency] to a user-specified depth, computes several alpha- and beta- diversity metrics, and generates principle coordinates analysis (PCoA) plots using Emperor for each of the beta diversity metrics.
+
+The metrics computed by default are:
+
+- Alpha diversity (operate on a single sample (i.e. within sample diversity)).
+    - Shannon’s diversity index (a quantitative measure of community richness)
+    - Observed OTUs (a qualitative measure of community richness)
+    - Faith’s Phylogenetic Diversity (a qualitative measure of community richness that incorporates phylogenetic relationships between the features)
+    - Evenness (or Pielou’s Evenness; a measure of community evenness)
+- Beta diversity (operate on a pair of samples (i.e. between sample diversity)).
+    - Jaccard distance (a qualitative measure of community dissimilarity)
+    - Bray-Curtis distance (a quantitative measure of community dissimilarity)
+    - unweighted UniFrac distance (a qualitative measure of community dissimilarity that incorporates phylogenetic relationships between the features)
+    - weighted UniFrac distance (a quantitative measure of community dissimilarity that incorporates phylogenetic relationships between the features)
+
+An important parameter that needs to be provided to this script is *"sampling_depth: Int % Range(1, None)"*, which is the even sampling (i.e. rarefaction) depth that was determined above. As most diversity metrics are sensitive to different sampling depths across different samples, this script will randomly subsample the counts from each sample to the value provided for this parameter. For example, if *"sampling_depth: Int % Range(1, None)"*: `500` is provided, this step will subsample the counts in each sample without replacement, so that each sample in the resulting table has a total count of 500. If the total count for any sample(s) are smaller than this value, those samples will be excluded from the diversity analysis. Choosing this value is tricky. We recommend making your choice by reviewing the information presented in the summary.qzv file that was created above. Choose a value that is as high as possible (so more sequences per sample are retained), while excluding as few samples as possible.
+
+
+> <hands-on-title>Phylogenetic Metrics</hands-on-title>
+>
+> 1. {% tool [`qiime2 diversity core-metrics-phylogenetic`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__diversity__core_metrics_phylogenetic/qiime2__diversity__core_metrics_phylogenetic/2026.1.0+q2galaxy.2026.1.0) %}: 
+>  - *"table: FeatureTable[Frequency]"*: `16s_table_filtered.qza`
+>  - *"phylogeny: Phylogeny[Rooted]"*: `16s_rooted_tree.qza`
+>  - *"sampling_depth: Int % Range(1, None)"*: `100000`
+>  - *"1: metadata: Metadata"*
+>     - *"metadata: Metadata"*: `Metadata from TSV`
+>     - *"Metadata Source"*: `dunnart_metadata.tsv`
+>
+> 2. Rename the `unweighted_unifrac_emperor.qzv` output to: `unweighted_unifrac_emperor.qzv`
+> 
+> 3. Rename the `weighted_unifrac_emperor.qza` output to: `weighted_unifrac_emperor.qza`
+> 
+> 4. Rename the `jaccard_emperor.qzv` output to: `jaccard_emperor.qzv`
+> 
+> 5. Rename the `bray_curtis_emperor.qzv` output to: `bray_curtis_emperor.qzv`
+> 
+> 6. Rename the `observed_features_vector.qza` output to: `observed_features_vector.qza`
+> 
+> 7. Rename the `evenness_vector.qza` output to: `evenness_vector.qza`
+> 
+> 8. Rename the `unweighted_unifrac_distance_matrix.qza` output to: `unweighted_unifrac_distance_matrix.qza`
+> 
+> 9. Visualisations: Unweighted UniFrac Emperor Ordination
+> 
+>   - To view the differences between sample composition using unweighted UniFrac in ordination space, download `unweighted_unifrac_emperor.qzv` to your local computer and view in QIIME 2 View (q2view).
+>   - [Click to view the **`unweighted_unifrac_emperor.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/ANRMHJr8pw58adbJ2yv4i38/unweighted_unifrac_emperor.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
+>
+>   - On q2view, select the "Color" tab, choose "Captivity" under the "Select a Color Category" dropdown menu.
+> 
+>   ![unweighted_unifrac_emperor2](./images/dunnart_images/q2view_unweighted_unifrac_emperor2.png)
+>
+{: .hands_on}
+
+
+
+Next, we’ll test for associations between categorical metadata columns and alpha diversity data. We’ll do that here for observed ASVs and evenness metrics.
+
+
+> <hands-on-title>Alpha Group Significance - Observed Features</hands-on-title>
+>
+> 1. {% tool [`qiime2 diversity alpha-group-significance`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__diversity__alpha_group_significance/qiime2__diversity__alpha_group_significance/2026.1.0+q2galaxy.2026.1.0) %}: 
+>   - *"alpha_diversity: SampleData[AlphaDiversity]"*: `observed_features_vector.qza`
+>   - *"1: metadata: Metadata"*
+>     - *"metadata: Metadata"*: `Metadata from TSV`
+>     - *"Metadata Source"*: `dunnart_metadata.tsv`
+>
+> 2. Rename the `visualization.qzv` output to: `observed_features-significance.qzv`
+> 
+> 3. Visualisations: Observed Diversity output
+> 
+>   - Download `observed_features-significance.qzv` to your local computer and view in QIIME 2 View (q2view).
+>   - [Click to view the **`observed_features-significance.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/AMje09kxzAz65VKNBORJoAI/observed_features-significance.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).  
+>
+>   - Select "Captivity" under the "Column" dropdown menu.  
+>
+>   ![faith](./images/dunnart_images/q2view_observed_features.png)
+>
+{: .hands_on}
+
+
+
+
+> <hands-on-title>Alpha Group Significance - Evenness</hands-on-title>
+>
+> 1. {% tool [`qiime2 diversity alpha-group-significance`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__diversity__alpha_group_significance/qiime2__diversity__alpha_group_significance/2026.1.0+q2galaxy.2026.1.0) %}: 
+>   - *"alpha_diversity: SampleData[AlphaDiversity]"*: `evenness_vector.qza`
+>   - *"1: metadata: Metadata"*
+>     - *"metadata: Metadata"*: `Metadata from TSV`
+>     - *"Metadata Source"*: `dunnart_metadata.tsv`
+>
+> 2. Rename the `visualization.qzv` output to: `evenness-group-significance.qzv`
+> 
+> 3. Visualisations: Observed Diversity output
+> 
+>   - Download `evenness-group-significance.qzv` to your local computer and view in QIIME 2 View (q2view).
+>   - [Click to view the **`evenness-group-significance.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/ALNMCSgm30C2zhm7sHNSA5s/evenness-group-significance.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).  
+>
+>   - Select "Captivity" under the "Column" dropdown menu.  
+>
+>   ![evenness](./images/dunnart_images/q2view_evenness.png)
+>
+{: .hands_on}
+
+
+
+
+Next, we’ll analyse sample composition in the context of categorical metadata using a permutational multivariate analysis of variance (PERMANOVA, first described in Anderson (2001)) test using the beta-group-significance command. The following commands will test whether distances between samples within a group are more similar to each other then they are to samples from the other groups. If you call this command with the *"pairwise: Bool"*: `Yes` parameter, as we’ll do here, it will also perform pairwise tests that will allow you to determine which specific pairs of groups differ from one another, if any. This command can be slow to run, especially when setting *"pairwise: Bool"*: `Yes`, since it is based on permutation tests. So, unlike the previous commands, we’ll run beta-group-significance on specific columns of metadata that we’re interested in exploring, rather than all metadata columns to which it is applicable. Here we’ll apply this to our unweighted UniFrac distances, using two sample metadata columns, as follows.
+
+
+> <hands-on-title>Beta Group Significance - Unifrac Distance</hands-on-title>
+>
+> 1. {% tool [`qiime2 diversity beta-group-significance`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__diversity__beta_group_significance/qiime2__diversity__beta_group_significance/2026.1.0+q2galaxy.2026.1.0) %}: 
+>   - *"distance_matrix: DistanceMatrix"*: `unweighted_unifrac_distance_matrix.qza`
+>   - *"metadata: MetadataColumn[Categorical]"*: `Metadata from TSV`
+>     - *"Metadata Source"*: `dunnart_metadata.tsv`
+>     - *"Column Name"*: `c3: Captivity`
+>
+> 2. Rename the `visualization.qzv` output to: `unweighted-unifrac-captivity-significance.qzv`
+> 
+> 3. Visualisations: Captivity significance output and provenance
+> 
+>   - Download `unweighted-unifrac-captivity-significance.qzv` to your local computer and view in QIIME 2 View (q2view).
+>   - [Click to view the **`unweighted-unifrac-captivity-significance.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/ALN4XydwBZnK-0qP0xoUmJg/unweighted-unifrac-captivity-significance.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).  
+>
+>   ![provenance](./images/dunnart_images/q2view_provenance.png)
+>
+{: .hands_on}
+
+
+
+Finally, we'll do differential abundance testing with ANCOM-BC2. ANCOM-BC2 is a compositionally-aware linear regression model that allows testing for differentially abundant features across sample groups while also implementing bias correction. This can be accessed using the ancombc2 action in the composition plugin.
+
+We’ll apply ANCOM-BC2 to see which ASV are differentially abundant across Captivity. If you had more than two treatments, you can specify a reference level to define what each group is compared against (*"reference_levels: List[Str]"*: `Captivity::Wild`). This is not necessary when you just have two groups. 
+
+
+> <hands-on-title>Differential Abundance Tests</hands-on-title>
+>
+> 1. {% tool [`qiime2 composition ancombc2`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__composition__ancombc2/qiime2__composition__ancombc2/2026.1.0+0.g4b3aa86.dirty-q2galaxy.2026.1.0) %}: 
+>   - *"table: FeatureTable[Frequency]"*: `unweighted_unifrac_distance_matrix.qza`
+>   - *"1: metadata: Metadata"*
+>     - *"metadata: Metadata"*: `Metadata from TSV`
+>     - *"Metadata Source"*: `dunnart_metadata.tsv`
+>   - *"fixed_effects_formula: Str"*: `Captivity`
+>
+> 2. Rename the `ancombc2_results.qza` output to: `ancombc2-results.qza`
+> 
+> 1. {% tool [`qiime2 composition ancombc2-visualizer`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__composition__ancombc2_visualizer/qiime2__composition__ancombc2_visualizer/2026.1.0+0.g4b3aa86.dirty-q2galaxy.2026.1.0) %}: 
+>   - *"data: FeatureData[ANCOMBC2Output]"*: `ancombc2-results.qza`
+>   - *"Click here for additional options"*
+>   - *"taxonomy: FeatureData[Taxonomy]"*: `taxonomy_classification.qza`
+>
+> 2. Rename the `visualization.qzv` output to: `ancombc2-barplot.qzv`
+> 
+> 3. Visualisations: Differential Abundance Testing
+> 
+>   - Download `ancombc2-barplot.qzv` to your local computer and view in QIIME 2 View (q2view).
+>   - [Click to view the **`ancombc2-barplot.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/ALlpMHvkL69hNlowYAk5I7Y/ancombc2-barplot.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
 >
 {: .hands_on}
 
