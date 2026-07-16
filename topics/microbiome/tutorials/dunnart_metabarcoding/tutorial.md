@@ -1,28 +1,23 @@
 ---
 layout: tutorial_hands_on
 
-title: "Hi-C analysis of Drosophila melanogaster cells using HiCExplorer"
+title: "Metabarcoding of bacteria in dunnart faecal samples across Australia (wild + captive)"
 zenodo_link: "https://doi.org/10.5281/zenodo.16416373"
 questions:
   - Why is the fat‑tailed dunnart a useful model for microbiome studies?
   - What are the expected experimental differences between captive and wild animals?
-  - Why use a byobu / screen session on a remote instance?
-  - What are symbolic links and why are they used here?
 objectives:
   - Place the dataset in ecological and conservation context.
   - Relate host ecology and sample provenance to interpretation of microbiome results.
-  - Launch and reconnect to a persistent byobu‑screen session.
-  - Create symbolic links to shared tutorial data to avoid redundant copies.
 time_estimation: "2h"
 key_points:
   - Captivity can alter diet, exposure and behaviour — all of which may reshape the gut microbiome.
   - The dataset contains a small, balanced subset (5 captive, 5 wild) suitable for teaching and demonstrating methods.
-  - 
 contributions:
   authorship:
     - tflowers15
-    - gayle
-    - ashley
+    - gkphilip
+    - adungan31
   funding:
     - unimelb
     - melbournebioinformatics
