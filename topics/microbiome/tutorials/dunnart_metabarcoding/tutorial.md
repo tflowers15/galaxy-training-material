@@ -6,13 +6,18 @@ zenodo_link: "https://doi.org/10.5281/zenodo.16416373"
 questions:
   - Why is the fat‑tailed dunnart a useful model for microbiome studies?
   - What are the expected experimental differences between captive and wild animals?
+  - Why use a byobu / screen session on a remote instance?
+  - What are symbolic links and why are they used here?
 objectives:
   - Place the dataset in ecological and conservation context.
   - Relate host ecology and sample provenance to interpretation of microbiome results.
+  - Launch and reconnect to a persistent byobu‑screen session.
+  - Create symbolic links to shared tutorial data to avoid redundant copies.
 time_estimation: "2h"
 key_points:
   - Captivity can alter diet, exposure and behaviour — all of which may reshape the gut microbiome.
   - The dataset contains a small, balanced subset (5 captive, 5 wild) suitable for teaching and demonstrating methods.
+  - 
 contributions:
   authorship:
     - tflowers15
@@ -127,7 +132,6 @@ Here, the data files (two per sample i.e. forward and reverse reads `R1` and `R2
 > 3. Create a list collection of the imported raw reads (`.fastq.gz`) datasets.
 >
 {: .hands_on}
-
 
 # Importing, cleaning and quality control of the data
 
@@ -383,6 +387,145 @@ A [metadata file](https://use.qiime2.org/en/stable/references/metadata.html) is 
 {: .hands_on}
 
 
+# Taxonomic Analysis
+
+## Assign taxonomy
+Here we will classify each identical read or *Amplicon Sequence Variant (ASV)* to the highest resolution based on a database. Common databases for bacteria datasets are [SILVA](https://www.arb-silva.de/), [Ribosomal Database Project](http://rdp.cme.msu.edu/)*, or [Genome Taxonomy Database](https://gtdb.ecogenomic.org/). See [Porter and Hajibabaei, 2020](https://www.frontiersin.org/articles/10.3389/fevo.2020.00248/full) for a review of different classifiers for metabarcoding research. The classifier chosen is dependent upon:
+
+1. Previously published data in a field
+2. The target region of interest
+3. The number of reference sequences for your organism in the database and how recently that database was updated.
+
+
+A classifier has already been trained for you for the V4 region of the bacterial 16S rRNA gene using the SILVA database. The next step will take a while to run. *The output directory cannot previously exist*.
+
+
+`n_jobs = 1`  This runs the script using all available cores
+
+
+> <spoiler></spoiler>
+> 
+> #### *A Note on the Ribosomal Data Project
+> 
+> As of the time of writing, the Ribosomal Data Project website is no longer available. You can find a standalone version of the RDP Classifier 2.14 released in August 2023 on [Sourgeforce](https://sourceforge.net/p/rdp-classifier/news/2023/08/rdp-classifier-214-august-2023-released/) and [Zenodo](https://zenodo.org/records/10367203).
+>
+{: .spoiler}
+
+
+> <callout></callout>
+> 
+> [The classifier](https://www.dropbox.com/scl/fi/5eg7gqeczdzjf287o20p6/silva_138.2_16s_v4_classifier.qza?rlkey=a8gde5oggidosqxapqw44kdum&st=axl7llhj&dl=0) used here is only appropriate for the specific 16S rRNA region that *this* data represents. You will need to train your own classifier for your own data. For more information about training your own classifier, see [Extra Information](./07-extra-info.html#train-silva-v138-classifier-for-16s18s-rrna-gene-marker-sequences-).
+>
+{: .callout}
+
+
+> <hands-on-title>Classify Taxonomy</hands-on-title>
+>
+> 1. {% tool [`qiime2 feature-classifier classify-sklearn`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__feature_classifier__classify_sklearn/qiime2__feature_classifier__classify_sklearn/2026.1.0+q2galaxy.2026.1.0) %}: 
+>  - *"reads: FeatureData[Sequence]"*: `dada2out_representative_sequences.qza`
+>  - *"classifier: TaxonomicClassifier"*: `silva_138.2_16s_v4_classifier.qza`
+>
+> 2. Rename the output to: `taxonomy_classification.qzv`
+> 
+> 3. Visualisation: Denoising Stats
+> 
+>   - Download `taxonomy_classification.qzv` to your local computer and view in QIIME 2 View (q2view).
+>   - [Click to view the **`taxonomy_classification.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/AHM-SIH5EEGMxhpwz8vbpG8/taxonomy.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
+>
+{: .hands_on}
+
+
+> <caution></caution>
+> 
+> This step often runs out of memory on full datasets. Some options are to change the number of cores you are using (adjust `--p-n-jobs`) or add `--p-reads-per-batch 10000` and try again. The QIIME 2 forum has many threads regarding this issue so always check there was well.
+> 
+{: .caution}
+
+
+
+## Generate a viewable summary file of the taxonomic assignments.
+
+
+> <hands-on-title>Tabulate Taxonomic Assignments</hands-on-title>
+>
+> 1. {% tool [`qiime2 metadata tabulate`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__metadata__tabulate/qiime2__metadata__tabulate/2026.1.0+q2galaxy.2026.1.0) %}: 
+>  - *"1: metadata: Metadata"*
+>     - *"metadata: Metadata"*: `Metadata from Artifact`
+>     - *"Metadata Source"*: `taxonomy_classification.qza`
+>
+> 2. Rename the output to: `taxonomy.qzv`
+> 
+> 3. Visualisation: Denoising Stats
+> 
+>   - Download `taxonomy.qzv` to your local computer and view in QIIME 2 View (q2view).
+>   - [Click to view the **`taxonomy.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/AHM-SIH5EEGMxhpwz8vbpG8/taxonomy.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
+>
+{: .hands_on}
+
+
+## Filtering
+
+Filter out reads classified as mitochondria and chloroplast. Unassigned ASVs are retained. Generate a viewable summary file of the new table to see the effect of filtering.
+
+According to QIIME developer Nicholas Bokulich, low abundance filtering (i.e. removing ASVs containing very few sequences) is not necessary under the ASV model.
+
+
+> <hands-on-title>Filter Taxanomic Table</hands-on-title>
+>
+> 1. {% tool [`qiime2 taxa filter-table`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__taxa__filter_table/qiime2__taxa__filter_table/2026.1.0+q2galaxy.2026.1.0) %}: 
+>  - *"table: FeatureTable[Frequency¹ | PresenceAbsence²]"*: `dada2out_table.qza`
+>  - *"taxonomy: FeatureData[Taxonomy]"*: `classification.qza`
+>  - *"Click here for additional options"*
+>  - *"exclude: Str"*: `Provide a value`
+>     - *"exclude"*: `Mitochondria,Chloroplast`
+>
+> 2. Rename the output to: `16s_table_filtered.qza`
+> 
+> 3. {% tool [`qiime2 feature-table summarize`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__feature_table__summarize/qiime2__feature_table__summarize/2026.1.0+q2galaxy.2026.1.0) %}: 
+>  - *"table: FeatureTable[Frequency | PresenceAbsence]"*: `16s_table_filtered.qza`
+>  - *"Click here for additional options"*
+>  - *"1: metadata: Metadata"*
+>     - *"metadata: Metadata"*: `Metadata from TSV`
+>     - *"Metadata Source"*: `dunnart_metadata.tsv`
+> 
+> 4. Rename the output to: `summary_filtered.qzv`
+> 
+> 5. Visualisation: Denoising Stats
+> 
+>   - Download `summary_filtered.qzv` to your local computer and view in QIIME 2 View (q2view).
+>   - [Click to view the **`summary_filtered.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/AFgPkLgEwPhYoS_BaZekjMw/summary_table_filtered/summary.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
+>
+{: .hands_on}
+
+
+## Train SILVA v138 classifier for 16S/18S rRNA gene marker sequences.
+
+This section contains information on how to train the classifier for analysing your **own** data.
+
+The newest version of the [SILVA](https://www.arb-silva.de/) database (v138) can be trained to classify marker gene sequences originating from the 16S/18S rRNA gene. Reference files `silva-138-99-seqs.qza` and `silva-138-99-tax.qza` were [downloaded from SILVA](https://www.arb-silva.de/download/archive/) and imported to get the artefact files. You can download both these files from [here](https://www.dropbox.com/s/x8ogeefjknimhkx/classifier_files.zip?dl=0).
+
+
+> <hands-on-title>Train Classifier</hands-on-title>
+> 
+> Reads for the region of interest are first extracted. **You will need to input your forward and reverse primer sequences**. See QIIME2 documentation for more [information](https://amplicon-docs.qiime2.org/en/stable/references/plugins/feature-classifier.html).
+>
+> 1. {% tool [`qiime2 feature-classifier extract-reads`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__feature_classifier__extract_reads/qiime2__feature_classifier__extract_reads/2026.1.0+q2galaxy.2026.1.0) %}: 
+>  - *"sequences: FeatureData[Sequence]"*: `silva-138-99-seqs.qza`
+>  - *"f_primer: Str"*: `FORWARD_PRIMER_SEQUENCE`
+>  - *"r_primer: Str"*: `REVERSE_PRIMER_SEQUENCE`
+>
+> 2. Rename the output to: `silva_138_marker_gene.qza`
+> 
+> The classifier is then trained using a naive Bayes algorithm. See QIIME2 documentation for more [information](https://amplicon-docs.qiime2.org/en/stable/references/plugins/feature-classifier.html#q2-action-feature-classifier-fit-classifier-naive-bayes).
+> 
+> 3. {% tool [`qiime2 feature-classifier fit-classifier-naive-bayes`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__feature_classifier__fit_classifier_naive_bayes/qiime2__feature_classifier__fit_classifier_naive_bayes/2026.1.0+q2galaxy.2026.1.0) %}: 
+>  - *"reference_reads: FeatureData[Sequence]"*: `silva_138_marker_gene.qza`
+>  - *"reference_taxonomy: FeatureData[Taxonomy]"*: `silva-138-99-tax.qza`
+>  - *"r_primer: Str"*: `REVERSE_PRIMER_SEQUENCE`
+>
+> 4. Rename the output to: `silva_138_marker_gene_classifier.qza `
+>
+{: .hands_on}
 
 
 
