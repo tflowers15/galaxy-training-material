@@ -1617,6 +1617,13 @@ edmontosaurus:
     matrix: 'edmontosaurus:matrix.org'
     joined: 2023-11
 
+egmg726:
+    name: Emma Gail
+    joined: 2026-07
+    affiliations:
+      - unimelb
+      - melbournebioinformatics
+
 ehumph:
     name: Elizabeth Humphries
     joined: 2023-06
