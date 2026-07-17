@@ -6,13 +6,9 @@ zenodo_link: "https://doi.org/10.5281/zenodo.16416373"
 questions:
   - Why is the fat‑tailed dunnart a useful model for microbiome studies?
   - What are the expected experimental differences between captive and wild animals?
-  - Why use a byobu / screen session on a remote instance?
-  - What are symbolic links and why are they used here?
 objectives:
   - Place the dataset in ecological and conservation context.
   - Relate host ecology and sample provenance to interpretation of microbiome results.
-  - Launch and reconnect to a persistent byobu‑screen session.
-  - Create symbolic links to shared tutorial data to avoid redundant copies.
 time_estimation: "2h"
 key_points:
   - Captivity can alter diet, exposure and behaviour — all of which may reshape the gut microbiome.
@@ -23,6 +19,7 @@ contributions:
     - tflowers15
     - gkphilip
     - adungan31
+    - egmg726
   funding:
     - unimelb
     - melbournebioinformatics
@@ -36,7 +33,7 @@ What is the influence of captivity on gut microbiota of the fat-tailed dunnart?
 
 ## The Players
 
-![dunnart](../images/dunnart_images/dunnart.jpg)
+![dunnart](./images/dunnart.jpg)
 (Photo credit: Emily Scicluna)
 
 
@@ -130,6 +127,8 @@ Here, the data files (two per sample i.e. forward and reverse reads `R1` and `R2
 >    {: .tip}
 >
 > 3. Create a list collection of the imported raw reads (`.fastq.gz`) datasets.
+> 
+>    {% snippet faqs/galaxy/collections_build_list.md %}
 >
 {: .hands_on}
 
@@ -238,7 +237,7 @@ TL;DR: when quality plots are essentially straight lines, truncation is less abo
 >   - Download `trimmed_sequences.qzv` to your local computer and view in [QIIME 2 View](https://view.qiime2.org) (q2view).
 >   - [Click to view the **`trimmed_sequences.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/AAF9YHZ2oAZQ48Kl-k1Jvyo/trimmed_sequences.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
 >   - Make sure to switch between the "Overview" and "Interactive Quality Plot" tabs in the top left hand corner. Click and drag on the plot to zoom in. Double click to zoom back out to full size. Hover over a box to see the parametric seven-number summary of the quality scores at the corresponding position.
->   ![OverviewQualPlotTabs](../images/dunnart_images/q2view_OverviewQualPlotTabs.png)
+>   ![OverviewQualPlotTabs](./images/q2view_OverviewQualPlotTabs.png)
 >
 {: .hands_on}
 
@@ -367,7 +366,7 @@ A [metadata file](https://use.qiime2.org/en/stable/references/metadata.html) is 
 >   - Download `summary_table.qzv ` to your local computer and view in QIIME 2 View (q2view).
 >   - [Click to view the **`summary.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/ADpnQOqVK-JD1zIkLejSfmY/summary_table/summary.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
 >   - Make sure to switch between the "Overview" and "Feature Detail" tabs in the top left hand corner. 
->    ![ASV_detailPNG](../images/dunnart_images/q2view_ASV_detail.png)
+>    ![ASV_detailPNG](./images/q2view_ASV_detail.png)
 >
 {: .hands_on}
 
@@ -580,7 +579,7 @@ Create bar charts to compare the relative abundance of ASVs across samples.
 >   - [Click to view the **`barchart.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/APrHWMBRZRFHT5GCxr_2NR0/barchart.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
 >   - Increase the "Bar Width", select "Captivity" in "Sort Samples By" drop-down menu and explore the resulting barplots by changing the levels in the "Change Taxonomic Level" dropdown menu (Select Level 1, then Level 3, and then Level 5 for example).  
 >
->   ![barplot1](../images/dunnart_images/q2view_barplot_levels.png)
+>   ![barplot1](./images/q2view_barplot_levels.png)
 >
 {: .hands_on}
 
@@ -631,7 +630,7 @@ Generate rarefaction curves to determine whether the samples have been sequenced
 >
 >   - Select "Animal" in the "Sample Metadata Column" and "observed_features" under "Metric":
 > 
->   ![rarefaction](../images/dunnart_images/q2view_rarefaction.png)
+>   ![rarefaction](./images/q2view_rarefaction.png)
 >
 {: .hands_on}
 
@@ -689,7 +688,7 @@ An important parameter that needs to be provided to this script is *"sampling_de
 >
 >   - On q2view, select the "Color" tab, choose "Captivity" under the "Select a Color Category" dropdown menu.
 > 
->   ![unweighted_unifrac_emperor2](../images/dunnart_images/q2view_unweighted_unifrac_emperor2.png)
+>   ![unweighted_unifrac_emperor2](./images/q2view_unweighted_unifrac_emperor2.png)
 >
 {: .hands_on}
 
@@ -715,7 +714,7 @@ Next, we’ll test for associations between categorical metadata columns and alp
 >
 >   - Select "Captivity" under the "Column" dropdown menu.  
 >
->   ![faith](../images/dunnart_images/q2view_observed_features.png)
+>   ![faith](./images/q2view_observed_features.png)
 >
 {: .hands_on}
 
@@ -739,7 +738,7 @@ Next, we’ll test for associations between categorical metadata columns and alp
 >
 >   - Select "Captivity" under the "Column" dropdown menu.  
 >
->   ![evenness](../images/dunnart_images/q2view_evenness.png)
+>   ![evenness](./images/q2view_evenness.png)
 >
 {: .hands_on}
 
@@ -764,7 +763,7 @@ Next, we’ll analyse sample composition in the context of categorical metadata 
 >   - Download `unweighted-unifrac-captivity-significance.qzv` to your local computer and view in QIIME 2 View (q2view).
 >   - [Click to view the **`unweighted-unifrac-captivity-significance.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/ALN4XydwBZnK-0qP0xoUmJg/unweighted-unifrac-captivity-significance.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).  
 >
->   ![provenance](../images/dunnart_images/q2view_provenance.png)
+>   ![provenance](./images/q2view_provenance.png)
 >
 {: .hands_on}
 
@@ -801,6 +800,91 @@ We’ll apply ANCOM-BC2 to see which ASV are differentially abundant across Capt
 {: .hands_on}
 
 
+
+# Exporting data for further analysis in R
+
+You need to export your ASV table, taxonomy table, and tree file for analyses in R. Many file formats can be accepted. 
+
+The tool for exporting QIIME2 artefacts to standard formats, `qiime2 tools export`, requires the user to specify the type and format of `.qza` artefact. When running the tool manually (selecting from the tool panel and specifying the input dataset to be exported), these fields will pre-fill with the correct values for the selected dataset. 
+
+However, when creating a workflow, the `.qza` type and format cannot be pre-filled and the tool step in the workflow will provide free-text boxes in which the user must provide the correct type and format. The easiest way to determine the type and format is to run the tool manually with an example of the expected input `.qza` and note and copy the type and format that are pre-filled into the tool in the workflow.
+
+## Export unrooted tree as `.nwk` format as required for the R package `phyloseq`.
+
+> <hands-on-title>Export Tree</hands-on-title>
+>
+> 1. {% tool [`qiime2 tools export`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2_core__tools__export/qiime2_core__tools__export/2026.1.0+dist.h02a552c2) %}: 
+>   - *"input: The path to the artifact you want to export"*: `16s_unrooted_tree.qza`
+>   - *"The type of your input qza is"*: `Phylogeny[Unrooted]` (should pre-select the correct artefact type)
+>   - *"The current QIIME 2 format is"*: `NewickDirectoryFormat` (should pre-select the correct datatype)
+>
+> 2. Rename the output to: `16s_unrooted_tree.nwk`
+>
+{: .hands_on}
+
+
+## Create a BIOM table with taxonomy annotations. A FeatureTable[Frequency] artefact will be exported as a BIOM v2.1.0 formatted file.
+
+> <hands-on-title>Export Taxonomy Annotations Table</hands-on-title>
+>
+> 1. {% tool [`qiime2 tools export`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2_core__tools__export/qiime2_core__tools__export/2026.1.0+dist.h02a552c2) %}: 
+>   - *"input: The path to the artifact you want to export"*: `16s_table_filtered.qza`
+>   - *"The type of your input qza is"*: `FeatureTable[Frequency]` (should pre-select the correct artefact type)
+>   - *"The current QIIME 2 format is"*: `BIOMV210DirFmt` (should pre-select the correct datatype)
+>
+> 2. Rename the output to: `feature-table.biom`
+> 
+> 3. Update the `feature-table.biom` datatype attribute to explicitly define the datatype as `biom1`. This does not affect the contents of the dataset and only informs Galaxy how to interact with it. The output of `qiime2 tools export` has the assigned datatype of `biom`, which is not an accepted input for the `Convert between BIOM table formats` tool. The accepted input format is `biom1`.
+> 
+>    {% snippet faqs/galaxy/datasets_change_datatype.md %}
+> 
+> 4. Then convert the BIOM to TSV
+> 
+> 5. {% tool [`Convert between BIOM table formats`](toolshed.g2.bx.psu.edu/repos/iuc/biom_convert/biom_convert/2.1.17+galaxy0) %}: 
+>   - *"Choose the source BIOM format"*: `BIOM File`
+>   - *"Input BIOM table"*: `feature-table.biom`
+>   - *"Choose the output type"*: `TSV-formatted (classic) table`
+> 
+> 6. Rename the output to: `feature-table.tsv`
+>
+{: .hands_on}
+
+
+## Export Taxonomy as TSV
+
+> <hands-on-title>Export Taxonomy</hands-on-title>
+>
+> 1. {% tool [`qiime2 tools export`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2_core__tools__export/qiime2_core__tools__export/2026.1.0+dist.h02a552c2) %}: 
+>   - *"input: The path to the artifact you want to export"*: `taxonomy_classification.qza`
+>   - *"The type of your input qza is"*: `FeatureData[Taxonomy]` (should pre-select the correct artefact type)
+>   - *"The current QIIME 2 format is"*: `TSVTaxonomyDirectoryFormat` (should pre-select the correct datatype)
+>
+> 2. Rename the output to: `taxonomy.tsv`
+>
+{: .hands_on}
+
+
+## Remove the header lines of the .tsv files
+
+> <hands-on-title>Remove Header</hands-on-title>
+>
+> 1. {% tool [` Remove beginning`](Remove beginning1) %}: 
+>   - *"Remove first"*: `1`
+>   - *"from"*: `taxonomy.tsv`
+>
+> 2. Rename the output to: `taxonomy_noheader.tsv`
+> 
+> 3. {% tool [` Remove beginning`](Remove beginning1) %}: 
+>   - *"Remove first"*: `1`
+>   - *"from"*: `feature-table.tsv`
+>
+> 4. Rename the output to: `feature-table_noheader.tsv`
+>
+{: .hands_on}
+
+
+
+Some packages require your data to be in a consistent order (i.e. the order of your ASVs in the taxonomy table rows to be the same order of ASVs in the columns of your ASV table). It's recommended to clean up your taxonomy file. You can have blank spots where the level of classification was not completely resolved.
 
 
 
