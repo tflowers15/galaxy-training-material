@@ -9,7 +9,7 @@ questions:
 objectives:
   - Place the dataset in ecological and conservation context.
   - Relate host ecology and sample provenance to interpretation of microbiome results.
-time_estimation: "2h"
+time_estimation: "3h"
 key_points:
   - Captivity can alter diet, exposure and behaviour — all of which may reshape the gut microbiome.
   - The dataset contains a small, balanced subset (5 captive, 5 wild) suitable for teaching and demonstrating methods.
@@ -33,7 +33,7 @@ What is the influence of captivity on gut microbiota of the fat-tailed dunnart?
 
 ## The Players
 
-![dunnart](./images/dunnart.jpg)
+![dunnart](./images/dunnart_images/dunnart.jpg)
 (Photo credit: Emily Scicluna)
 
 
@@ -142,7 +142,7 @@ Run the command to import the raw data located in the directory `raw_data` and e
 > 1. {% tool [`qiime2 tools import`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2_core__tools__import/qiime2_core__tools__import/2026.1.0+dist.h02a552c2) %}: 
 >    - *"Type of data to import"*: `SampleData[PairedEndSequencesWithQuality]`
 >    - *QIIME 2 file format to import from:*: `Casava One Eight Single Lane Per Sample Directory Format`
->    - *"Import sequences"*: 
+>    - *"Import sequences"*
 >      - *"Select a mechanism"*: `Use collection to import`
 >      - *"elements"*: `raw reads`
 >    - *"Append an extension?"*: `No, use element identifiers as is` (*If the datasets in the collection include the extension `.fastq.gz`*)
@@ -228,7 +228,7 @@ TL;DR: when quality plots are essentially straight lines, truncation is less abo
 > <hands-on-title>Summarise Trimmed Sequences</hands-on-title>
 >
 > 1. {% tool [`qiime2 demux summarize`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__demux__summarize/qiime2__demux__summarize/2026.1.0+q2galaxy.2026.1.0) %}: 
->  - *"data: SampleData[SequencesWithQuality | PairedEndSequencesWithQuality | JoinedSequencesWithQuality]"*: `trimmed_sequences.qza`
+>   - *"data: SampleData[SequencesWithQuality \| PairedEndSequencesWithQuality \| JoinedSequencesWithQuality]"*: `trimmed_sequences.qza`
 >
 > 2. Rename the output to: `trimmed_sequences.qzv`
 > 
@@ -237,7 +237,7 @@ TL;DR: when quality plots are essentially straight lines, truncation is less abo
 >   - Download `trimmed_sequences.qzv` to your local computer and view in [QIIME 2 View](https://view.qiime2.org) (q2view).
 >   - [Click to view the **`trimmed_sequences.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/AAF9YHZ2oAZQ48Kl-k1Jvyo/trimmed_sequences.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
 >   - Make sure to switch between the "Overview" and "Interactive Quality Plot" tabs in the top left hand corner. Click and drag on the plot to zoom in. Double click to zoom back out to full size. Hover over a box to see the parametric seven-number summary of the quality scores at the corresponding position.
->   ![OverviewQualPlotTabs](./images/q2view_OverviewQualPlotTabs.png)
+>   ![OverviewQualPlotTabs](./images/dunnart_images/q2view_OverviewQualPlotTabs.png)
 >
 {: .hands_on}
 
@@ -269,11 +269,11 @@ In the following command, a pooling method of 'pseudo' is selected. Pseudo-pooli
 > <hands-on-title>DADA2 Denoise Sequences</hands-on-title>
 >
 > 1. {% tool [`qiime2 dada2 denoise-paired`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__dada2__denoise_paired/qiime2__dada2__denoise_paired/2026.1.0+q2galaxy.2026.1.0) %}: 
->  - *"demultiplexed_seqs: SampleData[PairedEndSequencesWithQuality]"*: `trimmed_sequences.qza`
->  - *"trunc\_len\_f: Int"*: `xxx`
->  - *"trunc\_len\_r: Int"*: `xxx`
->  - *"Click here for additional options"*
->  - *"pooling_method: Str % Choices('independent', 'pseudo')"*: `pseudo `
+>   - *"demultiplexed_seqs: SampleData[PairedEndSequencesWithQuality]"*: `trimmed_sequences.qza`
+>   - *"trunc\_len\_f: Int"*: `xxx`
+>   - *"trunc\_len\_r: Int"*: `xxx`
+>   - *"Click here for additional options"*
+>      - *"pooling_method: Str % Choices('independent', 'pseudo')"*: `pseudo `
 >
 > 2. Rename the `table.qza` output to: `dada2out_table.qza`
 > 
@@ -336,9 +336,9 @@ A [metadata file](https://use.qiime2.org/en/stable/references/metadata.html) is 
 > <hands-on-title>Tabulate Denoising Stats</hands-on-title>
 >
 > 1. {% tool [`qiime2 metadata tabulate`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__metadata__tabulate/qiime2__metadata__tabulate/2026.1.0+q2galaxy.2026.1.0) %}: 
->  - *"1: input: Metadata"*: 
->    - *"input: Metadata"*: `Metadata from Artifact`
->    - *"Metadata Source"*: `dada2out_denoising_stats.qza`
+>   - *"1: input: Metadata"*
+>      - *"input: Metadata"*: `Metadata from Artifact`
+>      - *"Metadata Source"*: `dada2out_denoising_stats.qza`
 >
 > 2. Rename the output to: `16s_denoising_stats.qzv`
 > 
@@ -353,9 +353,9 @@ A [metadata file](https://use.qiime2.org/en/stable/references/metadata.html) is 
 > <hands-on-title>Summarise DADA2 Table</hands-on-title>
 >
 > 1. {% tool [`qiime2 feature-table summarize`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__metadata__tabulate/qiime2__metadata__tabulate/2026.1.0+q2galaxy.2026.1.0) %}: 
->  - *"table: FeatureTable[Frequency | PresenceAbsence]"*: `dada2out_table.qza`
->  - *"Click here for additional options"*
->      - *"1: input: Metadata"*: 
+>   - *"table: FeatureTable[Frequency \| PresenceAbsence]"*: `dada2out_table.qza`
+>   - *"Click here for additional options"*
+>      - *"1: input: Metadata"*
 >          - *"input: Metadata"*: `Metadata from TSV`
 >          - *"Metadata Source"*: `dunnart_metadata.tsv`
 >
@@ -366,7 +366,7 @@ A [metadata file](https://use.qiime2.org/en/stable/references/metadata.html) is 
 >   - Download `summary_table.qzv ` to your local computer and view in QIIME 2 View (q2view).
 >   - [Click to view the **`summary.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/ADpnQOqVK-JD1zIkLejSfmY/summary_table/summary.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
 >   - Make sure to switch between the "Overview" and "Feature Detail" tabs in the top left hand corner. 
->    ![ASV_detailPNG](./images/q2view_ASV_detail.png)
+>    ![ASV_detailPNG](./images/dunnart_images/q2view_ASV_detail.png)
 >
 {: .hands_on}
 
@@ -374,7 +374,7 @@ A [metadata file](https://use.qiime2.org/en/stable/references/metadata.html) is 
 > <hands-on-title>Tabulate Representative Sequences</hands-on-title>
 >
 > 1. {% tool [`qiime2 feature-table tabulate-seqs`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__feature_table__tabulate_seqs/qiime2__feature_table__tabulate_seqs/2026.1.0+q2galaxy.2026.1.0) %}: 
->  - *"data: FeatureData[Sequence | AlignedSequence]"*: `dada2out_representative_sequences.qza`
+>   - *"data: FeatureData[Sequence \| AlignedSequence]"*: `dada2out_representative_sequences.qza`
 >
 > 2. Rename the output to: `16s_representative_seqs.qzv`
 > 
@@ -399,9 +399,6 @@ Here we will classify each identical read or *Amplicon Sequence Variant (ASV)* t
 A classifier has already been trained for you for the V4 region of the bacterial 16S rRNA gene using the SILVA database. The next step will take a while to run. *The output directory cannot previously exist*.
 
 
-`n_jobs = 1`  This runs the script using all available cores
-
-
 > <spoiler></spoiler>
 > 
 > #### *A Note on the Ribosomal Data Project
@@ -421,8 +418,8 @@ A classifier has already been trained for you for the V4 region of the bacterial
 > <hands-on-title>Classify Taxonomy</hands-on-title>
 >
 > 1. {% tool [`qiime2 feature-classifier classify-sklearn`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__feature_classifier__classify_sklearn/qiime2__feature_classifier__classify_sklearn/2026.1.0+q2galaxy.2026.1.0) %}: 
->  - *"reads: FeatureData[Sequence]"*: `dada2out_representative_sequences.qza`
->  - *"classifier: TaxonomicClassifier"*: `silva_138.2_16s_v4_classifier.qza`
+>   - *"reads: FeatureData[Sequence]"*: `dada2out_representative_sequences.qza`
+>   - *"classifier: TaxonomicClassifier"*: `silva_138.2_16s_v4_classifier.qza`
 >
 > 2. Rename the output to: `taxonomy_classification.qzv`
 > 
@@ -447,7 +444,7 @@ A classifier has already been trained for you for the V4 region of the bacterial
 > <hands-on-title>Tabulate Taxonomic Assignments</hands-on-title>
 >
 > 1. {% tool [`qiime2 metadata tabulate`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__metadata__tabulate/qiime2__metadata__tabulate/2026.1.0+q2galaxy.2026.1.0) %}: 
->  - *"1: metadata: Metadata"*
+>   - *"1: metadata: Metadata"*
 >     - *"metadata: Metadata"*: `Metadata from Artifact`
 >     - *"Metadata Source"*: `taxonomy_classification.qza`
 >
@@ -471,18 +468,18 @@ According to QIIME developer Nicholas Bokulich, low abundance filtering (i.e. re
 > <hands-on-title>Filter Taxanomic Table</hands-on-title>
 >
 > 1. {% tool [`qiime2 taxa filter-table`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__taxa__filter_table/qiime2__taxa__filter_table/2026.1.0+q2galaxy.2026.1.0) %}: 
->  - *"table: FeatureTable[Frequency¹ | PresenceAbsence²]"*: `dada2out_table.qza`
->  - *"taxonomy: FeatureData[Taxonomy]"*: `classification.qza`
->  - *"Click here for additional options"*
->  - *"exclude: Str"*: `Provide a value`
+>   - *"table: FeatureTable[Frequency¹ \| PresenceAbsence²]"*: `dada2out_table.qza`
+>   - *"taxonomy: FeatureData[Taxonomy]"*: `classification.qza`
+>   - *"Click here for additional options"*
+>   - *"exclude: Str"*: `Provide a value`
 >     - *"exclude"*: `Mitochondria,Chloroplast`
 >
 > 2. Rename the output to: `16s_table_filtered.qza`
 > 
 > 3. {% tool [`qiime2 feature-table summarize`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__feature_table__summarize/qiime2__feature_table__summarize/2026.1.0+q2galaxy.2026.1.0) %}: 
->  - *"table: FeatureTable[Frequency | PresenceAbsence]"*: `16s_table_filtered.qza`
->  - *"Click here for additional options"*
->  - *"1: metadata: Metadata"*
+>   - *"table: FeatureTable[Frequency \| PresenceAbsence]"*: `16s_table_filtered.qza`
+>   - *"Click here for additional options"*
+>   - *"1: metadata: Metadata"*
 >     - *"metadata: Metadata"*: `Metadata from TSV`
 >     - *"Metadata Source"*: `dunnart_metadata.tsv`
 > 
@@ -508,18 +505,18 @@ The newest version of the [SILVA](https://www.arb-silva.de/) database (v138) can
 > Reads for the region of interest are first extracted. **You will need to input your forward and reverse primer sequences**. See QIIME2 documentation for more [information](https://amplicon-docs.qiime2.org/en/stable/references/plugins/feature-classifier.html).
 >
 > 1. {% tool [`qiime2 feature-classifier extract-reads`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__feature_classifier__extract_reads/qiime2__feature_classifier__extract_reads/2026.1.0+q2galaxy.2026.1.0) %}: 
->  - *"sequences: FeatureData[Sequence]"*: `silva-138-99-seqs.qza`
->  - *"f_primer: Str"*: `FORWARD_PRIMER_SEQUENCE`
->  - *"r_primer: Str"*: `REVERSE_PRIMER_SEQUENCE`
+>   - *"sequences: FeatureData[Sequence]"*: `silva-138-99-seqs.qza`
+>   - *"f_primer: Str"*: `FORWARD_PRIMER_SEQUENCE`
+>   - *"r_primer: Str"*: `REVERSE_PRIMER_SEQUENCE`
 >
 > 2. Rename the output to: `silva_138_marker_gene.qza`
 > 
 > The classifier is then trained using a naive Bayes algorithm. See QIIME2 documentation for more [information](https://amplicon-docs.qiime2.org/en/stable/references/plugins/feature-classifier.html#q2-action-feature-classifier-fit-classifier-naive-bayes).
 > 
 > 3. {% tool [`qiime2 feature-classifier fit-classifier-naive-bayes`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__feature_classifier__fit_classifier_naive_bayes/qiime2__feature_classifier__fit_classifier_naive_bayes/2026.1.0+q2galaxy.2026.1.0) %}: 
->  - *"reference_reads: FeatureData[Sequence]"*: `silva_138_marker_gene.qza`
->  - *"reference_taxonomy: FeatureData[Taxonomy]"*: `silva-138-99-tax.qza`
->  - *"r_primer: Str"*: `REVERSE_PRIMER_SEQUENCE`
+>   - *"reference_reads: FeatureData[Sequence]"*: `silva_138_marker_gene.qza`
+>   - *"reference_taxonomy: FeatureData[Taxonomy]"*: `silva-138-99-tax.qza`
+>   - *"r_primer: Str"*: `REVERSE_PRIMER_SEQUENCE`
 >
 > 4. Rename the output to: `silva_138_marker_gene_classifier.qza `
 >
@@ -564,12 +561,12 @@ Create bar charts to compare the relative abundance of ASVs across samples.
 > <hands-on-title>Taxonamy Barplot</hands-on-title>
 >
 > 1. {% tool [`qiime2 taxa barplot`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__taxa__barplot/qiime2__taxa__barplot/2026.1.0+q2galaxy.2026.1.0) %}: 
->  - *"table: FeatureTable[Frequency | PresenceAbsence]"*: `16s_table_filtered.qza`
->  - *"Click here for additional options"*
->  - *"taxonomy: FeatureData[Taxonomy]"*: `taxonomy_classification.qza`
->  - *"1: metadata: Metadata"*
->     - *"metadata: Metadata"*: `Metadata from TSV`
->     - *"Metadata Source"*: `dunnart_metadata.tsv`
+>   - *"table: FeatureTable[Frequency \| PresenceAbsence]"*: `16s_table_filtered.qza`
+>   - *"Click here for additional options"*
+>   - *"taxonomy: FeatureData[Taxonomy]"*: `taxonomy_classification.qza`
+>   - *"1: metadata: Metadata"*
+>      - *"metadata: Metadata"*: `Metadata from TSV`
+>      - *"Metadata Source"*: `dunnart_metadata.tsv`
 >
 > 2. Rename the output to: `barchart.qzv`
 > 
@@ -579,7 +576,7 @@ Create bar charts to compare the relative abundance of ASVs across samples.
 >   - [Click to view the **`barchart.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/APrHWMBRZRFHT5GCxr_2NR0/barchart.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
 >   - Increase the "Bar Width", select "Captivity" in "Sort Samples By" drop-down menu and explore the resulting barplots by changing the levels in the "Change Taxonomic Level" dropdown menu (Select Level 1, then Level 3, and then Level 5 for example).  
 >
->   ![barplot1](./images/q2view_barplot_levels.png)
+>   ![barplot1](./images/dunnart_images/q2view_barplot_levels.png)
 >
 {: .hands_on}
 
@@ -611,15 +608,15 @@ Generate rarefaction curves to determine whether the samples have been sequenced
 > <hands-on-title>Alpha Diversity Rarefaction</hands-on-title>
 >
 > 1. {% tool [`qiime2 diversity alpha-rarefaction`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__diversity__alpha_rarefaction/qiime2__diversity__alpha_rarefaction/2026.1.0+q2galaxy.2026.1.0) %}: 
->  - *"table: FeatureTable[Frequency]"*: `16s_table_filtered.qza`
->  - *"max_depth: Int % Range(1, None)"*: `200000`
->  - *"Click here for additional options"*
->  - *"phylogeny: Phylogeny[Rooted]"*: `16s_rooted_tree.qza`
->  - *"1: metadata: Metadata"*
->     - *"metadata: Metadata"*: `Metadata from TSV`
->     - *"Metadata Source"*: `dunnart_metadata.tsv`
->  - *"min_depth: Int % Range(1, None)"*: `500`
->  - *"steps: Int % Range(2, None)"*: `40`
+>   - *"table: FeatureTable[Frequency]"*: `16s_table_filtered.qza`
+>   - *"max_depth: Int % Range(1, None)"*: `200000`
+>   - *"Click here for additional options"*
+>   - *"phylogeny: Phylogeny[Rooted]"*: `16s_rooted_tree.qza`
+>   - *"1: metadata: Metadata"*
+>      - *"metadata: Metadata"*: `Metadata from TSV`
+>      - *"Metadata Source"*: `dunnart_metadata.tsv`
+>   - *"min_depth: Int % Range(1, None)"*: `500`
+>   - *"steps: Int % Range(2, None)"*: `40`
 >
 > 2. Rename the output to: `16s_alpha_rarefaction.qzv`
 > 
@@ -630,7 +627,7 @@ Generate rarefaction curves to determine whether the samples have been sequenced
 >
 >   - Select "Animal" in the "Sample Metadata Column" and "observed_features" under "Metric":
 > 
->   ![rarefaction](./images/q2view_rarefaction.png)
+>   ![rarefaction](./images/dunnart_images/q2view_rarefaction.png)
 >
 {: .hands_on}
 
@@ -660,12 +657,12 @@ An important parameter that needs to be provided to this script is *"sampling_de
 > <hands-on-title>Phylogenetic Metrics</hands-on-title>
 >
 > 1. {% tool [`qiime2 diversity core-metrics-phylogenetic`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__diversity__core_metrics_phylogenetic/qiime2__diversity__core_metrics_phylogenetic/2026.1.0+q2galaxy.2026.1.0) %}: 
->  - *"table: FeatureTable[Frequency]"*: `16s_table_filtered.qza`
->  - *"phylogeny: Phylogeny[Rooted]"*: `16s_rooted_tree.qza`
->  - *"sampling_depth: Int % Range(1, None)"*: `100000`
->  - *"1: metadata: Metadata"*
->     - *"metadata: Metadata"*: `Metadata from TSV`
->     - *"Metadata Source"*: `dunnart_metadata.tsv`
+>   - *"table: FeatureTable[Frequency]"*: `16s_table_filtered.qza`
+>   - *"phylogeny: Phylogeny[Rooted]"*: `16s_rooted_tree.qza`
+>   - *"sampling_depth: Int % Range(1, None)"*: `100000`
+>   - *"1: metadata: Metadata"*
+>      - *"metadata: Metadata"*: `Metadata from TSV`
+>      - *"Metadata Source"*: `dunnart_metadata.tsv`
 >
 > 2. Rename the `unweighted_unifrac_emperor.qzv` output to: `unweighted_unifrac_emperor.qzv`
 > 
@@ -688,7 +685,7 @@ An important parameter that needs to be provided to this script is *"sampling_de
 >
 >   - On q2view, select the "Color" tab, choose "Captivity" under the "Select a Color Category" dropdown menu.
 > 
->   ![unweighted_unifrac_emperor2](./images/q2view_unweighted_unifrac_emperor2.png)
+>   ![unweighted_unifrac_emperor2](./images/dunnart_images/q2view_unweighted_unifrac_emperor2.png)
 >
 {: .hands_on}
 
@@ -714,7 +711,7 @@ Next, we’ll test for associations between categorical metadata columns and alp
 >
 >   - Select "Captivity" under the "Column" dropdown menu.  
 >
->   ![faith](./images/q2view_observed_features.png)
+>   ![faith](./images/dunnart_images/q2view_observed_features.png)
 >
 {: .hands_on}
 
@@ -738,7 +735,7 @@ Next, we’ll test for associations between categorical metadata columns and alp
 >
 >   - Select "Captivity" under the "Column" dropdown menu.  
 >
->   ![evenness](./images/q2view_evenness.png)
+>   ![evenness](./images/dunnart_images/q2view_evenness.png)
 >
 {: .hands_on}
 
@@ -763,7 +760,7 @@ Next, we’ll analyse sample composition in the context of categorical metadata 
 >   - Download `unweighted-unifrac-captivity-significance.qzv` to your local computer and view in QIIME 2 View (q2view).
 >   - [Click to view the **`unweighted-unifrac-captivity-significance.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/ALN4XydwBZnK-0qP0xoUmJg/unweighted-unifrac-captivity-significance.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).  
 >
->   ![provenance](./images/q2view_provenance.png)
+>   ![provenance](./images/dunnart_images/q2view_provenance.png)
 >
 {: .hands_on}
 
