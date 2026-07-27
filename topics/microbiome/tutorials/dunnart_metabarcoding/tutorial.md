@@ -44,7 +44,7 @@ What is the influence of captivity on gut microbiota of the fat-tailed dunnart?
 
 ## The Players
 
-![dunnart](./images/dunnart_images/dunnart.jpg)
+![dunnart](../../images/dunnart_images/dunnart.jpg)
 (Photo credit: Emily Scicluna)
 
 
@@ -248,7 +248,7 @@ TL;DR: when quality plots are essentially straight lines, truncation is less abo
 >   - Download `trimmed_sequences.qzv` to your local computer and view in [QIIME 2 View](https://view.qiime2.org) (q2view).
 >   - [Click to view the **`trimmed_sequences.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/AAF9YHZ2oAZQ48Kl-k1Jvyo/trimmed_sequences.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
 >   - Make sure to switch between the "Overview" and "Interactive Quality Plot" tabs in the top left hand corner. Click and drag on the plot to zoom in. Double click to zoom back out to full size. Hover over a box to see the parametric seven-number summary of the quality scores at the corresponding position.
->   ![OverviewQualPlotTabs](./images/dunnart_images/q2view_OverviewQualPlotTabs.png)
+>   ![OverviewQualPlotTabs](../../images/dunnart_images/q2view_OverviewQualPlotTabs.png)
 >
 {: .hands_on}
 
@@ -377,7 +377,7 @@ A [metadata file](https://use.qiime2.org/en/stable/references/metadata.html) is 
 >   - Download `summary_table.qzv ` to your local computer and view in QIIME 2 View (q2view).
 >   - [Click to view the **`summary.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/ADpnQOqVK-JD1zIkLejSfmY/summary_table/summary.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
 >   - Make sure to switch between the "Overview" and "Feature Detail" tabs in the top left hand corner. 
->    ![ASV_detailPNG](./images/dunnart_images/q2view_ASV_detail.png)
+>    ![ASV_detailPNG](../../images/dunnart_images/q2view_ASV_detail.png)
 >
 {: .hands_on}
 
@@ -587,7 +587,7 @@ Create bar charts to compare the relative abundance of ASVs across samples.
 >   - [Click to view the **`barchart.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/APrHWMBRZRFHT5GCxr_2NR0/barchart.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
 >   - Increase the "Bar Width", select "Captivity" in "Sort Samples By" drop-down menu and explore the resulting barplots by changing the levels in the "Change Taxonomic Level" dropdown menu (Select Level 1, then Level 3, and then Level 5 for example).  
 >
->   ![barplot1](./images/dunnart_images/q2view_barplot_levels.png)
+>   ![barplot1](../../images/dunnart_images/q2view_barplot_levels.png)
 >
 {: .hands_on}
 
@@ -638,7 +638,7 @@ Generate rarefaction curves to determine whether the samples have been sequenced
 >
 >   - Select "Animal" in the "Sample Metadata Column" and "observed_features" under "Metric":
 > 
->   ![rarefaction](./images/dunnart_images/q2view_rarefaction.png)
+>   ![rarefaction](../../images/dunnart_images/q2view_rarefaction.png)
 >
 {: .hands_on}
 
@@ -696,7 +696,7 @@ An important parameter that needs to be provided to this script is *"sampling_de
 >
 >   - On q2view, select the "Color" tab, choose "Captivity" under the "Select a Color Category" dropdown menu.
 > 
->   ![unweighted_unifrac_emperor2](./images/dunnart_images/q2view_unweighted_unifrac_emperor2.png)
+>   ![unweighted_unifrac_emperor2](../../images/dunnart_images/q2view_unweighted_unifrac_emperor2.png)
 >
 {: .hands_on}
 
@@ -722,7 +722,7 @@ Next, we’ll test for associations between categorical metadata columns and alp
 >
 >   - Select "Captivity" under the "Column" dropdown menu.  
 >
->   ![faith](./images/dunnart_images/q2view_observed_features.png)
+>   ![faith](../../images/dunnart_images/q2view_observed_features.png)
 >
 {: .hands_on}
 
@@ -746,7 +746,7 @@ Next, we’ll test for associations between categorical metadata columns and alp
 >
 >   - Select "Captivity" under the "Column" dropdown menu.  
 >
->   ![evenness](./images/dunnart_images/q2view_evenness.png)
+>   ![evenness](../../images/dunnart_images/q2view_evenness.png)
 >
 {: .hands_on}
 
@@ -771,7 +771,7 @@ Next, we’ll analyse sample composition in the context of categorical metadata 
 >   - Download `unweighted-unifrac-captivity-significance.qzv` to your local computer and view in QIIME 2 View (q2view).
 >   - [Click to view the **`unweighted-unifrac-captivity-significance.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/ALN4XydwBZnK-0qP0xoUmJg/unweighted-unifrac-captivity-significance.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).  
 >
->   ![provenance](./images/dunnart_images/q2view_provenance.png)
+>   ![provenance](../../images/dunnart_images/q2view_provenance.png)
 >
 {: .hands_on}
 
