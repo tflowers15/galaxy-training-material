@@ -6,14 +6,25 @@ zenodo_link: "https://doi.org/10.5281/zenodo.16416373"
 questions:
   - Why is the fat‑tailed dunnart a useful model for microbiome studies?
   - What are the expected experimental differences between captive and wild animals?
+  - How is taxonomy assigned to the representative sequences?
+  - How do rarefaction and sampling depth choices influence diversity analyses?
+  - Which files are typically exported for downstream R analysis (phyloseq, DESeq2, etc.)?
 objectives:
   - Place the dataset in ecological and conservation context.
   - Relate host ecology and sample provenance to interpretation of microbiome results.
+  - Remove primers with cutadapt while handling degenerate bases and quality trimming and denoise and dereplicate paired-end sequences
+  - Apply a pre‑trained classifier appropriate for the V4 16S region to assign taxonomy to ASVs.
+  - Test for differences in alpha diversity (alpha‑group‑significance) and community composition (beta‑group‑significance / PERMANOVA), and perform differential abundance testing (ANCOM‑BC2).
+  - Export results for further analysis (unrooted tree, feature table, taxonomy and representative sequences).
 time_estimation: "3h"
 key_points:
   - Captivity can alter diet, exposure and behaviour — all of which may reshape the gut microbiome.
   - The dataset contains a small, balanced subset (5 captive, 5 wild) suitable for teaching and demonstrating methods.
-  - 
+  - Primer removal is essential; untrimmed primers can disrupt denoising and downstream inference.
+  - Classifier must be trained for the same primer/region used in the dataset; mismatched classifiers give poor results.
+  - Phylogenetic distances are required for phylogenetic alpha and beta metrics (Faith’s PD, UniFrac).
+  - Explore taxonomic composition at multiple taxonomic levels and by metadata categories (e.g. Captivity).
+  - Choose sampling/depth parameters informed by the feature‑table summary and rarefaction curves to balance sample retention and depth.
 contributions:
   authorship:
     - tflowers15
