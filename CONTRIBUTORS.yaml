@@ -230,6 +230,11 @@ alliecreason:
     orcid: 0000-0001-5724-1276
     joined: 2023-02
 
+allissadillman:
+    name: Allissa Dillman
+    email: adillman@biodatasage.com
+    joined: 2026-05
+
 almahmoud:
     name: Alex Mahmoud
     joined: 2019-06
@@ -4217,7 +4222,13 @@ vloux:
 
 wallajess:
     name: Jessica Wallace
-    joined: 2026-07    
+    email: jessica_wallace@anglistik.uni-freiburg.de
+    joined: 2026-07
+    orcid: 0009-0009-5001-4180
+    matrix: 'jessicawallacede:matrix.org'
+    affiliations:
+        - uni-freiburg
+
 
 wandrilled:
     name: Wandrille Duchemin
