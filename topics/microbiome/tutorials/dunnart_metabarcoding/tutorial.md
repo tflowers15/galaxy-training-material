@@ -2,7 +2,7 @@
 layout: tutorial_hands_on
 
 title: "Metabarcoding of bacteria in dunnart faecal samples across Australia (wild + captive)"
-zenodo_link: "https://doi.org/10.5281/zenodo.16416373"
+zenodo_link: "https://doi.org/10.5281/zenodo.21614436"
 questions:
   - Why is the fat‑tailed dunnart a useful model for microbiome studies?
   - What are the expected experimental differences between captive and wild animals?
@@ -118,7 +118,7 @@ Here, the data files (two per sample i.e. forward and reverse reads `R1` and `R2
 >
 >    {% snippet faqs/galaxy/histories_create_new.md %}
 >
-> 2. Import from [Zenodo](https://doi.org/10.5281/zenodo.16416373).
+> 2. Import from [Zenodo](https://doi.org/10.5281/zenodo.21614436).
 >
 >    > <tip-title>Importing data via links</tip-title>
 >    >
@@ -126,11 +126,31 @@ Here, the data files (two per sample i.e. forward and reverse reads `R1` and `R2
 >    > 2. Open the Galaxy Upload Manager
 >    > 3. Select **Paste/Fetch Data**
 >    >
->    >    Below are the links to the read files that can be copied and pasted in the upload manager.
+>    >    Below are the links to the datasets that are required for the tutorial that can be copied and pasted in the upload manager.
 >    >
 >    >    ```
->    >    https://zenodo.org/records/16416373/files/HiC_S2_1p_10min_lowU_R1.fastq.gz
->    >    https://zenodo.org/records/16416373/files/HiC_S2_1p_10min_lowU_R2.fastq.gz
+>    >    https://zenodo.org/records/21614437/files/D01_FWD09_REV01_L001_R1_001.fastq.gz
+>    >    https://zenodo.org/records/21614437/files/D01_FWD09_REV01_L001_R2_001.fastq.gz
+>    >    https://zenodo.org/records/21614437/files/D06_FWD09_REV06_L001_R1_001.fastq.gz
+>    >    https://zenodo.org/records/21614437/files/D06_FWD09_REV06_L001_R2_001.fastq.gz
+>    >    https://zenodo.org/records/21614437/files/D08_FWD09_REV08_L001_R1_001.fastq.gz
+>    >    https://zenodo.org/records/21614437/files/D08_FWD09_REV08_L001_R2_001.fastq.gz
+>    >    https://zenodo.org/records/21614437/files/D09_FWD09_REV09_L001_R1_001.fastq.gz
+>    >    https://zenodo.org/records/21614437/files/D09_FWD09_REV09_L001_R2_001.fastq.gz
+>    >    https://zenodo.org/records/21614437/files/D11_FWD09_REV11_L001_R1_001.fastq.gz
+>    >    https://zenodo.org/records/21614437/files/D11_FWD09_REV11_L001_R2_001.fastq.gz
+>    >    https://zenodo.org/records/21614437/files/D13_FWD10_REV01_L001_R1_001.fastq.gz
+>    >    https://zenodo.org/records/21614437/files/D13_FWD10_REV01_L001_R2_001.fastq.gz
+>    >    https://zenodo.org/records/21614437/files/D14_FWD10_REV02_L001_R1_001.fastq.gz
+>    >    https://zenodo.org/records/21614437/files/D14_FWD10_REV02_L001_R2_001.fastq.gz
+>    >    https://zenodo.org/records/21614437/files/D17_FWD10_REV05_L001_R1_001.fastq.gz
+>    >    https://zenodo.org/records/21614437/files/D17_FWD10_REV05_L001_R2_001.fastq.gz
+>    >    https://zenodo.org/records/21614437/files/D19_FWD10_REV07_L001_R1_001.fastq.gz
+>    >    https://zenodo.org/records/21614437/files/D19_FWD10_REV07_L001_R2_001.fastq.gz
+>    >    https://zenodo.org/records/21614437/files/D20_FWD10_REV08_L001_R1_001.fastq.gz
+>    >    https://zenodo.org/records/21614437/files/D20_FWD10_REV08_L001_R2_001.fastq.gz
+>    >    https://zenodo.org/records/21614437/files/dunnart_metadata.tsv
+>    >    https://zenodo.org/records/21614437/files/silva_138.2_16s_v4_classifier.qza
 >    >    ```
 >    >
 >    > 4. Paste the links into the text field
