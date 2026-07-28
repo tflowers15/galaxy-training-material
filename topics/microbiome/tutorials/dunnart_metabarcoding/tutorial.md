@@ -107,9 +107,9 @@ This Galaxy tutorial based on material from the [Metabarcoding of bacteria in du
 
 # Data upload
 
-These [samples](./index.html#data) were sequenced on a single Illumina NextSeq run at the Walter and Eliza Hall Institute (WEHI), Melbourne, Australia. Data from WEHI came as paired-end, demultiplexed, unzipped *.fastq files with adapters still attached. Following the [QIIME2 importing tutorial](https://amplicon-docs.qiime2.org/en/stable/how-to-guides/how-to-import.html), this is the Casava One Eight format. The files have been renamed to satisfy the Casava format as SampleID_FWDXX-REVXX_L001_R[1 or 2]_001.fastq e.g. CTRLA_Fwd04-Rev25_L001_R1_001.fastq.gz. The files were then zipped (.gzip).
+These [samples](./index.html#data) were sequenced on a single Illumina NextSeq run at the Walter and Eliza Hall Institute (WEHI), Melbourne, Australia. Data from WEHI came as paired-end, demultiplexed, unzipped *.fastq files with adapters still attached. Following the [QIIME2 importing tutorial](https://amplicon-docs.qiime2.org/en/stable/how-to-guides/how-to-import.html), this is the Casava One Eight format. The files have been renamed to satisfy the Casava format as `SampleID\_FWDXX-REVXX\_L001\_R[1 or 2]\_001.fastq` e.g. `CTRLA\_Fwd04-Rev25\_L001\_R1\_001.fastq.gz`. The files were then zipped (`.gzip`).
 
-Here, the data files (two per sample i.e. forward and reverse reads `R1` and `R2` respectively) will be imported and exported as a single QIIME 2 artefact file. These samples are already demultiplexed (i.e. sequences from each sample have been written to separate files), so a metadata file is not initially required.
+Here, the data files (two per sample, i.e. forward and reverse reads `R1` and `R2` respectively) will be imported and exported as a single QIIME 2 artefact file. These samples are already demultiplexed (i.e. sequences from each sample have been written to separate files), so a metadata file is not initially required.
 
 
 > <hands-on-title>Data upload</hands-on-title>
@@ -288,13 +288,24 @@ TL;DR: when quality plots are essentially straight lines, truncation is less abo
 
 In the following command, a pooling method of 'pseudo' is selected. Pseudo-pooling improves sensitivity to shared low-abundance ASVs across samples while remaining computationally efficient. This is better than the default of 'independent' (where samples are denoised independently) when you expect samples in the run to have similar ASVs overall.
 
-> <caution></caution>
-> 
-> #### STOP - workshop participants only
-> 
-> Due to time limitations in a workshop setting, please do NOT run the commands below. You will need to access pre-computed files that this command generates by running the following: `cd; mkdir analysis/dada2out; cp /mnt/shared_data/pre_computed/dada2out/* analysis/dada2out`. If you have accidentally run the command below, `ctrl-c` will terminate it.
+
+> <comment-title></comment-title>
 >
-{: .caution}
+> The following DADA2 denoising step can take a long time to run (~1h). You can either wait for this step to run or import the results from a previous previously run of `qiime2 dada2 denoise-paired`.
+>
+> > <hands-on-title>Import denoised dataset files</hands-on-title>
+> >
+> > 1. Import the DADA2 output table, representative sequences and denoising stats files from [Zenodo](https://zenodo.org/api/records/21614437):
+> >
+> >    ```text
+> >    https://zenodo.org/records/21614437/files/dada2out_table.qza
+> >    https://zenodo.org/records/21614437/files/dada2out_representative_sequences.qza
+> >    https://zenodo.org/records/21614437/files/dada2out_denoising_stats.qza
+> >    ```
+> >
+> {: .hands_on}
+> 
+{: .comment}
 
 
 > <hands-on-title>DADA2 Denoise Sequences</hands-on-title>
@@ -425,7 +436,6 @@ Here we will classify each identical read or *Amplicon Sequence Variant (ASV)* t
 1. Previously published data in a field
 2. The target region of interest
 3. The number of reference sequences for your organism in the database and how recently that database was updated.
-
 
 A classifier has already been trained for you for the V4 region of the bacterial 16S rRNA gene using the SILVA database. The next step will take a while to run. *The output directory cannot previously exist*.
 
