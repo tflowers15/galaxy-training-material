@@ -52,6 +52,7 @@ Fat-tailed dunnart [*Sminthopsis crassicaudata*](https://en.wikipedia.org/wiki/F
    
 
 ## The Study
+
 Indigenous microbial communities (microbiota) play critical roles in host health. Small marsupials, such as the fat-tailed dunnart, are increasingly used as model systems to understand how environmental conditions shape host-associated microbiomes. Transitions between wild and captive environments can substantially alter diet, behaviour, and microbial exposure, providing a natural framework to investigate microbiome restructuring and its potential consequences for host physiology and health. Here, we characterise the gut microbiome of wild and captive fat-tailed dunnarts to assess how captivity influences microbial community composition. This dataset represents a subset of a larger experimental framework examining microbiome-mediated effects on host function and conservation outcomes.
 
 ## QIIME 2 Analysis platform
@@ -165,8 +166,7 @@ Here, the data files (two per sample, i.e. forward and reverse reads `R1` and `R
 
 # Importing, cleaning and quality control of the data
 
-Run the command to import the raw data located in the directory `raw_data` and export it to a single QIIME 2 artefact file, `combined.qza`.
-
+After importing the datasets and creating a collection containing the raw sequenced reads, the first step is to import the raw `.fastq.gz` reads into a single QIIME2 artefact file (`.qza`) using the `qiime2 tools import`.
 
 > <hands-on-title>Create QIIME2 Artefact</hands-on-title>
 >
@@ -196,7 +196,7 @@ Run the command to import the raw data located in the directory `raw_data` and e
 
 These sequences still have the primers attached and must be removed prior to denoising. For this workshop, primer trimming was performed using the QIIME 2 `cutadapt trim-paired` plugin to maintain a fully reproducible workflow within the QIIME 2 framework. Amplicons were generated using standard 16S rRNA gene primers for the v4 region, and the reads returned from the sequencer therefore include these primer sequences at the 5′ ends. Using cutadapt, the specified primer sequence and any bases upstream of the match are removed, with an error rate of 0.10 to balance sensitivity of primer detection with specificity of trimming. Degenerate bases in the primers are accommodated using wildcard matching, and any reads lacking the expected primer sequences are discarded to minimise inclusion of off-target amplification products. A modest 3′ quality trimming threshold (Phred score = 20) is also applied to remove low-quality bases prior to downstream denoising.
 
-It is important to note that these data were generated on an Illumina NextSeq platform, which uses 2-colour chemistry and can produce artificial poly-G tails at the ends of reads under low-signal conditions. The QIIME 2 implementation of cutadapt does not have the `--nextseq-trim` parameter, which is specifically designed to remove these artefacts. As such, the trimming approach used here represents a simplified, self-contained workflow appropriate for teaching purposes. For production analyses of NextSeq data, best practice is to perform trimming with standalone cutadapt (including --nextseq-trim) prior to importing reads into QIIME 2, as this improves removal of sequencing artefacts and can enhance downstream denoising and taxonomic resolution.
+It is important to note that these data were generated on an Illumina NextSeq platform, which uses 2-colour chemistry and can produce artificial poly-G tails at the ends of reads under low-signal conditions. The QIIME 2 implementation of `cutadapt` does not have the `NextSeq trimming` parameter (the `--nextseq-trim` flag if running `cutadapt` via command line), which is specifically designed to remove these artefacts. As such, the trimming approach used here represents a simplified, self-contained workflow appropriate for teaching purposes. For production analyses of NextSeq data, best practice is to perform trimming with standalone `cutadapt` (including `NextSeq trimming`) prior to importing reads into QIIME 2, as this improves removal of sequencing artefacts and can enhance downstream denoising and taxonomic resolution.
 
 
 > <hands-on-title>Run Cutadapt</hands-on-title>
@@ -472,14 +472,6 @@ A classifier has already been trained for you for the V4 region of the bacterial
 {: .hands_on}
 
 
-> <caution></caution>
-> 
-> This step often runs out of memory on full datasets. Some options are to change the number of cores you are using (adjust `--p-n-jobs`) or add `--p-reads-per-batch 10000` and try again. The QIIME 2 forum has many threads regarding this issue so always check there was well.
-> 
-{: .caution}
-
-
-
 ## Generate a viewable summary file of the taxonomic assignments.
 
 > <hands-on-title>Tabulate Taxonomic Assignments</hands-on-title>
@@ -640,7 +632,7 @@ Generate rarefaction curves to determine whether the samples have been sequenced
 
 > <callout></callout>
 > 
-> The value that you provide for --p-max-depth should be determined by reviewing the “Frequency per sample” information presented in the summary.qzv file that was created above after filtering. In general, choosing a value that is somewhere around the median frequency seems to work well, but you may want to increase that value if the lines in the resulting rarefaction plot don’t appear to be levelling out, or decrease that value if you seem to be losing many of your samples due to low total frequencies closer to the minimum sampling depth than the maximum sampling depth.
+> The value that you provide for `max_depth` should be determined by reviewing the “Frequency per sample” information presented in the `summary.qzv` file that was created above after filtering. In general, choosing a value that is somewhere around the median frequency seems to work well, but you may want to increase that value if the lines in the resulting rarefaction plot don’t appear to be levelling out, or decrease that value if you seem to be losing many of your samples due to low total frequencies closer to the minimum sampling depth than the maximum sampling depth.
 >
 {: .callout}
 
