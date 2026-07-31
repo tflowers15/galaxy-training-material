@@ -158,13 +158,129 @@ Here, the data files (two per sample, i.e. forward and reverse reads `R1` and `R
 >    > 5. Press **Start**
 >    {: .tip}
 >
-> 3. Create a list collection of the imported raw reads (`.fastq.gz`) datasets.
+> 3. Create a paired collection of the imported raw reads (`.fastq.gz`) datasets.
 > 
 >    {% snippet faqs/galaxy/collections_build_list.md %}
 >
 {: .hands_on}
 
 # Importing, cleaning and quality control of the data
+
+## Remove primers
+
+> <callout></callout>
+> 
+> Remember to ask your sequencing facility if the raw data you get has the primers attached - they may have already been removed.
+>
+{: .callout}
+
+These sequences still have the primers attached and must be removed prior to denoising. 
+
+> <hands-on-title>Run Cutadapt</hands-on-title>
+>
+> 1. {% tool [`Cutadapt`](toolshed.g2.bx.psu.edu/repos/lparsons/cutadapt/cutadapt/5.2+galaxy2) %}: 
+>    - *"Single-end or Paired-end reads?"*: `Paired-End Collection`
+>    - *"Paired Collection"*: `paired reads`
+>    - *"Read 1 Adapters"*: `+ Insert 5' (Front) Adapters"`
+>        - *"1: 5' (Front) Adapters"*
+>        - *"Source"*: `Enter Custom Sequence`
+>        - *"Custom 5' adapter sequence "*: `GTGYCAGCMGCCGCGGTAA`
+>    - *"Read 2 Adapters"*: `+ Insert 5' (Front) Adapters"`
+>        - *"1: 5' (Front) Adapters"*
+>        - *"Source"*: `Enter Custom Sequence`
+>        - *"Custom 5' adapter sequence "*: `GGACTACNVGGGTWTCTAAT`
+>    - *"Adapter Handling Options"*
+>        - *"Maximum error rate"*: `0.1`
+>        - *"Minimum overlap length"*: `10`
+>        - *"Match wildcards in adapters"*: `Yes`
+>    - *"Other Read Trimming Options"*
+>        - *"Quality cutoff(s) (R1)"*: `0,30`
+>        - *"NextSeq trimming"*: `20`
+>    - *"Read Filtering Options"*
+>        - *"Discard Untrimmed Reads"*: `Yes`
+>
+> 2. Rename the output to: `trimmed pairs`
+> 
+> 3. {% tool [`Flatten collection`](__FLATTEN__) %}: 
+>    - *"Input Collection"*: `trimmed pairs`
+>   
+> 4. Rename the output to: `trimmed pairs flattened`
+> 
+> 5. {% tool [`Extract element identifiers`](toolshed.g2.bx.psu.edu/repos/iuc/collection_element_identifiers/collection_element_identifiers/0.0.3) %}: 
+>    - *"Dataset collection"*: `trimmed sequences flattened`
+>   
+> 6. Rename the output to: `collection identifiers`
+>   
+> 7. {% tool [`Regex Find And Replace`](toolshed.g2.bx.psu.edu/repos/galaxyp/regex_find_replace/regex1/1.0.3) %}: 
+>    - *"Select lines from"*: Output of `collection identifiers`
+>    - *"Check"*: `+ Insert Check`
+>        - *"Find Regex"*: `001_forward`
+>        - *"Replacement"*: `R1_001.fastq.gz`
+>     - *"Check"*: `+ Insert Check`
+>        - *"Find Regex"*: `001_reverse`
+>        - *"Replacement"*: `R2_001.fastq.gz`
+> 
+> 8. Rename the output to: `corrected identifiers`
+> 
+> 9. {% tool [`Paste`](Paste1) %}: 
+>    - *"Paste"*: `collection identifiers`
+>    - *"and"*: `corrected identifiers`
+>    - *"Delimit by"*: `Tab`
+> 
+> 8. Rename the output to: `identifier mapping`
+> 
+> 9. {% tool [`Relabel identifiers`](__RELABEL_FROM_FILE__) %}: 
+>    - *"Input Collection"*: `trimmed sequences flattened`
+>    - *"How should the new labels be specified?"*: `Map original identifiers to new ones using a two-column table`
+>        - *"Identifier mapping"*: `identifier mapping`
+>
+> 8. Rename the output to: `trimmed sequences`
+>
+> > <comment></comment>
+> >
+> > For this workshop, primer trimming was performed using the QIIME 2 `cutadapt trim-paired` plugin to maintain a fully reproducible workflow within the QIIME 2 framework. Amplicons were generated using standard 16S rRNA gene primers for the v4 region, and the reads returned from the sequencer therefore include these primer sequences at the 5′ ends. Using cutadapt, the specified primer sequence and any bases upstream of the match are removed, with an error rate of 0.10 to balance sensitivity of primer detection with specificity of trimming. Degenerate bases in the primers are accommodated using wildcard matching, and any reads lacking the expected primer sequences are discarded to minimise inclusion of off-target amplification products. A modest 3′ quality trimming threshold (Phred score = 20) is also applied to remove low-quality bases prior to downstream denoising.
+> > 
+> > It is important to note that these data were generated on an Illumina NextSeq platform, which uses 2-colour chemistry and can produce artificial poly-G tails at the ends of reads under low-signal conditions. The QIIME 2 implementation of `cutadapt` does not have the `NextSeq trimming` parameter (the `--nextseq-trim` flag if running `cutadapt` via command line), which is specifically designed to remove these artefacts. As such, the trimming approach used here represents a simplified, self-contained workflow appropriate for teaching purposes. For production analyses of NextSeq data, best practice is to perform trimming with standalone `cutadapt` (including `NextSeq trimming`) prior to importing reads into QIIME 2, as this improves removal of sequencing artefacts and can enhance downstream denoising and taxonomic resolution.
+> >
+> > > <hands-on-title>Run Cutadapt</hands-on-title>
+> > >
+> > > 1. {% tool [`qiime2 cutadapt trim-paired`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__cutadapt__trim_paired/qiime2__cutadapt__trim_paired/2026.1.0+q2galaxy.2026.1.0) %}: 
+> > >    - *"demultiplexed_sequences: SampleData[PairedEndSequencesWithQuality]"*: `combined.qza`
+> > >    - *"Click here for additional options"*
+> > >    - *"front_f: List[Str]"*: `+ Insert front_f: List[Str]"`
+> > >        - *"1: front_f: List[Str]"*: `GTGYCAGCMGCCGCGGTAA`
+> > >    - *"front_r: List[Str]"*: `+ Insert front_r: List[Str]"`
+> > >        - *"1: front_r: List[Str]"*: `GGACTACNVGGGTWTCTAAT`
+> > >    - *"error_rate: Float % Range(0, 1, inclusive_end=True)"*: `0.1`
+> > >    - *"overlap: Int % Range(1, None)"*: `10`
+> > >    - *"match_adapter_wildcards: Bool"*: `Yes`
+> > >    - *"discard_untrimmed: Bool"*: `Yes`
+> > >    - *"quality\_cutoff\_5end: Int % Range(0, None)"*: `0`
+> > >    - *"quality\_cutoff\_3end: Int % Range(0, None)"*: `30`
+> > >
+> > > 2. Rename the output to: `trimmed_sequences.qza`
+> > >
+> > {: .hands_on}
+> >
+> {: .comment}
+> 
+{: .hands_on}
+
+
+> <caution></caution>
+> 
+> The primers specified are the Earth Microbiome Project (EMP) 16S V4 primers (515F (Parada)– 806R (Apprill) targeting the v4 region of the bacterial 16S rRNA gene), which correspond to *this* specific experiment. Unless you are using these exact primers for your experiment, you need to adapt the code accordingly.
+>
+{: .caution}
+
+
+> <comment></comment>
+> 
+> The error rate, `error_rate`, and overlap, `overlap`, parameters will likely need to be adjusted for your own sample data to maximise the proportion of reads successfully trimmed while avoiding nonspecific matches. Play around with these values and see what happens.
+>
+{: .comment}
+
+## Create a QIIME2 Artefact
 
 After importing the datasets and creating a collection containing the raw sequenced reads, the first step is to import the raw `.fastq.gz` reads into a single QIIME2 artefact file (`.qza`) using the `qiime2 tools import`.
 
@@ -183,54 +299,6 @@ After importing the datasets and creating a collection containing the raw sequen
 > 2. Rename the output to: `combined.qza`
 >
 {: .hands_on}
-
-
-## Remove primers
-
-> <callout></callout>
-> 
-> Remember to ask your sequencing facility if the raw data you get has the primers attached - they may have already been removed.
->
-{: .callout}
-
-
-These sequences still have the primers attached and must be removed prior to denoising. For this workshop, primer trimming was performed using the QIIME 2 `cutadapt trim-paired` plugin to maintain a fully reproducible workflow within the QIIME 2 framework. Amplicons were generated using standard 16S rRNA gene primers for the v4 region, and the reads returned from the sequencer therefore include these primer sequences at the 5′ ends. Using cutadapt, the specified primer sequence and any bases upstream of the match are removed, with an error rate of 0.10 to balance sensitivity of primer detection with specificity of trimming. Degenerate bases in the primers are accommodated using wildcard matching, and any reads lacking the expected primer sequences are discarded to minimise inclusion of off-target amplification products. A modest 3′ quality trimming threshold (Phred score = 20) is also applied to remove low-quality bases prior to downstream denoising.
-
-It is important to note that these data were generated on an Illumina NextSeq platform, which uses 2-colour chemistry and can produce artificial poly-G tails at the ends of reads under low-signal conditions. The QIIME 2 implementation of `cutadapt` does not have the `NextSeq trimming` parameter (the `--nextseq-trim` flag if running `cutadapt` via command line), which is specifically designed to remove these artefacts. As such, the trimming approach used here represents a simplified, self-contained workflow appropriate for teaching purposes. For production analyses of NextSeq data, best practice is to perform trimming with standalone `cutadapt` (including `NextSeq trimming`) prior to importing reads into QIIME 2, as this improves removal of sequencing artefacts and can enhance downstream denoising and taxonomic resolution.
-
-
-> <hands-on-title>Run Cutadapt</hands-on-title>
->
-> 1. {% tool [`qiime2 cutadapt trim-paired`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__cutadapt__trim_paired/qiime2__cutadapt__trim_paired/2026.1.0+q2galaxy.2026.1.0) %}: 
->    - *"demultiplexed_sequences: SampleData[PairedEndSequencesWithQuality]"*: `combined.qza`
->    - *"Click here for additional options"*
->    - *"front_f: List[Str]"*: `+ Insert front_f: List[Str]"`
->        - *"1: front_f: List[Str]"*: `GTGYCAGCMGCCGCGGTAA`
->    - *"front_r: List[Str]"*: `+ Insert front_r: List[Str]"`
->        - *"1: front_r: List[Str]"*: `GGACTACNVGGGTWTCTAAT`
->    - *"error_rate: Float % Range(0, 1, inclusive_end=True)"*: `0.1`
->    - *"overlap: Int % Range(1, None)"*: `10`
->    - *"match_adapter_wildcards: Bool"*: `Yes`
->    - *"discard_untrimmed: Bool"*: `Yes`
->    - *"quality\_cutoff\_5end: Int % Range(0, None)"*: `0`
->    - *"quality\_cutoff\_3end: Int % Range(0, None)"*: `30`
->
-> 2. Rename the output to: `trimmed_sequences.qza`
->
-{: .hands_on}
-
-> <caution></caution>
-> 
-> The primers specified are the Earth Microbiome Project (EMP) 16S V4 primers (515F (Parada)– 806R (Apprill) targeting the v4 region of the bacterial 16S rRNA gene), which correspond to *this* specific experiment. Unless you are using these exact primers for your experiment, you need to adapt the code accordingly.
->
-{: .caution}
-
-
-> <discussion></discussion>
-> 
-> The error rate, `error_rate`, and overlap, `overlap`, parameters will likely need to be adjusted for your own sample data to maximise the proportion of reads successfully trimmed while avoiding nonspecific matches. Play around with these values and see what happens.
->
-{: .discussion}
 
 
 ## Create and interpret sequence quality data
