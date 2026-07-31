@@ -57,11 +57,11 @@ Indigenous microbial communities (microbiota) play critical roles in host health
 
 ## QIIME 2 Analysis platform
 
-> <caution></caution>
+> <comment></comment>
 > 
 > The version used in this workshop is `qiime2-2026.1`. Other versions of QIIME2 may result in minor differences in results.
 >
-{: .caution}
+{: .comment}
 
 
 Quantitative Insights Into Microbial Ecology 2 ([QIIME 2](https://www.nature.com/articles/s41587-019-0209-9)) is a next-generation microbiome [bioinformatics platform](https://qiime2.org/) that is extensible, free, open source, and community developed. It allows researchers to:
@@ -75,19 +75,19 @@ Quantitative Insights Into Microbial Ecology 2 ([QIIME 2](https://www.nature.com
 #### Viewing QIIME2 visualisations
 
 
-> <callout></callout>
+> <comment></comment>
 > 
 > In order to use QIIME2 View to visualise your files, you will need to use a Google Chrome or Mozilla Firefox web browser (not in private browsing). For more information, click [here](https://view.qiime2.org).
 >
-{: .callout}
+{: .comment}
 
 As this tutorial uses Galaxy Australia, you will need to download the visual files (*.qzv) to your local computer and view them in [QIIME2 View](https://view.qiime2.org) (q2view).
 
-> <callout></callout>
+> <comment></comment>
 > 
 > We will be doing this step multiple times throughout this workshop to view visualisation files as they are generated.
 >
-{: .callout}
+{: .comment}
 
 > <comment></comment>
 > 
@@ -108,7 +108,7 @@ This Galaxy tutorial based on material from the [Metabarcoding of bacteria in du
 
 # Data upload
 
-These [samples](./index.html#data) were sequenced on a single Illumina NextSeq run at the Walter and Eliza Hall Institute (WEHI), Melbourne, Australia. Data from WEHI came as paired-end, demultiplexed, unzipped *.fastq files with adapters still attached. Following the [QIIME2 importing tutorial](https://amplicon-docs.qiime2.org/en/stable/how-to-guides/how-to-import.html), this is the Casava One Eight format. The files have been renamed to satisfy the Casava format as `SampleID\_FWDXX-REVXX\_L001\_R[1 or 2]\_001.fastq` e.g. `CTRLA\_Fwd04-Rev25\_L001\_R1\_001.fastq.gz`. The files were then zipped (`.gzip`).
+These [samples](./index.html#data) were sequenced on a single Illumina NextSeq run at the Walter and Eliza Hall Institute (WEHI), Melbourne, Australia. Data from WEHI came as paired-end, demultiplexed, unzipped *.fastq files with adapters still attached. Following the [QIIME2 importing tutorial](https://amplicon-docs.qiime2.org/en/stable/how-to-guides/how-to-import.html), this is the Casava One Eight format. The files have been renamed to satisfy the Casava format as `SampleID\_FWDXX-REVXX\_L001\_R[1 or 2]\_001.fastq` (e.g. `CTRLA\_Fwd04-Rev25\_L001\_R1\_001.fastq.gz`). The files were then zipped (`.gzip`).
 
 Here, the data files (two per sample, i.e. forward and reverse reads `R1` and `R2` respectively) will be imported and exported as a single QIIME 2 artefact file. These samples are already demultiplexed (i.e. sequences from each sample have been written to separate files), so a metadata file is not initially required.
 
@@ -124,7 +124,9 @@ Here, the data files (two per sample, i.e. forward and reverse reads `R1` and `R
 >    > <tip-title>Importing data via links</tip-title>
 >    >
 >    > 1. Copy the link location
+>    > 
 >    > 2. Open the Galaxy Upload Manager
+>    >    
 >    > 3. Select **Paste/Fetch Data**
 >    >
 >    >    Below are the links to the datasets that are required for the tutorial that can be copied and pasted in the upload manager.
@@ -155,6 +157,7 @@ Here, the data files (two per sample, i.e. forward and reverse reads `R1` and `R
 >    >    ```
 >    >
 >    > 4. Paste the links into the text field
+>    > 
 >    > 5. Press **Start**
 >    {: .tip}
 >
@@ -168,11 +171,11 @@ Here, the data files (two per sample, i.e. forward and reverse reads `R1` and `R
 
 ## Remove primers
 
-> <callout></callout>
+> <comment></comment>
 > 
 > Remember to ask your sequencing facility if the raw data you get has the primers attached - they may have already been removed.
 >
-{: .callout}
+{: .comment}
 
 These sequences still have the primers attached and must be removed prior to denoising. 
 
@@ -200,41 +203,6 @@ These sequences still have the primers attached and must be removed prior to den
 >        - *"Discard Untrimmed Reads"*: `Yes`
 >
 > 2. Rename the output to: `trimmed pairs`
-> 
-> 3. {% tool [`Flatten collection`](__FLATTEN__) %}: 
->    - *"Input Collection"*: `trimmed pairs`
->   
-> 4. Rename the output to: `trimmed pairs flattened`
-> 
-> 5. {% tool [`Extract element identifiers`](toolshed.g2.bx.psu.edu/repos/iuc/collection_element_identifiers/collection_element_identifiers/0.0.3) %}: 
->    - *"Dataset collection"*: `trimmed sequences flattened`
->   
-> 6. Rename the output to: `collection identifiers`
->   
-> 7. {% tool [`Regex Find And Replace`](toolshed.g2.bx.psu.edu/repos/galaxyp/regex_find_replace/regex1/1.0.3) %}: 
->    - *"Select lines from"*: Output of `collection identifiers`
->    - *"Check"*: `+ Insert Check`
->        - *"Find Regex"*: `001_forward`
->        - *"Replacement"*: `R1_001.fastq.gz`
->     - *"Check"*: `+ Insert Check`
->        - *"Find Regex"*: `001_reverse`
->        - *"Replacement"*: `R2_001.fastq.gz`
-> 
-> 8. Rename the output to: `corrected identifiers`
-> 
-> 9. {% tool [`Paste`](Paste1) %}: 
->    - *"Paste"*: `collection identifiers`
->    - *"and"*: `corrected identifiers`
->    - *"Delimit by"*: `Tab`
-> 
-> 8. Rename the output to: `identifier mapping`
-> 
-> 9. {% tool [`Relabel identifiers`](__RELABEL_FROM_FILE__) %}: 
->    - *"Input Collection"*: `trimmed sequences flattened`
->    - *"How should the new labels be specified?"*: `Map original identifiers to new ones using a two-column table`
->        - *"Identifier mapping"*: `identifier mapping`
->
-> 8. Rename the output to: `trimmed sequences`
 >
 > > <comment></comment>
 > >
@@ -267,11 +235,11 @@ These sequences still have the primers attached and must be removed prior to den
 {: .hands_on}
 
 
-> <caution></caution>
+> <comment></comment>
 > 
 > The primers specified are the Earth Microbiome Project (EMP) 16S V4 primers (515F (Parada)– 806R (Apprill) targeting the v4 region of the bacterial 16S rRNA gene), which correspond to *this* specific experiment. Unless you are using these exact primers for your experiment, you need to adapt the code accordingly.
 >
-{: .caution}
+{: .comment}
 
 
 > <comment></comment>
@@ -282,7 +250,52 @@ These sequences still have the primers attached and must be removed prior to den
 
 ## Create a QIIME2 Artefact
 
-After importing the datasets and creating a collection containing the raw sequenced reads, the first step is to import the raw `.fastq.gz` reads into a single QIIME2 artefact file (`.qza`) using the `qiime2 tools import`.
+QIIME2 requires `.fastq.gz` sequence datasets to follow the CASAVA file naming format (`SampleID\_FWDXX-REVXX\_L001\_R[1 or 2]\_001.fastq`, e.g. `D01_FWD09_REV01_L001_R1_001.fastq.gz`) in order to import `.fastq.gz` sequence datasets into the QIIME2 artefact format (`.qza`), which is the data format used by the QIIME2 suite of tools. Generally a single `.qza` QIIME2 artefact will be created that contains all of the `.fastq.gz` sample datasets to be processed. 
+
+In Galaxy, the `.fastq.gz` datasets can provide as an input to the import tool, `qiime2 tools import`, either as individual datasets (although this requires manually specifying each dataset to be included) or as a dataset collection (recommended method). The input dataset collection must be a list collection even when using paired-end reads.
+
+The following steps reformat the paired-end collection of `.fastq.gz` trimmed sequences produced by `Cutadapt` to a flat list collection and rename the datasets within the list collection to satisfy the CASAVA format requirements.
+
+> <hands-on-title>Prepare Collection for QIIME2</hands-on-title>
+> 
+> 1. {% tool [`Flatten collection`](__FLATTEN__) %}: 
+>    - *"Input Collection"*: `trimmed pairs`
+>   
+> 2. Rename the output to: `trimmed pairs flattened`
+> 
+> 3. {% tool [`Extract element identifiers`](toolshed.g2.bx.psu.edu/repos/iuc/collection_element_identifiers/collection_element_identifiers/0.0.3) %}: 
+>    - *"Dataset collection"*: `trimmed sequences flattened`
+>   
+> 4. Rename the output to: `collection identifiers`
+>   
+> 5. {% tool [`Regex Find And Replace`](toolshed.g2.bx.psu.edu/repos/galaxyp/regex_find_replace/regex1/1.0.3) %}: 
+>    - *"Select lines from"*: Output of `collection identifiers`
+>    - *"Check"*: `+ Insert Check`
+>        - *"Find Regex"*: `001_forward`
+>        - *"Replacement"*: `R1_001.fastq.gz`
+>     - *"Check"*: `+ Insert Check`
+>        - *"Find Regex"*: `001_reverse`
+>        - *"Replacement"*: `R2_001.fastq.gz`
+> 
+> 6. Rename the output to: `corrected identifiers`
+> 
+> 7. {% tool [`Paste`](Paste1) %}: 
+>    - *"Paste"*: `collection identifiers`
+>    - *"and"*: `corrected identifiers`
+>    - *"Delimit by"*: `Tab`
+> 
+> 8. Rename the output to: `identifier mapping`
+> 
+> 9. {% tool [`Relabel identifiers`](__RELABEL_FROM_FILE__) %}: 
+>    - *"Input Collection"*: `trimmed sequences flattened`
+>    - *"How should the new labels be specified?"*: `Map original identifiers to new ones using a two-column table`
+>        - *"Identifier mapping"*: `identifier mapping`
+>
+> 10. Rename the output to: `trimmed sequences`
+> 
+{: .hands_on}
+
+Once the collection of trimmed `.fastq.gz` sequences is correctly named to import into QIIME2, we use the `qiime2 tools import` tool to create a single QIIME2 artefact file (`.qza`) containing all the trimmed sequences.
 
 > <hands-on-title>Create QIIME2 Artefact</hands-on-title>
 >
@@ -291,12 +304,12 @@ After importing the datasets and creating a collection containing the raw sequen
 >    - *QIIME 2 file format to import from:*: `Casava One Eight Single Lane Per Sample Directory Format`
 >    - *"Import sequences"*
 >      - *"Select a mechanism"*: `Use collection to import`
->      - *"elements"*: `raw reads`
+>      - *"elements"*: `trimmed sequences`
 >    - *"Append an extension?"*: `No, use element identifiers as is` (*If the datasets in the collection include the extension `.fastq.gz`*)
 >    - *"Append an extension?"*: `Yes` (*If the datasets in the collection DO NOT include the extension `.fastq.gz`*)
 >      - *"Extension to append (e.g. '.fastq.gz')"*: `.fastq.gz`
 >
-> 2. Rename the output to: `combined.qza`
+> 2. Rename the output to: `trimmed_sequences.qza`
 >
 {: .hands_on}
 
@@ -345,16 +358,14 @@ TL;DR: when quality plots are essentially straight lines, truncation is less abo
 
 ##  Denoising the data
 
-> <callout></callout>
+> <comment></comment>
 > 
 > This step may take a long time to run (i.e. hours), depending on file sizes and available computational power.
 >
-> Remember to adjust `trunc\_len\_f` and `trunc\_len\_r` according to your own data.
->
-{: .callout}
+{: .comment}
 
 
-In the following command, a pooling method of 'pseudo' is selected. Pseudo-pooling improves sensitivity to shared low-abundance ASVs across samples while remaining computationally efficient. This is better than the default of 'independent' (where samples are denoised independently) when you expect samples in the run to have similar ASVs overall.
+In the following command, a pooling method of `pseudo` is selected. Pseudo-pooling improves sensitivity to shared low-abundance ASVs across samples while remaining computationally efficient. This is better than the default of 'independent' (where samples are denoised independently) when you expect samples in the run to have similar ASVs overall.
 
 
 > <comment-title></comment-title>
@@ -380,8 +391,8 @@ In the following command, a pooling method of 'pseudo' is selected. Pseudo-pooli
 >
 > 1. {% tool [`qiime2 dada2 denoise-paired`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__dada2__denoise_paired/qiime2__dada2__denoise_paired/2026.1.0+q2galaxy.2026.1.0) %}: 
 >   - *"demultiplexed_seqs: SampleData[PairedEndSequencesWithQuality]"*: `trimmed_sequences.qza`
->   - *"trunc\_len\_f: Int"*: `xxx`
->   - *"trunc\_len\_r: Int"*: `xxx`
+>   - *"trunc\_len\_f: Int"*: `210`
+>   - *"trunc\_len\_r: Int"*: `170`
 >   - *"Click here for additional options"*
 >      - *"pooling_method: Str % Choices('independent', 'pseudo')"*: `pseudo `
 >
@@ -391,36 +402,20 @@ In the following command, a pooling method of 'pseudo' is selected. Pseudo-pooli
 > 
 > 4. Rename the `denoising_stats.qza` output to: `dada2out_denoising_stats.qza`
 >
+> > <comment></comment>
+> >
+> > #### Calculating truncation lengths
+> >
+> > Remember to adjust `trunc\_len\_f` and `trunc\_len\_r` according to your own data.
+> > 
+> > Overlap = (forward truncation length + reverse truncation length) − amplicon length.
+> >
+> > For this amplicon, the expected length is ~255 bp. Try a few sensible truncation-length combinations and compare read retention and merging success.
+> > 
+> {: .comment}
+> 
 {: .hands_on}
 
-
-> <challenge></challenge>
->
-> #### Calculating truncation lengths
->
-> The above code for you likely didn't work if you didn't adjust the truncation length from `xxx` to an integer!
->
-> Overlap = (forward truncation length + reverse truncation length) − amplicon length.
->
-> For this amplicon, the expected length is ~255 bp. Try a few sensible truncation-length combinations and compare read retention and merging success.
->
-> > <solution></solution>
-> > 
-> > Change this part of the command from:
-> > 
-> > - *"trunc\_len\_f: Int"*: `xxx`
-> > - *"trunc\_len\_r: Int"*: `xxx`
-> > 
-> > to
-> > 
-> > - *"trunc\_len\_f: Int"*: `210`
-> > - *"trunc\_len\_r: Int"*: `170`
-> > 
-> > *Tip: Use the up arrow to go back if you tried to run the command before. You can use your arrow keys to edit the command before re-running to replace `xxx` with the numerical values.*
-> > 
-> {: .solution}
-> 
-{: .challenge}
 
 
 ## Generate summary files
@@ -428,7 +423,7 @@ In the following command, a pooling method of 'pseudo' is selected. Pseudo-pooli
 A [metadata file](https://use.qiime2.org/en/stable/references/metadata.html) is required which provides the key to gaining biological insight from your data. The file <fn>dunnart_metadata.tsv</fn> is provided in the home directory of your Nectar instance. This spreadsheet has already been verified using the plugin for Google Sheets, [keemei](https://keemei.qiime2.org/).  
 
 
-> <discussion></discussion>
+> <comment></comment>
 > 
 > #### Things to look for
 >
@@ -440,7 +435,7 @@ A [metadata file](https://use.qiime2.org/en/stable/references/metadata.html) is 
 > 
 > 4. *Did most samples retain enough reads for downstream analysis?* Samples with very low final read counts may still be usable in some contexts, but they should be interpreted cautiously and may need to be excluded later.
 >
-{: .discussion}
+{: .comment}
 
 
 > <hands-on-title>Tabulate Denoising Stats</hands-on-title>
@@ -508,20 +503,20 @@ Here we will classify each identical read or *Amplicon Sequence Variant (ASV)* t
 A classifier has already been trained for you for the V4 region of the bacterial 16S rRNA gene using the SILVA database. The next step will take a while to run. *The output directory cannot previously exist*.
 
 
-> <spoiler></spoiler>
+> <comment></comment>
 > 
 > #### *A Note on the Ribosomal Data Project
 > 
 > As of the time of writing, the Ribosomal Data Project website is no longer available. You can find a standalone version of the RDP Classifier 2.14 released in August 2023 on [Sourgeforce](https://sourceforge.net/p/rdp-classifier/news/2023/08/rdp-classifier-214-august-2023-released/) and [Zenodo](https://zenodo.org/records/10367203).
 >
-{: .spoiler}
+{: .comment}
 
 
-> <callout></callout>
+> <comment></comment>
 > 
 > [The classifier](https://www.dropbox.com/scl/fi/5eg7gqeczdzjf287o20p6/silva_138.2_16s_v4_classifier.qza?rlkey=a8gde5oggidosqxapqw44kdum&st=axl7llhj&dl=0) used here is only appropriate for the specific 16S rRNA region that *this* data represents. You will need to train your own classifier for your own data. For more information about training your own classifier, see [Extra Information](./07-extra-info.html#train-silva-v138-classifier-for-16s18s-rrna-gene-marker-sequences-).
 >
-{: .callout}
+{: .comment}
 
 
 > <hands-on-title>Classify Taxonomy</hands-on-title>
@@ -686,7 +681,7 @@ Create bar charts to compare the relative abundance of ASVs across samples.
 Generate rarefaction curves to determine whether the samples have been sequenced deeply enough to capture all the community members. The max depth setting will depend on the number of sequences in your samples.
 
 
-> <discussion></discussion>
+> <comment></comment>
 > 
 > #### Things to look for:
 >
@@ -694,15 +689,15 @@ Generate rarefaction curves to determine whether the samples have been sequenced
 >
 > 2. At what sequencing depth (x-axis) do your curves plateau? This value will be important for downstream analyses, particularly for alpha diversity analyses.
 >
-{: .discussion}
+{: .comment}
 
 
 
-> <callout></callout>
+> <comment></comment>
 > 
 > The value that you provide for `max_depth` should be determined by reviewing the “Frequency per sample” information presented in the `summary.qzv` file that was created above after filtering. In general, choosing a value that is somewhere around the median frequency seems to work well, but you may want to increase that value if the lines in the resulting rarefaction plot don’t appear to be levelling out, or decrease that value if you seem to be losing many of your samples due to low total frequencies closer to the minimum sampling depth than the maximum sampling depth.
 >
-{: .callout}
+{: .comment}
 
 
 
@@ -832,8 +827,7 @@ Next, we’ll test for associations between categorical metadata columns and alp
 > 3. Visualisations: Observed Diversity output
 > 
 >   - Download `evenness-group-significance.qzv` to your local computer and view in QIIME 2 View (q2view).
->   - [Click to view the **`evenness-group-significance.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/ALNMCSgm30C2zhm7sHNSA5s/evenness-group-significance.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).  
->
+>   - [Click to view the **`evenness-group-significance.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/ALNMCSgm30C2zhm7sHNSA5s/evenness-group-significance.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
 >   - Select "Captivity" under the "Column" dropdown menu.  
 >
 >   ![evenness](../../images/dunnart_images/q2view_evenness.png)
