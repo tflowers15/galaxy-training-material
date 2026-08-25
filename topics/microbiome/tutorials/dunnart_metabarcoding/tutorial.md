@@ -27,9 +27,9 @@ key_points:
   - Choose sampling/depth parameters informed by the feature‑table summary and rarefaction curves to balance sample retention and depth.
 contributions:
   authorship:
+    - adungan31
     - tflowers15
     - gkphilip
-    - adungan31
     - egmg726
   funding:
     - unimelb
