@@ -56,7 +56,7 @@ Indigenous microbial communities (microbiota) play critical roles in host health
 
 ## QIIME 2 Analysis platform
 
-> <comment>QIIME2 Version</comment>
+> <comment-title>QIIME2 Version</comment-title>
 > 
 > The version used in this workshop is `qiime2-2026.1`. Other versions of QIIME2 may result in minor differences in results.
 >
@@ -69,14 +69,14 @@ Quantitative Insights Into Microbial Ecology 2 ([QIIME 2](https://www.nature.com
   - Easily share results without QIIME 2 installed
   - Plugin-based system — researchers can add in tools as they wish
 
-#### Viewing QIIME2 visualisations
+### Viewing QIIME2 visualisations
 
 In order to use QIIME2 View to visualise your files, you will need to use a Google Chrome or Mozilla Firefox web browser (not in private browsing). For more information, click [here](https://view.qiime2.org). As this tutorial uses Galaxy Australia, you will need to download the visual files (*.qzv) to your local computer and view them in [QIIME2 View](https://view.qiime2.org) (q2view).
 
 We will be doing this step multiple times throughout this workshop to view visualisation files as they are generated.
 
 
-> <comment>The QIIME vizualisation extractor Tool</comment>
+> <comment-title>The QIIME vizualisation extractor Tool</comment-title>
 > 
 > Within Galaxy, the `QIIME vizualisation extractor` tool can be used to view QIIME2 `.qzv` visualisation files. However, some QIIME2 visualisation files will not properly display or will lose some of the visualisation's interactive features.
 > 
@@ -158,7 +158,7 @@ Here, the data files (two per sample, i.e. forward and reverse reads `R1` and `R
 
 ## Remove primers
 
-> <comment>Check with Sequencing Facility</comment>
+> <comment-title>Check with Sequencing Facility</comment-title>
 > 
 > Remember to ask your sequencing facility if the raw data you get has the primers attached - they may have already been removed.
 >
@@ -195,19 +195,19 @@ It is important to note that these data were generated on an Illumina NextSeq pl
 >
 > 2. Rename the output to: `trimmed pairs`
 >
-> > <comment>Primers</comment>
+> > <comment-title>Primers</comment-title>
 > >
 > > The primers specified are the Earth Microbiome Project (EMP) 16S V4 primers (515F (Parada)– 806R (Apprill) targeting the v4 region of the bacterial 16S rRNA gene), which correspond to *this* specific experiment. Unless you are using these exact primers for your experiment, you need to adapt the code accordingly.
 > >
 > {: .comment}
 >
-> > <comment>Error Rate and Overlap</comment>
+> > <comment-title>Error Rate and Overlap</comment-title>
 > >
 > > The error rate, `Maximum error rate`, and overlap, `Minimum overlap length`, parameters will likely need to be adjusted for your own sample data to maximise the proportion of reads successfully trimmed while avoiding nonspecific matches. Play around with these values and see what happens.
 > >
 > {: .comment}
 > 
-> > <comment>Alternately running qiime2 cutadapt trim-paired</comment>
+> > <comment-title>Alternately running qiime2 cutadapt trim-paired</comment-title>
 > > 
 > > The following step shows the tool set up for running `qiime2 cutadapt trim-paired` to perform this simplified trimming approach. However, for production analyses of NextSeq data, best practice is to perform trimming with the standalone `cutadapt` (including `NextSeq trimming`) prior to importing reads into QIIME 2, as this improves removal of sequencing artefacts and can enhance downstream denoising and taxonomic resolution.
 > >
@@ -312,9 +312,7 @@ For paired-end data, an additional and critical consideration is read overlap. A
 
 TL;DR: when quality plots are essentially straight lines, truncation is less about identifying where quality drops and more about keeping as much usable sequence as possible while ensuring adequate overlap between reads.
 
-> <discussion></discussion>
-> 
-> #### Things to look for when choosing truncation lengths
+> <discussion-title>Things to look for when choosing truncation lengths</discussion-title>
 > 
 > 1. Do the forward and reverse quality profiles show a clear decline near the ends of the reads? If so, truncate before the low-quality tail.
 > 2. If the quality profiles remain high and relatively flat, avoid trimming too aggressively and retain as much high-quality sequence as possible.
@@ -340,7 +338,7 @@ TL;DR: when quality plots are essentially straight lines, truncation is less abo
 
 ##  Denoising the data
 
-> <comment></comment>
+> <comment-title></comment-title>
 > 
 > This step may take a long time to run (i.e. hours), depending on file sizes and available computational power.
 >
@@ -348,7 +346,7 @@ TL;DR: when quality plots are essentially straight lines, truncation is less abo
 
 In the following command, a pooling method of `pseudo` is selected. Pseudo-pooling improves sensitivity to shared low-abundance ASVs across samples while remaining computationally efficient. This is better than the default of 'independent' (where samples are denoised independently) when you expect samples in the run to have similar ASVs overall.
 
-> <comment-title></comment-title>
+> <comment-title>Precomputed DADA2 Denoising Results</comment-title>
 >
 > The following DADA2 denoising step can take a long time to run (~1h). You can either wait for this step to run or import the results from a previous previously run of `qiime2 dada2 denoise-paired`.
 >
@@ -382,9 +380,7 @@ In the following command, a pooling method of `pseudo` is selected. Pseudo-pooli
 > 
 > 4. Rename the `denoising_stats.qza` output to: `dada2out_denoising_stats.qza`
 >
-> > <comment></comment>
-> >
-> > #### Calculating truncation lengths
+> > <comment-title>Calculating truncation lengths</comment-title>
 > >
 > > Remember to adjust `trunc_len_f` and `trunc_len_r` according to your own data.
 > > 
@@ -400,7 +396,7 @@ In the following command, a pooling method of `pseudo` is selected. Pseudo-pooli
 
 A [metadata file](https://use.qiime2.org/en/stable/references/metadata.html) is required which provides the key to gaining biological insight from your data. The file <fn>dunnart_metadata.tsv</fn> is provided in the home directory of your Nectar instance. This spreadsheet has already been verified using the plugin for Google Sheets, [keemei](https://keemei.qiime2.org/).  
 
-#### Things to look for
+Things to look for
 
 1. *How many features (ASVs) were generated?* Does this seem reasonable for the sample type? High-diversity communities will usually yield more ASVs than low-diversity communities, but very large numbers can also reflect residual noise or non-target amplification.
 2. *Do the representative sequences make biological sense?* Taxonomic assignments or BLAST hits should broadly match the expected environment or host (for example, marine, soil, gut, or terrestrial communities).
@@ -468,15 +464,13 @@ Here we will classify each identical read or *Amplicon Sequence Variant (ASV)* t
 
 A classifier has already been trained for you for the V4 region of the bacterial 16S rRNA gene using the SILVA database. The next step will take a while to run. *The output directory cannot previously exist*.
 
-> <comment></comment>
-> 
-> #### *A Note on the Ribosomal Data Project
+> <comment-title>*A Note on the Ribosomal Data Project</comment-title>
 > 
 > As of the time of writing, the Ribosomal Data Project website is no longer available. You can find a standalone version of the RDP Classifier 2.14 released in August 2023 on [Sourgeforce](https://sourceforge.net/p/rdp-classifier/news/2023/08/rdp-classifier-214-august-2023-released/) and [Zenodo](https://zenodo.org/records/10367203).
 >
 {: .comment}
 
-> <comment></comment>
+> <comment-title></comment-title>
 > 
 > [The classifier](https://www.dropbox.com/scl/fi/5eg7gqeczdzjf287o20p6/silva_138.2_16s_v4_classifier.qza?rlkey=a8gde5oggidosqxapqw44kdum&st=axl7llhj&dl=0) used here is only appropriate for the specific 16S rRNA region that *this* data represents. You will need to train your own classifier for your own data. For more information about training your own classifier, see [Extra Information](./07-extra-info.html#train-silva-v138-classifier-for-16s18s-rrna-gene-marker-sequences-).
 >
@@ -630,12 +624,12 @@ Create bar charts to compare the relative abundance of ASVs across samples.
 ### Rarefaction curves
 Generate rarefaction curves to determine whether the samples have been sequenced deeply enough to capture all the community members. The max depth setting will depend on the number of sequences in your samples.
 
-#### Things to look for:
+Things to look for:
 
  1. Do the curves for each sample plateau? If they don’t, the samples haven’t been sequenced deeply enough to capture the full diversity of the bacterial communities, which is shown on the y-axis.
  2. At what sequencing depth (x-axis) do your curves plateau? This value will be important for downstream analyses, particularly for alpha diversity analyses.
 
-> <comment></comment>
+> <comment-title>Specifying a Max Depth Value</comment-title>
 > 
 > The value that you provide for `max_depth` should be determined by reviewing the “Frequency per sample” information presented in the `summary.qzv` file that was created above after filtering. In general, choosing a value that is somewhere around the median frequency seems to work well, but you may want to increase that value if the lines in the resulting rarefaction plot don’t appear to be levelling out, or decrease that value if you seem to be losing many of your samples due to low total frequencies closer to the minimum sampling depth than the maximum sampling depth.
 >
