@@ -57,7 +57,7 @@ Indigenous microbial communities (microbiota) play critical roles in host health
 
 ## QIIME 2 Analysis platform
 
-> <comment></comment>
+> <comment>QIIME2 Version</comment>
 > 
 > The version used in this workshop is `qiime2-2026.1`. Other versions of QIIME2 may result in minor differences in results.
 >
@@ -74,22 +74,12 @@ Quantitative Insights Into Microbial Ecology 2 ([QIIME 2](https://www.nature.com
 
 #### Viewing QIIME2 visualisations
 
+In order to use QIIME2 View to visualise your files, you will need to use a Google Chrome or Mozilla Firefox web browser (not in private browsing). For more information, click [here](https://view.qiime2.org). As this tutorial uses Galaxy Australia, you will need to download the visual files (*.qzv) to your local computer and view them in [QIIME2 View](https://view.qiime2.org) (q2view).
 
-> <comment></comment>
-> 
-> In order to use QIIME2 View to visualise your files, you will need to use a Google Chrome or Mozilla Firefox web browser (not in private browsing). For more information, click [here](https://view.qiime2.org).
->
-{: .comment}
+We will be doing this step multiple times throughout this workshop to view visualisation files as they are generated.
 
-As this tutorial uses Galaxy Australia, you will need to download the visual files (*.qzv) to your local computer and view them in [QIIME2 View](https://view.qiime2.org) (q2view).
 
-> <comment></comment>
-> 
-> We will be doing this step multiple times throughout this workshop to view visualisation files as they are generated.
->
-{: .comment}
-
-> <comment></comment>
+> <comment>The QIIME vizualisation extractor Tool</comment>
 > 
 > Within Galaxy, the `QIIME vizualisation extractor` tool can be used to view QIIME2 `.qzv` visualisation files. However, some QIIME2 visualisation files will not properly display or will lose some of the visualisation's interactive features.
 > 
@@ -163,7 +153,7 @@ Here, the data files (two per sample, i.e. forward and reverse reads `R1` and `R
 >
 > 3. Create a paired collection of the imported raw reads (`.fastq.gz`) datasets.
 > 
->    {% snippet faqs/galaxy/collections_build_list.md %}
+>    {% snippet faqs/galaxy/collections_build_list_paired.md %}
 >
 {: .hands_on}
 
@@ -171,13 +161,17 @@ Here, the data files (two per sample, i.e. forward and reverse reads `R1` and `R
 
 ## Remove primers
 
-> <comment></comment>
+> <comment>Check with Sequencing Facility</comment>
 > 
 > Remember to ask your sequencing facility if the raw data you get has the primers attached - they may have already been removed.
 >
 {: .comment}
 
 These sequences still have the primers attached and must be removed prior to denoising. 
+
+For this workshop, we perform primer trimming using the `cutadapt` tool in Galaxy. Amplicons were generated using standard 16S rRNA gene primers for the v4 region, and the reads returned from the sequencer therefore include these primer sequences at the 5′ ends. Using `cutadapt`, the specified primer sequence and any bases upstream of the match are removed, with an error rate of 0.10 to balance sensitivity of primer detection with specificity of trimming. Degenerate bases in the primers are accommodated using wildcard matching, and any reads lacking the expected primer sequences are discarded to minimise inclusion of off-target amplification products. A modest 3′ quality trimming threshold (Phred score = 20) is also applied to remove low-quality bases prior to downstream denoising.
+
+It is important to note that these data were generated on an Illumina NextSeq platform, which uses 2-colour chemistry and can produce artificial poly-G tails at the ends of reads under low-signal conditions. We use standalone `cutadapt` tool instead of `qiime2 cutadapt trim-paired` because the QIIME2 implementation does not have the `NextSeq trimming` parameter (the `--nextseq-trim` flag if running `cutadapt` via command line), which is specifically designed to remove these artificial poly-G tails.
 
 > <hands-on-title>Run Cutadapt</hands-on-title>
 >
@@ -204,11 +198,21 @@ These sequences still have the primers attached and must be removed prior to den
 >
 > 2. Rename the output to: `trimmed pairs`
 >
-> > <comment></comment>
+> > <comment>Primers</comment>
 > >
-> > For this workshop, primer trimming was performed using the QIIME 2 `cutadapt trim-paired` plugin to maintain a fully reproducible workflow within the QIIME 2 framework. Amplicons were generated using standard 16S rRNA gene primers for the v4 region, and the reads returned from the sequencer therefore include these primer sequences at the 5′ ends. Using cutadapt, the specified primer sequence and any bases upstream of the match are removed, with an error rate of 0.10 to balance sensitivity of primer detection with specificity of trimming. Degenerate bases in the primers are accommodated using wildcard matching, and any reads lacking the expected primer sequences are discarded to minimise inclusion of off-target amplification products. A modest 3′ quality trimming threshold (Phred score = 20) is also applied to remove low-quality bases prior to downstream denoising.
+> > The primers specified are the Earth Microbiome Project (EMP) 16S V4 primers (515F (Parada)– 806R (Apprill) targeting the v4 region of the bacterial 16S rRNA gene), which correspond to *this* specific experiment. Unless you are using these exact primers for your experiment, you need to adapt the code accordingly.
+> >
+> {: .comment}
+>
+> > <comment>Error Rate and Overlap</comment>
+> >
+> > The error rate, `Maximum error rate`, and overlap, `Minimum overlap length`, parameters will likely need to be adjusted for your own sample data to maximise the proportion of reads successfully trimmed while avoiding nonspecific matches. Play around with these values and see what happens.
+> >
+> {: .comment}
+> 
+> > <comment>Alternately running qiime2 cutadapt trim-paired</comment>
 > > 
-> > It is important to note that these data were generated on an Illumina NextSeq platform, which uses 2-colour chemistry and can produce artificial poly-G tails at the ends of reads under low-signal conditions. The QIIME 2 implementation of `cutadapt` does not have the `NextSeq trimming` parameter (the `--nextseq-trim` flag if running `cutadapt` via command line), which is specifically designed to remove these artefacts. As such, the trimming approach used here represents a simplified, self-contained workflow appropriate for teaching purposes. For production analyses of NextSeq data, best practice is to perform trimming with standalone `cutadapt` (including `NextSeq trimming`) prior to importing reads into QIIME 2, as this improves removal of sequencing artefacts and can enhance downstream denoising and taxonomic resolution.
+> > The following step shows the tool set up for running `qiime2 cutadapt trim-paired` to perform this simplified trimming approach. However, for production analyses of NextSeq data, best practice is to perform trimming with the standalone `cutadapt` (including `NextSeq trimming`) prior to importing reads into QIIME 2, as this improves removal of sequencing artefacts and can enhance downstream denoising and taxonomic resolution.
 > >
 > > > <hands-on-title>Run Cutadapt</hands-on-title>
 > > >
@@ -234,19 +238,6 @@ These sequences still have the primers attached and must be removed prior to den
 > 
 {: .hands_on}
 
-
-> <comment></comment>
-> 
-> The primers specified are the Earth Microbiome Project (EMP) 16S V4 primers (515F (Parada)– 806R (Apprill) targeting the v4 region of the bacterial 16S rRNA gene), which correspond to *this* specific experiment. Unless you are using these exact primers for your experiment, you need to adapt the code accordingly.
->
-{: .comment}
-
-
-> <comment></comment>
-> 
-> The error rate, `error_rate`, and overlap, `overlap`, parameters will likely need to be adjusted for your own sample data to maximise the proportion of reads successfully trimmed while avoiding nonspecific matches. Play around with these values and see what happens.
->
-{: .comment}
 
 ## Create a QIIME2 Artefact
 
