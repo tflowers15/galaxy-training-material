@@ -95,7 +95,7 @@ This Galaxy tutorial based on material from the [Metabarcoding of bacteria in du
 
 # Data upload
 
-These [samples](./index.html#data) were sequenced on a single Illumina NextSeq run at the Walter and Eliza Hall Institute (WEHI), Melbourne, Australia. Data from WEHI came as paired-end, demultiplexed, unzipped *.fastq files with adapters still attached. Following the [QIIME2 importing tutorial](https://amplicon-docs.qiime2.org/en/stable/how-to-guides/how-to-import.html), this is the Casava One Eight format. The files have been renamed to satisfy the Casava format as `SampleID\_FWDXX-REVXX\_L001\_R[1 or 2]\_001.fastq` (e.g. `CTRLA\_Fwd04-Rev25\_L001\_R1\_001.fastq.gz`). The files were then zipped (`.gzip`).
+These [samples](./index.html#data) were sequenced on a single Illumina NextSeq run at the Walter and Eliza Hall Institute (WEHI), Melbourne, Australia. Data from WEHI came as paired-end, demultiplexed, unzipped *.fastq files with adapters still attached. Following the [QIIME2 importing tutorial](https://amplicon-docs.qiime2.org/en/stable/how-to-guides/how-to-import.html), this is the Casava One Eight format. The files have been renamed to satisfy the Casava format as `SampleID_FWDXX-REVXX_L001_R[1 or 2]_001.fastq` (e.g. `CTRLA_Fwd04-Rev25_L001_R1_001.fastq.gz`). The files were then zipped (`.gzip`).
 
 Here, the data files (two per sample, i.e. forward and reverse reads `R1` and `R2` respectively) will be imported and exported as a single QIIME 2 artefact file. These samples are already demultiplexed (i.e. sequences from each sample have been written to separate files), so a metadata file is not initially required.
 
@@ -224,8 +224,8 @@ It is important to note that these data were generated on an Illumina NextSeq pl
 > > >    - *"overlap: Int % Range(1, None)"*: `10`
 > > >    - *"match_adapter_wildcards: Bool"*: `Yes`
 > > >    - *"discard_untrimmed: Bool"*: `Yes`
-> > >    - *"quality\_cutoff\_5end: Int % Range(0, None)"*: `0`
-> > >    - *"quality\_cutoff\_3end: Int % Range(0, None)"*: `30`
+> > >    - *"quality_cutoff_5end: Int % Range(0, None)"*: `0`
+> > >    - *"quality_cutoff_3end: Int % Range(0, None)"*: `30`
 > > >
 > > > 2. Rename the output to: `trimmed_sequences.qza`
 > > >
@@ -237,7 +237,7 @@ It is important to note that these data were generated on an Illumina NextSeq pl
 
 ## Create a QIIME2 Artefact
 
-QIIME2 requires `.fastq.gz` sequence datasets to follow the CASAVA file naming format (`SampleID\_FWDXX-REVXX\_L001\_R[1 or 2]\_001.fastq`, e.g. `D01_FWD09_REV01_L001_R1_001.fastq.gz`) in order to import `.fastq.gz` sequence datasets into the QIIME2 artefact format (`.qza`), which is the data format used by the QIIME2 suite of tools. Generally a single `.qza` QIIME2 artefact will be created that contains all of the `.fastq.gz` sample datasets to be processed. 
+QIIME2 requires `.fastq.gz` sequence datasets to follow the CASAVA file naming format (`SampleID_FWDXX-REVXX_L001_R[1 or 2]_001.fastq`, e.g. `D01_FWD09_REV01_L001_R1_001.fastq.gz`) in order to import `.fastq.gz` sequence datasets into the QIIME2 artefact format (`.qza`), which is the data format used by the QIIME2 suite of tools. Generally a single `.qza` QIIME2 artefact will be created that contains all of the `.fastq.gz` sample datasets to be processed. 
 
 In Galaxy, the `.fastq.gz` datasets can provide as an input to the import tool, `qiime2 tools import`, either as individual datasets (although this requires manually specifying each dataset to be included) or as a dataset collection (recommended method). The input dataset collection must be a list collection even when using paired-end reads.
 
@@ -371,8 +371,8 @@ In the following command, a pooling method of `pseudo` is selected. Pseudo-pooli
 >
 > 1. {% tool [`qiime2 dada2 denoise-paired`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__dada2__denoise_paired/qiime2__dada2__denoise_paired/2026.1.0+q2galaxy.2026.1.0) %}: 
 >   - *"demultiplexed_seqs: SampleData[PairedEndSequencesWithQuality]"*: `trimmed_sequences.qza`
->   - *"trunc\_len\_f: Int"*: `210`
->   - *"trunc\_len\_r: Int"*: `170`
+>   - *"trunc_len_f: Int"*: `210`
+>   - *"trunc_len_r: Int"*: `170`
 >   - *"Click here for additional options"*
 >      - *"pooling_method: Str % Choices('independent', 'pseudo')"*: `pseudo `
 >
@@ -386,7 +386,7 @@ In the following command, a pooling method of `pseudo` is selected. Pseudo-pooli
 > >
 > > #### Calculating truncation lengths
 > >
-> > Remember to adjust `trunc\_len\_f` and `trunc\_len\_r` according to your own data.
+> > Remember to adjust `trunc_len_f` and `trunc_len_r` according to your own data.
 > > 
 > > Overlap = (forward truncation length + reverse truncation length) − amplicon length.
 > >
