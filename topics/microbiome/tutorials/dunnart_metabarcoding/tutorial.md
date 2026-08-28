@@ -312,13 +312,11 @@ For paired-end data, an additional and critical consideration is read overlap. A
 
 TL;DR: when quality plots are essentially straight lines, truncation is less about identifying where quality drops and more about keeping as much usable sequence as possible while ensuring adequate overlap between reads.
 
-> <discussion-title>Things to look for when choosing truncation lengths</discussion-title>
-> 
-> 1. Do the forward and reverse quality profiles show a clear decline near the ends of the reads? If so, truncate before the low-quality tail.
-> 2. If the quality profiles remain high and relatively flat, avoid trimming too aggressively and retain as much high-quality sequence as possible.
-> 3. Will the chosen forward and reverse truncation lengths still leave enough overlap for paired-end merging? A minimum overlap of ~50 bp is recommended.
->
-{: .discussion}
+### Things to look for when choosing truncation lengths
+ 
+1. Do the forward and reverse quality profiles show a clear decline near the ends of the reads? If so, truncate before the low-quality tail.
+2. If the quality profiles remain high and relatively flat, avoid trimming too aggressively and retain as much high-quality sequence as possible.
+3. Will the chosen forward and reverse truncation lengths still leave enough overlap for paired-end merging? A minimum overlap of ~50 bp is recommended.
 
 > <hands-on-title>Summarise Trimmed Sequences</hands-on-title>
 >
