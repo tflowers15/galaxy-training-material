@@ -49,7 +49,6 @@ What is the influence of captivity on gut microbiota of the fat-tailed dunnart?
 
 
 Fat-tailed dunnart [*Sminthopsis crassicaudata*](https://en.wikipedia.org/wiki/Fat-tailed_dunnart) - a species of mouse-like marsupial in the family Dasyuridae, which includes quolls, the Tasmanian devil, and the extinct Thylacine. There are 10 samples in this dataset (*This data is a subset from a larger experiment*); 5 faecal samples each from captive and wild fat-tailed dunnarts.  
-   
 
 ## The Study
 
@@ -63,14 +62,12 @@ Indigenous microbial communities (microbiota) play critical roles in host health
 >
 {: .comment}
 
-
 Quantitative Insights Into Microbial Ecology 2 ([QIIME 2](https://www.nature.com/articles/s41587-019-0209-9)) is a next-generation microbiome [bioinformatics platform](https://qiime2.org/) that is extensible, free, open source, and community developed. It allows researchers to:
 
   - Automatically track analyses with decentralised data provenance
   - Interactively explore data with beautiful visualisations
   - Easily share results without QIIME 2 installed
   - Plugin-based system — researchers can add in tools as they wish
-
 
 #### Viewing QIIME2 visualisations
 
@@ -238,7 +235,6 @@ It is important to note that these data were generated on an Illumina NextSeq pl
 > 
 {: .hands_on}
 
-
 ## Create a QIIME2 Artefact
 
 QIIME2 requires `.fastq.gz` sequence datasets to follow the CASAVA file naming format (`SampleID\_FWDXX-REVXX\_L001\_R[1 or 2]\_001.fastq`, e.g. `D01_FWD09_REV01_L001_R1_001.fastq.gz`) in order to import `.fastq.gz` sequence datasets into the QIIME2 artefact format (`.qza`), which is the data format used by the QIIME2 suite of tools. Generally a single `.qza` QIIME2 artefact will be created that contains all of the `.fastq.gz` sample datasets to be processed. 
@@ -304,7 +300,6 @@ Once the collection of trimmed `.fastq.gz` sequences is correctly named to impor
 >
 {: .hands_on}
 
-
 ## Create and interpret sequence quality data
 
 Create a viewable summary file so the data quality can be checked. Viewing the quality plots generated here helps determine settings for dada2, which we will run next.
@@ -327,7 +322,6 @@ TL;DR: when quality plots are essentially straight lines, truncation is less abo
 >
 {: .discussion}
 
-
 > <hands-on-title>Summarise Trimmed Sequences</hands-on-title>
 >
 > 1. {% tool [`qiime2 demux summarize`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__demux__summarize/qiime2__demux__summarize/2026.1.0+q2galaxy.2026.1.0) %}: 
@@ -344,9 +338,6 @@ TL;DR: when quality plots are essentially straight lines, truncation is less abo
 >
 {: .hands_on}
 
-
-
-
 ##  Denoising the data
 
 > <comment></comment>
@@ -355,9 +346,7 @@ TL;DR: when quality plots are essentially straight lines, truncation is less abo
 >
 {: .comment}
 
-
 In the following command, a pooling method of `pseudo` is selected. Pseudo-pooling improves sensitivity to shared low-abundance ASVs across samples while remaining computationally efficient. This is better than the default of 'independent' (where samples are denoised independently) when you expect samples in the run to have similar ASVs overall.
-
 
 > <comment-title></comment-title>
 >
@@ -407,27 +396,16 @@ In the following command, a pooling method of `pseudo` is selected. Pseudo-pooli
 > 
 {: .hands_on}
 
-
-
 ## Generate summary files
 
 A [metadata file](https://use.qiime2.org/en/stable/references/metadata.html) is required which provides the key to gaining biological insight from your data. The file <fn>dunnart_metadata.tsv</fn> is provided in the home directory of your Nectar instance. This spreadsheet has already been verified using the plugin for Google Sheets, [keemei](https://keemei.qiime2.org/).  
 
+#### Things to look for
 
-> <comment></comment>
-> 
-> #### Things to look for
->
-> 1. *How many features (ASVs) were generated?* Does this seem reasonable for the sample type? High-diversity communities will usually yield more ASVs than low-diversity communities, but very large numbers can also reflect residual noise or non-target amplification.
-> 
-> 2. *Do the representative sequences make biological sense?* Taxonomic assignments or BLAST hits should broadly match the expected environment or host (for example, marine, soil, gut, or terrestrial communities).
->     
-> 3. *How many reads were retained after filtering, denoising, merging, and chimera removal?* If a large proportion of reads were lost (for example, >50%), this may indicate that trimming or truncation settings were too stringent, read quality was poor, or overlap between forward and reverse reads was insufficient.
-> 
-> 4. *Did most samples retain enough reads for downstream analysis?* Samples with very low final read counts may still be usable in some contexts, but they should be interpreted cautiously and may need to be excluded later.
->
-{: .comment}
-
+1. *How many features (ASVs) were generated?* Does this seem reasonable for the sample type? High-diversity communities will usually yield more ASVs than low-diversity communities, but very large numbers can also reflect residual noise or non-target amplification.
+2. *Do the representative sequences make biological sense?* Taxonomic assignments or BLAST hits should broadly match the expected environment or host (for example, marine, soil, gut, or terrestrial communities).
+3. *How many reads were retained after filtering, denoising, merging, and chimera removal?* If a large proportion of reads were lost (for example, >50%), this may indicate that trimming or truncation settings were too stringent, read quality was poor, or overlap between forward and reverse reads was insufficient.
+4. *Did most samples retain enough reads for downstream analysis?* Samples with very low final read counts may still be usable in some contexts, but they should be interpreted cautiously and may need to be excluded later.
 
 > <hands-on-title>Tabulate Denoising Stats</hands-on-title>
 >
@@ -445,7 +423,6 @@ A [metadata file](https://use.qiime2.org/en/stable/references/metadata.html) is 
 >
 {: .hands_on}
 
-
 > <hands-on-title>Summarise DADA2 Table</hands-on-title>
 >
 > 1. {% tool [`qiime2 feature-table summarize`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__metadata__tabulate/qiime2__metadata__tabulate/2026.1.0+q2galaxy.2026.1.0) %}: 
@@ -462,10 +439,9 @@ A [metadata file](https://use.qiime2.org/en/stable/references/metadata.html) is 
 >   - Download `summary_table.qzv ` to your local computer and view in QIIME 2 View (q2view).
 >   - [Click to view the **`summary.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/ADpnQOqVK-JD1zIkLejSfmY/summary_table/summary.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
 >   - Make sure to switch between the "Overview" and "Feature Detail" tabs in the top left hand corner. 
->    ![ASV_detailPNG](../../images/dunnart_images/q2view_ASV_detail.png)
+>   ![ASV_detailPNG](../../images/dunnart_images/q2view_ASV_detail.png)
 >
 {: .hands_on}
-
 
 > <hands-on-title>Tabulate Representative Sequences</hands-on-title>
 >
@@ -481,7 +457,6 @@ A [metadata file](https://use.qiime2.org/en/stable/references/metadata.html) is 
 >
 {: .hands_on}
 
-
 # Taxonomic Analysis
 
 ## Assign taxonomy
@@ -493,7 +468,6 @@ Here we will classify each identical read or *Amplicon Sequence Variant (ASV)* t
 
 A classifier has already been trained for you for the V4 region of the bacterial 16S rRNA gene using the SILVA database. The next step will take a while to run. *The output directory cannot previously exist*.
 
-
 > <comment></comment>
 > 
 > #### *A Note on the Ribosomal Data Project
@@ -502,13 +476,11 @@ A classifier has already been trained for you for the V4 region of the bacterial
 >
 {: .comment}
 
-
 > <comment></comment>
 > 
 > [The classifier](https://www.dropbox.com/scl/fi/5eg7gqeczdzjf287o20p6/silva_138.2_16s_v4_classifier.qza?rlkey=a8gde5oggidosqxapqw44kdum&st=axl7llhj&dl=0) used here is only appropriate for the specific 16S rRNA region that *this* data represents. You will need to train your own classifier for your own data. For more information about training your own classifier, see [Extra Information](./07-extra-info.html#train-silva-v138-classifier-for-16s18s-rrna-gene-marker-sequences-).
 >
 {: .comment}
-
 
 > <hands-on-title>Classify Taxonomy</hands-on-title>
 >
@@ -524,7 +496,6 @@ A classifier has already been trained for you for the V4 region of the bacterial
 >   - [Click to view the **`taxonomy_classification.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/AHM-SIH5EEGMxhpwz8vbpG8/taxonomy.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
 >
 {: .hands_on}
-
 
 ## Generate a viewable summary file of the taxonomic assignments.
 
@@ -544,13 +515,9 @@ A classifier has already been trained for you for the V4 region of the bacterial
 >
 {: .hands_on}
 
-
 ## Filtering
 
-Filter out reads classified as mitochondria and chloroplast. Unassigned ASVs are retained. Generate a viewable summary file of the new table to see the effect of filtering.
-
-According to QIIME developer Nicholas Bokulich, low abundance filtering (i.e. removing ASVs containing very few sequences) is not necessary under the ASV model.
-
+Filter out reads classified as mitochondria and chloroplast. Unassigned ASVs are retained. Generate a viewable summary file of the new table to see the effect of filtering. According to QIIME developer Nicholas Bokulich, low abundance filtering (i.e. removing ASVs containing very few sequences) is not necessary under the ASV model.
 
 > <hands-on-title>Filter Taxanomic Table</hands-on-title>
 >
@@ -579,13 +546,11 @@ According to QIIME developer Nicholas Bokulich, low abundance filtering (i.e. re
 >
 {: .hands_on}
 
-
 ## Train SILVA v138 classifier for 16S/18S rRNA gene marker sequences.
 
 This section contains information on how to train the classifier for analysing your **own** data.
 
 The newest version of the [SILVA](https://www.arb-silva.de/) database (v138) can be trained to classify marker gene sequences originating from the 16S/18S rRNA gene. Reference files `silva-138-99-seqs.qza` and `silva-138-99-tax.qza` were [downloaded from SILVA](https://www.arb-silva.de/download/archive/) and imported to get the artefact files. You can download both these files from [here](https://www.dropbox.com/s/x8ogeefjknimhkx/classifier_files.zip?dl=0).
-
 
 > <hands-on-title>Train Classifier</hands-on-title>
 > 
@@ -609,8 +574,6 @@ The newest version of the [SILVA](https://www.arb-silva.de/) database (v138) can
 >
 {: .hands_on}
 
-
-
 # Build a phylogenetic tree
 
 The next step does the following:
@@ -621,7 +584,6 @@ The next step does the following:
 4. Apply mid-point rooting to the tree.
 
 A phylogenetic tree is necessary for any analyses that incorporates information on the relative relatedness of community members, by incorporating phylogenetic distances between observed organisms in the computation. This would include any beta-diversity analyses and visualisations from a weighted or unweighted Unifrac distance matrix.
-
 
 > <hands-on-title>Tabulate Taxonomic Assignments</hands-on-title>
 >
@@ -637,7 +599,6 @@ A phylogenetic tree is necessary for any analyses that incorporates information 
 > 5. Rename the `alignment.qza` output to: `aligned_16s_representative_seqs.qza`
 > 
 {: .hands_on}
-
 
 # Basic Visualisations and Statistics
 
@@ -662,35 +623,23 @@ Create bar charts to compare the relative abundance of ASVs across samples.
 >   - Download `barchart.qzv` to your local computer and view in QIIME 2 View (q2view). Try selecting different taxonomic levels and metadata-based sample sorting.
 >   - [Click to view the **`barchart.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/APrHWMBRZRFHT5GCxr_2NR0/barchart.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
 >   - Increase the "Bar Width", select "Captivity" in "Sort Samples By" drop-down menu and explore the resulting barplots by changing the levels in the "Change Taxonomic Level" dropdown menu (Select Level 1, then Level 3, and then Level 5 for example).  
->
 >   ![barplot1](../../images/dunnart_images/q2view_barplot_levels.png)
 >
 {: .hands_on}
 
-
 ### Rarefaction curves
 Generate rarefaction curves to determine whether the samples have been sequenced deeply enough to capture all the community members. The max depth setting will depend on the number of sequences in your samples.
 
+#### Things to look for:
 
-> <comment></comment>
-> 
-> #### Things to look for:
->
-> 1. Do the curves for each sample plateau? If they don’t, the samples haven’t been sequenced deeply enough to capture the full diversity of the bacterial communities, which is shown on the y-axis.
->
-> 2. At what sequencing depth (x-axis) do your curves plateau? This value will be important for downstream analyses, particularly for alpha diversity analyses.
->
-{: .comment}
-
-
+ 1. Do the curves for each sample plateau? If they don’t, the samples haven’t been sequenced deeply enough to capture the full diversity of the bacterial communities, which is shown on the y-axis.
+ 2. At what sequencing depth (x-axis) do your curves plateau? This value will be important for downstream analyses, particularly for alpha diversity analyses.
 
 > <comment></comment>
 > 
 > The value that you provide for `max_depth` should be determined by reviewing the “Frequency per sample” information presented in the `summary.qzv` file that was created above after filtering. In general, choosing a value that is somewhere around the median frequency seems to work well, but you may want to increase that value if the lines in the resulting rarefaction plot don’t appear to be levelling out, or decrease that value if you seem to be losing many of your samples due to low total frequencies closer to the minimum sampling depth than the maximum sampling depth.
 >
 {: .comment}
-
-
 
 > <hands-on-title>Alpha Diversity Rarefaction</hands-on-title>
 >
@@ -713,13 +662,9 @@ Generate rarefaction curves to determine whether the samples have been sequenced
 >   - [Click to view the **`16s_alpha_rarefaction.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/APhv6-MkB307twQ0bCWkrkY/16s_alpha_rarefaction.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
 >
 >   - Select "Animal" in the "Sample Metadata Column" and "observed_features" under "Metric":
-> 
 >   ![rarefaction](../../images/dunnart_images/q2view_rarefaction.png)
 >
 {: .hands_on}
-
-
-
 
 ### Alpha and beta diversity analysis
 
@@ -739,7 +684,6 @@ The metrics computed by default are:
     - weighted UniFrac distance (a quantitative measure of community dissimilarity that incorporates phylogenetic relationships between the features)
 
 An important parameter that needs to be provided to this script is *"sampling_depth: Int % Range(1, None)"*, which is the even sampling (i.e. rarefaction) depth that was determined above. As most diversity metrics are sensitive to different sampling depths across different samples, this script will randomly subsample the counts from each sample to the value provided for this parameter. For example, if *"sampling_depth: Int % Range(1, None)"*: `500` is provided, this step will subsample the counts in each sample without replacement, so that each sample in the resulting table has a total count of 500. If the total count for any sample(s) are smaller than this value, those samples will be excluded from the diversity analysis. Choosing this value is tricky. We recommend making your choice by reviewing the information presented in the summary.qzv file that was created above. Choose a value that is as high as possible (so more sequences per sample are retained), while excluding as few samples as possible.
-
 
 > <hands-on-title>Phylogenetic Metrics</hands-on-title>
 >
@@ -771,15 +715,11 @@ An important parameter that needs to be provided to this script is *"sampling_de
 >   - [Click to view the **`unweighted_unifrac_emperor.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/ANRMHJr8pw58adbJ2yv4i38/unweighted_unifrac_emperor.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
 >
 >   - On q2view, select the "Color" tab, choose "Captivity" under the "Select a Color Category" dropdown menu.
-> 
 >   ![unweighted_unifrac_emperor2](../../images/dunnart_images/q2view_unweighted_unifrac_emperor2.png)
 >
 {: .hands_on}
 
-
-
 Next, we’ll test for associations between categorical metadata columns and alpha diversity data. We’ll do that here for observed ASVs and evenness metrics.
-
 
 > <hands-on-title>Alpha Group Significance - Observed Features</hands-on-title>
 >
@@ -797,13 +737,9 @@ Next, we’ll test for associations between categorical metadata columns and alp
 >   - [Click to view the **`observed_features-significance.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/AMje09kxzAz65VKNBORJoAI/observed_features-significance.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).  
 >
 >   - Select "Captivity" under the "Column" dropdown menu.  
->
 >   ![faith](../../images/dunnart_images/q2view_observed_features.png)
 >
 {: .hands_on}
-
-
-
 
 > <hands-on-title>Alpha Group Significance - Evenness</hands-on-title>
 >
@@ -820,16 +756,11 @@ Next, we’ll test for associations between categorical metadata columns and alp
 >   - Download `evenness-group-significance.qzv` to your local computer and view in QIIME 2 View (q2view).
 >   - [Click to view the **`evenness-group-significance.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/ALNMCSgm30C2zhm7sHNSA5s/evenness-group-significance.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
 >   - Select "Captivity" under the "Column" dropdown menu.  
->
 >   ![evenness](../../images/dunnart_images/q2view_evenness.png)
 >
 {: .hands_on}
 
-
-
-
 Next, we’ll analyse sample composition in the context of categorical metadata using a permutational multivariate analysis of variance (PERMANOVA, first described in Anderson (2001)) test using the beta-group-significance command. The following commands will test whether distances between samples within a group are more similar to each other then they are to samples from the other groups. If you call this command with the *"pairwise: Bool"*: `Yes` parameter, as we’ll do here, it will also perform pairwise tests that will allow you to determine which specific pairs of groups differ from one another, if any. This command can be slow to run, especially when setting *"pairwise: Bool"*: `Yes`, since it is based on permutation tests. So, unlike the previous commands, we’ll run beta-group-significance on specific columns of metadata that we’re interested in exploring, rather than all metadata columns to which it is applicable. Here we’ll apply this to our unweighted UniFrac distances, using two sample metadata columns, as follows.
-
 
 > <hands-on-title>Beta Group Significance - Unifrac Distance</hands-on-title>
 >
@@ -844,18 +775,14 @@ Next, we’ll analyse sample composition in the context of categorical metadata 
 > 3. Visualisations: Captivity significance output and provenance
 > 
 >   - Download `unweighted-unifrac-captivity-significance.qzv` to your local computer and view in QIIME 2 View (q2view).
->   - [Click to view the **`unweighted-unifrac-captivity-significance.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/ALN4XydwBZnK-0qP0xoUmJg/unweighted-unifrac-captivity-significance.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).  
->
+>   - [Click to view the **`unweighted-unifrac-captivity-significance.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/ALN4XydwBZnK-0qP0xoUmJg/unweighted-unifrac-captivity-significance.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
 >   ![provenance](../../images/dunnart_images/q2view_provenance.png)
 >
 {: .hands_on}
 
-
-
 Finally, we'll do differential abundance testing with ANCOM-BC2. ANCOM-BC2 is a compositionally-aware linear regression model that allows testing for differentially abundant features across sample groups while also implementing bias correction. This can be accessed using the ancombc2 action in the composition plugin.
 
 We’ll apply ANCOM-BC2 to see which ASV are differentially abundant across Captivity. If you had more than two treatments, you can specify a reference level to define what each group is compared against (*"reference_levels: List[Str]"*: `Captivity::Wild`). This is not necessary when you just have two groups. 
-
 
 > <hands-on-title>Differential Abundance Tests</hands-on-title>
 >
@@ -882,8 +809,6 @@ We’ll apply ANCOM-BC2 to see which ASV are differentially abundant across Capt
 >
 {: .hands_on}
 
-
-
 # Exporting data for further analysis in R
 
 You need to export your ASV table, taxonomy table, and tree file for analyses in R. Many file formats can be accepted. 
@@ -904,7 +829,6 @@ However, when creating a workflow, the `.qza` type and format cannot be pre-fill
 > 2. Rename the output to: `16s_unrooted_tree.nwk`
 >
 {: .hands_on}
-
 
 ## Create a BIOM table with taxonomy annotations. A FeatureTable[Frequency] artefact will be exported as a BIOM v2.1.0 formatted file.
 
@@ -932,7 +856,6 @@ However, when creating a workflow, the `.qza` type and format cannot be pre-fill
 >
 {: .hands_on}
 
-
 ## Export Taxonomy as TSV
 
 > <hands-on-title>Export Taxonomy</hands-on-title>
@@ -945,7 +868,6 @@ However, when creating a workflow, the `.qza` type and format cannot be pre-fill
 > 2. Rename the output to: `taxonomy.tsv`
 >
 {: .hands_on}
-
 
 ## Remove the header lines of the .tsv files
 
@@ -965,11 +887,7 @@ However, when creating a workflow, the `.qza` type and format cannot be pre-fill
 >
 {: .hands_on}
 
-
-
 Some packages require your data to be in a consistent order (i.e. the order of your ASVs in the taxonomy table rows to be the same order of ASVs in the columns of your ASV table). It's recommended to clean up your taxonomy file. You can have blank spots where the level of classification was not completely resolved.
-
-
 
 # Conclusion
 
