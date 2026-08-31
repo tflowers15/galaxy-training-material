@@ -197,7 +197,7 @@ It is important to note that these data were generated on an Illumina NextSeq pl
 >
 > > <comment-title>Primers</comment-title>
 > >
-> > The primers specified are the Earth Microbiome Project (EMP) 16S V4 primers (515F (Parada)– 806R (Apprill) targeting the v4 region of the bacterial 16S rRNA gene), which correspond to *this* specific experiment. Unless you are using these exact primers for your experiment, you need to adapt the code accordingly.
+> > The primers specified are the Earth Microbiome Project (EMP) 16S V4 primers (515F (Parada)– 806R (Apprill) targeting the v4 region of the bacterial 16S rRNA gene), which correspond to *this* specific experiment. Unless you are using these exact primers for your experiment, you will need to replace the `Custom 5’ adapter sequence` with the primers used in your experiment.
 > >
 > {: .comment}
 >
@@ -209,7 +209,11 @@ It is important to note that these data were generated on an Illumina NextSeq pl
 > 
 > > <comment-title>Alternately running qiime2 cutadapt trim-paired</comment-title>
 > > 
-> > The following step shows the tool set up for running `qiime2 cutadapt trim-paired` to perform this simplified trimming approach. However, for production analyses of NextSeq data, best practice is to perform trimming with the standalone `cutadapt` (including `NextSeq trimming`) prior to importing reads into QIIME 2, as this improves removal of sequencing artefacts and can enhance downstream denoising and taxonomic resolution.
+> > The following step shows the tool set up for running `qiime2 cutadapt trim-paired` to perform a simplified trimming approach without the `NextSeq trimming` option. However, for production analyses of NextSeq data, best practice is to perform trimming with the standalone `cutadapt` (including `NextSeq trimming`) prior to importing reads into QIIME 2, as this improves removal of sequencing artefacts and can enhance downstream denoising and taxonomic resolution.
+> >
+> > Note, qiime2 cutadapt trim-paired requires the input reads to be stored as a single QIIME2 artefact (`combined.qza`), not a dataset collection as used by cutadapt. Creating a QIIME2 artefact from a dataset collection is show below.
+> > 
+> > {% snippet training-material/topics/microbiome/tutorials/dunnart_metabarcoding/tutorial.md#hands-on-create-qiime2-artefact %}
 > >
 > > > <hands-on-title>Run Cutadapt</hands-on-title>
 > > >
@@ -239,7 +243,7 @@ It is important to note that these data were generated on an Illumina NextSeq pl
 
 QIIME2 requires `.fastq.gz` sequence datasets to follow the CASAVA file naming format (`SampleID_FWDXX-REVXX_L001_R[1 or 2]_001.fastq`, e.g. `D01_FWD09_REV01_L001_R1_001.fastq.gz`) in order to import `.fastq.gz` sequence datasets into the QIIME2 artefact format (`.qza`), which is the data format used by the QIIME2 suite of tools. Generally a single `.qza` QIIME2 artefact will be created that contains all of the `.fastq.gz` sample datasets to be processed. 
 
-In Galaxy, the `.fastq.gz` datasets can provide as an input to the import tool, `qiime2 tools import`, either as individual datasets (although this requires manually specifying each dataset to be included) or as a dataset collection (recommended method). The input dataset collection must be a list collection even when using paired-end reads.
+In Galaxy, the `.fastq.gz` datasets can be provided as an input to the import tool, `qiime2 tools import`, either as individual datasets (although this requires manually specifying each dataset to be included) or as a dataset collection (recommended method). The input dataset collection must be a list collection even when using paired-end reads.
 
 The following steps reformat the paired-end collection of `.fastq.gz` trimmed sequences produced by `Cutadapt` to a flat list collection and rename the datasets within the list collection to satisfy the CASAVA format requirements.
 
@@ -304,7 +308,7 @@ Once the collection of trimmed `.fastq.gz` sequences is correctly named to impor
 
 Create a viewable summary file so the data quality can be checked. Viewing the quality plots generated here helps determine settings for dada2, which we will run next.
 
-Trimmed sequences are processed using the `dada2` [plugin](https://pubmed.ncbi.nlm.nih.gov/27214047/) within QIIME2. dada2 denoises data by modelling and correcting Illumina amplicon sequencing errors, and infers exact amplicon sequence variants (ASVs), resolving differences of as little as a single nucleotide. Its workflow includes filtering, dereplication, paired-end read merging, and reference-free chimera detection, resulting in a feature (ASV) table.
+Trimmed sequences are processed using the `dada2` [plugin](https://pubmed.ncbi.nlm.nih.gov/27214047/) within QIIME2. DADA2 denoises data by modelling and correcting Illumina amplicon sequencing errors, and infers exact amplicon sequence variants (ASVs), resolving differences of as little as a single nucleotide. Its workflow includes filtering, dereplication, paired-end read merging, and reference-free chimera detection, resulting in a feature (ASV) table.
 
 Truncation removes bases from the 3′ end of reads at the specified position. When choosing DADA2 truncation lengths, the first step is to inspect the forward and reverse quality plots you just created. In many modern Illumina datasets, especially after primer and basic quality trimming, these plots may appear relatively flat with consistently high quality across most of the read length. In these cases, there is no obvious “cut point” where quality sharply declines. Instead of looking for a specific quality threshold (for example, Q35), you should choose truncation lengths conservatively, trimming only the very ends of reads if needed while retaining as much high-quality sequence as possible without compromising read overlap.
 
@@ -346,7 +350,7 @@ In the following command, a pooling method of `pseudo` is selected. Pseudo-pooli
 
 > <comment-title>Precomputed DADA2 Denoising Results</comment-title>
 >
-> The following DADA2 denoising step can take a long time to run (~1h). You can either wait for this step to run or import the results from a previous previously run of `qiime2 dada2 denoise-paired`.
+> The following DADA2 denoising step can take a long time to run (~1h). You can either wait for this step to run or import the results from a previous run of `qiime2 dada2 denoise-paired`.
 >
 > > <hands-on-title>Import denoised dataset files</hands-on-title>
 > >
@@ -394,7 +398,7 @@ In the following command, a pooling method of `pseudo` is selected. Pseudo-pooli
 
 A [metadata file](https://use.qiime2.org/en/stable/references/metadata.html) is required which provides the key to gaining biological insight from your data. The file <fn>dunnart_metadata.tsv</fn> is provided in the home directory of your Nectar instance. This spreadsheet has already been verified using the plugin for Google Sheets, [keemei](https://keemei.qiime2.org/).  
 
-Things to look for
+### Things to look for
 
 1. *How many features (ASVs) were generated?* Does this seem reasonable for the sample type? High-diversity communities will usually yield more ASVs than low-diversity communities, but very large numbers can also reflect residual noise or non-target amplification.
 2. *Do the representative sequences make biological sense?* Taxonomic assignments or BLAST hits should broadly match the expected environment or host (for example, marine, soil, gut, or terrestrial communities).
@@ -622,7 +626,7 @@ Create bar charts to compare the relative abundance of ASVs across samples.
 ### Rarefaction curves
 Generate rarefaction curves to determine whether the samples have been sequenced deeply enough to capture all the community members. The max depth setting will depend on the number of sequences in your samples.
 
-Things to look for:
+#### Things to look for
 
  1. Do the curves for each sample plateau? If they don’t, the samples haven’t been sequenced deeply enough to capture the full diversity of the bacterial communities, which is shown on the y-axis.
  2. At what sequencing depth (x-axis) do your curves plateau? This value will be important for downstream analyses, particularly for alpha diversity analyses.
