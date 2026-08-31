@@ -211,9 +211,7 @@ It is important to note that these data were generated on an Illumina NextSeq pl
 > > 
 > > The following step shows the tool set up for running `qiime2 cutadapt trim-paired` to perform a simplified trimming approach without the `NextSeq trimming` option. However, for production analyses of NextSeq data, best practice is to perform trimming with the standalone `cutadapt` (including `NextSeq trimming`) prior to importing reads into QIIME 2, as this improves removal of sequencing artefacts and can enhance downstream denoising and taxonomic resolution.
 > >
-> > Note, qiime2 cutadapt trim-paired requires the input reads to be stored as a single QIIME2 artefact (`combined.qza`), not a dataset collection as used by cutadapt. Creating a QIIME2 artefact from a dataset collection is show below.
-> > 
-> > {% snippet training-material/topics/microbiome/tutorials/dunnart_metabarcoding/tutorial.md#hands-on-create-qiime2-artefact %}
+> > Note, `qiime2 cutadapt trim-paired` requires the input reads to be stored as a single QIIME2 artefact (e.g. `combined.qza`), not a dataset collection as used by `cutadapt`. A QIIME2 artefact can be created from a dataset collection using `qiime2 tools import` as shown below in [Hands On: Create QIIME2 Artefact]({% link training-material/topics/microbiome/tutorials/dunnart_metabarcoding/tutorial.md %}#hands-on-create-qiime2-artefact).
 > >
 > > > <hands-on-title>Run Cutadapt</hands-on-title>
 > > >
@@ -245,7 +243,7 @@ QIIME2 requires `.fastq.gz` sequence datasets to follow the CASAVA file naming f
 
 In Galaxy, the `.fastq.gz` datasets can be provided as an input to the import tool, `qiime2 tools import`, either as individual datasets (although this requires manually specifying each dataset to be included) or as a dataset collection (recommended method). The input dataset collection must be a list collection even when using paired-end reads.
 
-The following steps reformat the paired-end collection of `.fastq.gz` trimmed sequences produced by `Cutadapt` to a flat list collection and rename the datasets within the list collection to satisfy the CASAVA format requirements.
+The following steps reformat the paired-end collection of `.fastq.gz` trimmed sequences produced by Cutadapt to a flat list collection and rename the datasets within the list collection to satisfy the CASAVA format requirements.
 
 > <hands-on-title>Prepare Collection for QIIME2</hands-on-title>
 > 
@@ -297,10 +295,17 @@ Once the collection of trimmed `.fastq.gz` sequences is correctly named to impor
 >      - *"Select a mechanism"*: `Use collection to import`
 >      - *"elements"*: `trimmed sequences`
 >    - *"Append an extension?"*: `No, use element identifiers as is` (*If the datasets in the collection include the extension `.fastq.gz`*)
->    - *"Append an extension?"*: `Yes` (*If the datasets in the collection DO NOT include the extension `.fastq.gz`*)
->      - *"Extension to append (e.g. '.fastq.gz')"*: `.fastq.gz`
+>   
+> > <comment-title></comment-title>
+> >
+> > If the datasets in the collection **DO NOT** include the extension `.fastq.gz`, then this extension must been appended to each dataset identifier to conform to the CASAVA format.
+> > 
+> > - *"Append an extension?"*: `Yes`
+> >     - *"Extension to append (e.g. '.fastq.gz')"*: `.fastq.gz`
+> >
+> {: .comment}
 >
-> 2. Rename the output to: `trimmed_sequences.qza`
+> 3. Rename the output to: `trimmed_sequences.qza`
 >
 {: .hands_on}
 
@@ -346,7 +351,7 @@ TL;DR: when quality plots are essentially straight lines, truncation is less abo
 >
 {: .comment}
 
-In the following command, a pooling method of `pseudo` is selected. Pseudo-pooling improves sensitivity to shared low-abundance ASVs across samples while remaining computationally efficient. This is better than the default of 'independent' (where samples are denoised independently) when you expect samples in the run to have similar ASVs overall.
+In the following command, a pooling method of `pseudo` is selected. Pseudo-pooling improves sensitivity to shared low-abundance ASVs across samples while remaining computationally efficient. This is better than the default of `independent` (where samples are denoised independently) when you expect samples in the run to have similar ASVs overall.
 
 > <comment-title>Precomputed DADA2 Denoising Results</comment-title>
 >
@@ -450,7 +455,7 @@ A [metadata file](https://use.qiime2.org/en/stable/references/metadata.html) is 
 > 
 > 3. Visualisation: Denoising Stats
 > 
->   - Download `16s_representative_seqs.qzv ` to your local computer and view in QIIME 2 View (q2view).
+>   - Download `16s_representative_seqs.qzv` to your local computer and view in QIIME 2 View (q2view).
 >   - [Click to view the **`16s_representative_seqs.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/AHIIyoQHzEzPyoEXzjBVxBc/16s_representative_seqs.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
 >
 {: .hands_on}
@@ -464,7 +469,7 @@ Here we will classify each identical read or *Amplicon Sequence Variant (ASV)* t
 2. The target region of interest
 3. The number of reference sequences for your organism in the database and how recently that database was updated.
 
-A classifier has already been trained for you for the V4 region of the bacterial 16S rRNA gene using the SILVA database. The next step will take a while to run. *The output directory cannot previously exist*.
+A classifier has already been trained for you for the V4 region of the bacterial 16S rRNA gene using the SILVA database. The next step will take a while to run.
 
 > <comment-title>*A Note on the Ribosomal Data Project</comment-title>
 > 
@@ -542,33 +547,37 @@ Filter out reads classified as mitochondria and chloroplast. Unassigned ASVs are
 >
 {: .hands_on}
 
-## Train SILVA v138 classifier for 16S/18S rRNA gene marker sequences.
 
-This section contains information on how to train the classifier for analysing your **own** data.
+> <details-title>Train the SILVA v138 classifier for 16S/18S rRNA gene marker sequences</details-title>
+>
+> This section contains information on how to train the classifier for analysing your **own** data.
+>
+> The newest version of the [SILVA](https://www.arb-silva.de/) database (v138) can be trained to classify marker gene sequences originating from the 16S/18S rRNA gene. Reference files `silva-138-99-seqs.qza` and `silva-138-99-tax.qza` were [downloaded from SILVA](https://www.arb-silva.de/download/archive/) and imported to get the artefact files. You can download both these files from [here](https://www.dropbox.com/s/x8ogeefjknimhkx/classifier_files.zip?dl=0).
+>
+> > <hands-on-title>Train Classifier</hands-on-title>
+> > 
+> > Reads for the region of interest are first extracted. **You will need to input your forward and reverse primer sequences**. See QIIME2 documentation for more [information](https://amplicon-docs.qiime2.org/en/stable/references/plugins/feature-classifier.html).
+> >
+> > 1. {% tool [`qiime2 feature-classifier extract-reads`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__feature_classifier__extract_reads/qiime2__feature_classifier__extract_reads/2026.1.0+q2galaxy.2026.1.0) %}: 
+> >   - *"sequences: FeatureData[Sequence]"*: `silva-138-99-seqs.qza`
+> >   - *"f_primer: Str"*: `FORWARD_PRIMER_SEQUENCE`
+> >   - *"r_primer: Str"*: `REVERSE_PRIMER_SEQUENCE`
+> >
+> > 2. Rename the output to: `silva_138_marker_gene.qza`
+> > 
+> > The classifier is then trained using a naive Bayes algorithm. See QIIME2 documentation for more [information](https://amplicon-docs.qiime2.org/en/stable/references/plugins/feature-classifier.html#q2-action-feature-classifier-fit-classifier-naive-bayes).
+> > 
+> > 3. {% tool [`qiime2 feature-classifier fit-classifier-naive-bayes`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__feature_classifier__fit_classifier_naive_bayes/qiime2__feature_classifier__fit_classifier_naive_bayes/2026.1.0+q2galaxy.2026.1.0) %}: 
+> >   - *"reference_reads: FeatureData[Sequence]"*: `silva_138_marker_gene.qza`
+> >   - *"reference_taxonomy: FeatureData[Taxonomy]"*: `silva-138-99-tax.qza`
+> >   - *"r_primer: Str"*: `REVERSE_PRIMER_SEQUENCE`
+> >
+> > 4. Rename the output to: `silva_138_marker_gene_classifier.qza `
+> >
+> {: .hands_on}
+>
+{: .details}
 
-The newest version of the [SILVA](https://www.arb-silva.de/) database (v138) can be trained to classify marker gene sequences originating from the 16S/18S rRNA gene. Reference files `silva-138-99-seqs.qza` and `silva-138-99-tax.qza` were [downloaded from SILVA](https://www.arb-silva.de/download/archive/) and imported to get the artefact files. You can download both these files from [here](https://www.dropbox.com/s/x8ogeefjknimhkx/classifier_files.zip?dl=0).
-
-> <hands-on-title>Train Classifier</hands-on-title>
-> 
-> Reads for the region of interest are first extracted. **You will need to input your forward and reverse primer sequences**. See QIIME2 documentation for more [information](https://amplicon-docs.qiime2.org/en/stable/references/plugins/feature-classifier.html).
->
-> 1. {% tool [`qiime2 feature-classifier extract-reads`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__feature_classifier__extract_reads/qiime2__feature_classifier__extract_reads/2026.1.0+q2galaxy.2026.1.0) %}: 
->   - *"sequences: FeatureData[Sequence]"*: `silva-138-99-seqs.qza`
->   - *"f_primer: Str"*: `FORWARD_PRIMER_SEQUENCE`
->   - *"r_primer: Str"*: `REVERSE_PRIMER_SEQUENCE`
->
-> 2. Rename the output to: `silva_138_marker_gene.qza`
-> 
-> The classifier is then trained using a naive Bayes algorithm. See QIIME2 documentation for more [information](https://amplicon-docs.qiime2.org/en/stable/references/plugins/feature-classifier.html#q2-action-feature-classifier-fit-classifier-naive-bayes).
-> 
-> 3. {% tool [`qiime2 feature-classifier fit-classifier-naive-bayes`](toolshed.g2.bx.psu.edu/repos/q2d2/qiime2__feature_classifier__fit_classifier_naive_bayes/qiime2__feature_classifier__fit_classifier_naive_bayes/2026.1.0+q2galaxy.2026.1.0) %}: 
->   - *"reference_reads: FeatureData[Sequence]"*: `silva_138_marker_gene.qza`
->   - *"reference_taxonomy: FeatureData[Taxonomy]"*: `silva-138-99-tax.qza`
->   - *"r_primer: Str"*: `REVERSE_PRIMER_SEQUENCE`
->
-> 4. Rename the output to: `silva_138_marker_gene_classifier.qza `
->
-{: .hands_on}
 
 # Build a phylogenetic tree
 
@@ -599,7 +608,6 @@ A phylogenetic tree is necessary for any analyses that incorporates information 
 # Basic Visualisations and Statistics
 
 ## ASV relative abundance bar charts
-
 Create bar charts to compare the relative abundance of ASVs across samples.
 
 > <hands-on-title>Taxonamy Barplot</hands-on-title>
@@ -623,10 +631,10 @@ Create bar charts to compare the relative abundance of ASVs across samples.
 >
 {: .hands_on}
 
-### Rarefaction curves
+## Rarefaction curves
 Generate rarefaction curves to determine whether the samples have been sequenced deeply enough to capture all the community members. The max depth setting will depend on the number of sequences in your samples.
 
-#### Things to look for
+### Things to look for
 
  1. Do the curves for each sample plateau? If they don’t, the samples haven’t been sequenced deeply enough to capture the full diversity of the bacterial communities, which is shown on the y-axis.
  2. At what sequencing depth (x-axis) do your curves plateau? This value will be important for downstream analyses, particularly for alpha diversity analyses.
@@ -662,7 +670,7 @@ Generate rarefaction curves to determine whether the samples have been sequenced
 >
 {: .hands_on}
 
-### Alpha and beta diversity analysis
+## Alpha and beta diversity analysis
 
 The following is taken  from the [Moving Pictures tutorial](https://amplicon-docs.qiime2.org/en/stable/tutorials/moving-pictures.html) and adapted for this data set. QIIME 2’s diversity analyses are available through the `q2-diversity` plugin, which supports computing alpha- and beta- diversity metrics, applying related statistical tests, and generating interactive visualisations. We’ll first apply the core-metrics-phylogenetic method, which rarefies a FeatureTable[Frequency] to a user-specified depth, computes several alpha- and beta- diversity metrics, and generates principle coordinates analysis (PCoA) plots using Emperor for each of the beta diversity metrics.
 
@@ -727,7 +735,7 @@ Next, we’ll test for associations between categorical metadata columns and alp
 >
 > 2. Rename the `visualization.qzv` output to: `observed_features-significance.qzv`
 > 
-> 3. Visualisations: Observed Diversity output
+> 3. Visualisations: Observed Features
 > 
 >   - Download `observed_features-significance.qzv` to your local computer and view in QIIME 2 View (q2view).
 >   - [Click to view the **`observed_features-significance.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/AMje09kxzAz65VKNBORJoAI/observed_features-significance.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).  
@@ -747,7 +755,7 @@ Next, we’ll test for associations between categorical metadata columns and alp
 >
 > 2. Rename the `visualization.qzv` output to: `evenness-group-significance.qzv`
 > 
-> 3. Visualisations: Observed Diversity output
+> 3. Visualisations: Observed Evenness
 > 
 >   - Download `evenness-group-significance.qzv` to your local computer and view in QIIME 2 View (q2view).
 >   - [Click to view the **`evenness-group-significance.qzv`** file in QIIME 2 View](https://view.qiime2.org/visualization/?src=https://www.dropbox.com/scl/fo/romu76hw5alep6qj4xfws/ALNMCSgm30C2zhm7sHNSA5s/evenness-group-significance.qzv?rlkey=z0rtnozon2hlic4ba6i30c301).
@@ -776,7 +784,7 @@ Next, we’ll analyse sample composition in the context of categorical metadata 
 >
 {: .hands_on}
 
-Finally, we'll do differential abundance testing with ANCOM-BC2. ANCOM-BC2 is a compositionally-aware linear regression model that allows testing for differentially abundant features across sample groups while also implementing bias correction. This can be accessed using the ancombc2 action in the composition plugin.
+Finally, we'll do differential abundance testing with ANCOM-BC2. ANCOM-BC2 is a compositionally-aware linear regression model that allows testing for differentially abundant features across sample groups while also implementing bias correction. This can be accessed using the `qiime2 composition ancombc2` tool.
 
 We’ll apply ANCOM-BC2 to see which ASV are differentially abundant across Captivity. If you had more than two treatments, you can specify a reference level to define what each group is compared against (*"reference_levels: List[Str]"*: `Captivity::Wild`). This is not necessary when you just have two groups. 
 
@@ -813,7 +821,7 @@ The tool for exporting QIIME2 artefacts to standard formats, `qiime2 tools expor
 
 However, when creating a workflow, the `.qza` type and format cannot be pre-filled and the tool step in the workflow will provide free-text boxes in which the user must provide the correct type and format. The easiest way to determine the type and format is to run the tool manually with an example of the expected input `.qza` and note and copy the type and format that are pre-filled into the tool in the workflow.
 
-## Export unrooted tree as `.nwk` format as required for the R package `phyloseq`.
+## Export unrooted tree as .nwk format as required for the R package phyloseq.
 
 > <hands-on-title>Export Tree</hands-on-title>
 >
@@ -865,7 +873,7 @@ However, when creating a workflow, the `.qza` type and format cannot be pre-fill
 >
 {: .hands_on}
 
-## Remove the header lines of the .tsv files
+## Remove the header lines from the .tsv files
 
 > <hands-on-title>Remove Header</hands-on-title>
 >
