@@ -579,7 +579,7 @@ Filter out reads classified as mitochondria and chloroplast. Unassigned ASVs are
 {: .details}
 
 
-# Build a phylogenetic tree
+# Build a Phylogenetic Tree
 
 The next step does the following:
 
@@ -723,6 +723,8 @@ An important parameter that needs to be provided to this script is *"sampling_de
 >
 {: .hands_on}
 
+### Alpha Diversity
+
 Next, we’ll test for associations between categorical metadata columns and alpha diversity data. We’ll do that here for observed ASVs and evenness metrics.
 
 > <hands-on-title>Alpha Group Significance - Observed Features</hands-on-title>
@@ -764,6 +766,8 @@ Next, we’ll test for associations between categorical metadata columns and alp
 >
 {: .hands_on}
 
+### Beta Diversity
+
 Next, we’ll analyse sample composition in the context of categorical metadata using a permutational multivariate analysis of variance (PERMANOVA, first described in Anderson (2001)) test using the beta-group-significance command. The following commands will test whether distances between samples within a group are more similar to each other then they are to samples from the other groups. If you call this command with the *"pairwise: Bool"*: `Yes` parameter, as we’ll do here, it will also perform pairwise tests that will allow you to determine which specific pairs of groups differ from one another, if any. This command can be slow to run, especially when setting *"pairwise: Bool"*: `Yes`, since it is based on permutation tests. So, unlike the previous commands, we’ll run beta-group-significance on specific columns of metadata that we’re interested in exploring, rather than all metadata columns to which it is applicable. Here we’ll apply this to our unweighted UniFrac distances, using two sample metadata columns, as follows.
 
 > <hands-on-title>Beta Group Significance - Unifrac Distance</hands-on-title>
@@ -783,6 +787,8 @@ Next, we’ll analyse sample composition in the context of categorical metadata 
 >   ![provenance](../../images/dunnart_images/q2view_provenance.png)
 >
 {: .hands_on}
+
+### ANCOM-BC2 Differential Abundance
 
 Finally, we'll do differential abundance testing with ANCOM-BC2. ANCOM-BC2 is a compositionally-aware linear regression model that allows testing for differentially abundant features across sample groups while also implementing bias correction. This can be accessed using the `qiime2 composition ancombc2` tool.
 
@@ -834,7 +840,9 @@ However, when creating a workflow, the `.qza` type and format cannot be pre-fill
 >
 {: .hands_on}
 
-## Create a BIOM table with taxonomy annotations. A FeatureTable[Frequency] artefact will be exported as a BIOM v2.1.0 formatted file.
+## Create a BIOM table with taxonomy annotations. 
+
+Export a FeatureTable[Frequency] artefact as a BIOM v2.1.0 formatted file.
 
 > <hands-on-title>Export Taxonomy Annotations Table</hands-on-title>
 >
