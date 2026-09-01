@@ -211,7 +211,7 @@ It is important to note that these data were generated on an Illumina NextSeq pl
 > > 
 > > The following step shows the tool set up for running `qiime2 cutadapt trim-paired` to perform a simplified trimming approach without the `NextSeq trimming` option. However, for production analyses of NextSeq data, best practice is to perform trimming with the standalone `cutadapt` (including `NextSeq trimming`) prior to importing reads into QIIME 2, as this improves removal of sequencing artefacts and can enhance downstream denoising and taxonomic resolution.
 > >
-> > Note, `qiime2 cutadapt trim-paired` requires the input reads to be stored as a single QIIME2 artefact (e.g. `combined.qza`), not a dataset collection as used by `cutadapt`. A QIIME2 artefact can be created from a dataset collection using `qiime2 tools import` as shown below in [Hands On: Create QIIME2 Artefact]({% link training-material/topics/microbiome/tutorials/dunnart_metabarcoding/tutorial.md %}#hands-on-create-qiime2-artefact).
+> > Note, `qiime2 cutadapt trim-paired` requires the input reads to be stored as a single QIIME2 artefact (e.g. `combined.qza`), not a dataset collection as used by `cutadapt`. A QIIME2 artefact can be created from a dataset collection using `qiime2 tools import` as shown below in [Hands On: Create QIIME2 Artefact]({% link topics/microbiome/tutorials/dunnart_metabarcoding/tutorial.md %}#hands-on-create-qiime2-artefact).
 > >
 > > > <hands-on-title>Run Cutadapt</hands-on-title>
 > > >
@@ -295,17 +295,17 @@ Once the collection of trimmed `.fastq.gz` sequences is correctly named to impor
 >      - *"Select a mechanism"*: `Use collection to import`
 >      - *"elements"*: `trimmed sequences`
 >    - *"Append an extension?"*: `No, use element identifiers as is` (*If the datasets in the collection include the extension `.fastq.gz`*)
->   
+>
+> 2. Rename the output to: `trimmed_sequences.qza`
+>    
 > > <comment-title></comment-title>
 > >
-> > If the datasets in the collection **DO NOT** include the extension `.fastq.gz`, then this extension must been appended to each dataset identifier to conform to the CASAVA format.
+> > When providing an input collection for `qiime2 tools import`, if the datasets in the collection **DO NOT** include the extension `.fastq.gz`, then this extension must been appended to each dataset identifier to conform to the CASAVA format.
 > > 
 > > - *"Append an extension?"*: `Yes`
 > >     - *"Extension to append (e.g. '.fastq.gz')"*: `.fastq.gz`
 > >
 > {: .comment}
->
-> 3. Rename the output to: `trimmed_sequences.qza`
 >
 {: .hands_on}
 
