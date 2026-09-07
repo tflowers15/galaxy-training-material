@@ -1,7 +1,7 @@
 ---
 layout: tutorial_hands_on
 
-title: "Metabarcoding of bacteria in dunnart faecal samples across Australia (wild + captive) using QIIME2"
+title: "Metabarcoding of bacteria in dunnart faecal samples across Australia (wild + captive) using QIIME 2"
 zenodo_link: "https://doi.org/10.5281/zenodo.21614436"
 questions:
   - Why is the fat-tailed dunnart a useful system for investigating host-associated microbiomes in a conservation context?
@@ -44,10 +44,12 @@ contributions:
     - unimelb
     - melbournebioinformatics
     - AustralianBioCommons   
+subtopic: metabarcoding
 tags:
   - qiime2
   - taxonomy
-  - metagenomics
+  - metabarcoding
+  - amplicon
 
 ---
 
