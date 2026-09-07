@@ -1,30 +1,39 @@
 ---
 layout: tutorial_hands_on
 
-title: "Metabarcoding of bacteria in dunnart faecal samples across Australia (wild + captive)"
+title: "Metabarcoding of bacteria in dunnart faecal samples across Australia (wild + captive) using QIIME2"
 zenodo_link: "https://doi.org/10.5281/zenodo.21614436"
 questions:
-  - Why is the fat‑tailed dunnart a useful model for microbiome studies?
-  - What are the expected experimental differences between captive and wild animals?
-  - How is taxonomy assigned to the representative sequences?
-  - How do rarefaction and sampling depth choices influence diversity analyses?
-  - Which files are typically exported for downstream R analysis (phyloseq, DESeq2, etc.)?
+  - Why is the fat-tailed dunnart a useful system for investigating host-associated microbiomes in a conservation context?
+  - How might captivity alter the gut microbiome?
+  - How is taxonomy assigned to representative ASV sequences, and why does the choice of reference database and classifier matter?
+  - How does sequencing depth influence estimates of microbial diversity, and how should an appropriate sampling depth be selected?
+  - Do captive and wild dunnarts differ in alpha diversity (within-sample diversity) or beta diversity (between-sample diversity)?
+  - Which microbial taxa appear to differ between captive and wild animals?
+  - Which QIIME 2 outputs are useful for downstream analyses and visualisation in R?
 objectives:
-  - Place the dataset in ecological and conservation context.
-  - Relate host ecology and sample provenance to interpretation of microbiome results.
-  - Remove primers with cutadapt while handling degenerate bases and quality trimming and denoise and dereplicate paired-end sequences
-  - Apply a pre‑trained classifier appropriate for the V4 16S region to assign taxonomy to ASVs.
-  - Test for differences in alpha diversity (alpha‑group‑significance) and community composition (beta‑group‑significance / PERMANOVA), and perform differential abundance testing (ANCOM‑BC2).
-  - Export results for further analysis (unrooted tree, feature table, taxonomy and representative sequences).
+  - Import paired-end 16S rRNA gene amplicon data and associated sample metadata into QIIME2 within Galaxy.
+  - Remove primer sequences using Cutadapt.
+  - Select quality filtering and truncation parameters based on the characteristics of the sequencing run to be applied in DADA2.
+  - Evaluate sequence-processing outputs to assess read retention and identify potential problems.
+  - Assign taxonomy to ASVs using a pre-trained classifier appropriate for the amplified 16S rRNA gene region.
+  - Generate and interpret taxonomic composition summaries across samples and experimental groups.
+  - Construct a phylogenetic tree and explain why phylogeny is required for metrics such as Faith's PD and UniFrac.
+  - Use feature-table summaries and rarefaction curves to select an appropriate sampling depth for diversity analyses.
+  - Calculate and compare alpha and beta diversity between captive and wild animals.
+  - Test differences in community composition using PERMANOVA and understand the importance of evaluating dispersion.
+  - Identify differentially abundant taxa using ANCOM-BC2 and distinguish differential abundance from overall community-level differences.
+  - Export feature tables, taxonomy, representative sequences and phylogenetic trees for downstream analysis in R.
 time_estimation: "3h"
 key_points:
-  - Captivity can alter diet, exposure and behaviour — all of which may reshape the gut microbiome.
-  - The dataset contains a small, balanced subset (5 captive, 5 wild) suitable for teaching and demonstrating methods.
-  - Primer removal is essential; untrimmed primers can disrupt denoising and downstream inference.
-  - Classifier must be trained for the same primer/region used in the dataset; mismatched classifiers give poor results.
-  - Phylogenetic distances are required for phylogenetic alpha and beta metrics (Faith’s PD, UniFrac).
-  - Explore taxonomic composition at multiple taxonomic levels and by metadata categories (e.g. Captivity).
-  - Choose sampling/depth parameters informed by the feature‑table summary and rarefaction curves to balance sample retention and depth.
+  - Captivity can alter host diet, environmental exposure, social interactions, movement, veterinary treatment and other ecological factors, all of which may influence the gut microbiome. Microbiome patterns should therefore be interpreted in the context of sample provenance and host ecology, rather than treating sequencing data independently of the biology.
+  - This dataset contains a small subset of five captive and five wild dunnarts. It is appropriate for demonstrating analytical methods, but biological conclusions should be treated as exploratory rather than definitive.
+  - Primer removal is an important preprocessing step. Residual primer sequences can interfere with sequence inference, merging and taxonomic assignment.
+  - Taxonomic assignments depend on both the reference database and classifier. A classifier appropriate for the sequenced 16S region should be used, and taxonomic assignments should not automatically be interpreted as species-level identification.
+  - Sequencing depth varies among samples. Sampling depth for diversity analyses represents a trade-off between retaining samples and retaining microbial diversity within each sample.
+  - Relative-abundance plots are useful for exploring community composition but should not, by themselves, be used to determine whether taxa differ statistically between groups.
+  - Differential abundance methods such as ANCOM-BC2 address a different question from alpha- or beta-diversity analyses: which individual taxa are associated with the experimental groups?
+  - QIIME 2 outputs can be exported for downstream statistical analysis, integration with additional metadata and publication-quality visualisation in R.
 contributions:
   authorship:
     - adungan31
@@ -34,7 +43,11 @@ contributions:
   funding:
     - unimelb
     - melbournebioinformatics
-    - AustralianBioCommons
+    - AustralianBioCommons   
+tags:
+  - qiime2
+  - taxonomy
+  - metagenomics
 
 ---
 
@@ -904,4 +917,31 @@ Some packages require your data to be in a consistent order (i.e. the order of y
 # Conclusion
 
 We have used `QIIME2` to process fat-tailed dunnart faecal samples and analyse differences in the observed microbiome between 5 captive and 5 wild fat-tailed dunnarts.
+
+## What have we done?
+
+We used QIIME 2 within Galaxy to transform raw paired-end 16S rRNA gene sequencing reads into an analysis-ready microbiome dataset. This was done by removing primer sequences, performing quality filtering and denoising, inferring ASVs, assigning taxonomy, and constructing a phylogenetic tree. Microbiome data was then examined from several complementary perspectives: taxonomic composition, alpha diversity, beta diversity, and differential abundance. Together, these analyses allow us to ask whether captive and wild animals differ in overall microbial diversity, community composition, and the abundance of particular microbial taxa.
+
+## Where can we go from here?
+
+The files generated during this workshop provide a starting point for much more extensive analyses. Exported feature tables, taxonomy, sequences, phylogenetic trees and metadata can be imported into R using packages such as phyloseq, vegan and other microbiome-analysis tools. These could be used to:
+
+- Produce publication-quality taxonomic composition and ordination figures.
+- Examine specific taxa or taxonomic groups in greater detail.
+- Test additional metadata variables or incorporate continuous host/environmental variables.
+- Use multivariable models to separate the effects of captivity from potential confounding variables.
+- Explore alternative transformations and distance metrics.
+- Perform more extensive differential abundance analyses to identify taxa that consistently distinguish captive and wild populations.
+- Integrate microbiome data with host diet, physiology, immune function, metabolomics or environmental data.
+ 
+## Questions to think about
+
+Now you can process raw data microbiome sequencing in QIIME 2 with Galaxy! Here are some question’s related to this study that help interpret the output that you created during the workshop. You may want to create your own list of questions that are relevant to your own work.
+
+1. Do captive and wild dunnarts appear to have different gut microbiomes? What evidence supports your answer?
+2. How sensitive are your conclusions to analytical decisions, such as sampling depth or choice of diversity metric?
+3. What biological mechanisms might explain the patterns you observed? For example, could diet, environmental microbial exposure or animal management contribute?
+4. Which results would you want to reproduce in a larger dataset before making strong biological conclusions?
+5. If captivity alters the microbiome, does that necessarily mean the change is harmful? What additional evidence would you need to demonstrate consequences for host health or conservation?
+6. How could these results inform management of captive or reintroduced animals?
 
