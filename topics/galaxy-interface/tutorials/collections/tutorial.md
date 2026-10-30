@@ -20,8 +20,15 @@ key_points:
   - "This significantly simplifies the analysis."
   - "This tutorial showed how to (1) create collection, (2) run tools on a collection, (3) combine collection elements into a final analysis results."
   - "There is a variety of **Collection operation** tools allowing to perform a variety of transformations."
-contributors:
-  - nekrut
+contributions:
+  authorship:
+    - nekrut
+  editing:
+    - tflowers15
+  funding:
+    - unimelb
+    - melbournebioinformatics
+    - AustralianBioCommons
 
 subtopic: manage
 
@@ -65,9 +72,11 @@ https://zenodo.org/record/5119008/files/M117C1-ch_2.fq.gz
 ```
 
 > <hands-on-title>Set format to `fastqsanger.gz`</hands-on-title>
-> The above datasets are in `fastqsanger.gz` format. It is necessary to explicitly set format in Galaxy. The {% icon tip %} **Tip** section below explains how to upload these data and set the correct format. There is a variety of [fastq format flavors](https://en.wikipedia.org/wiki/FASTQ_format) and it is difficult to guess them automatically.
+> The above datasets are in `fastqsanger.gz` format. Galaxy is fairly good at correctly identifying the datatype/format for imported/uploaded datasets. However, if Galaxy does not default to the correct datatype, this can be set manually. Another option available is to specify the datatype when uploading/importing the datasets. The {% icon tip %} **Tip** sections below explains how to upload these data and set the correct format. There is a variety of [fastq format flavors](https://en.wikipedia.org/wiki/FASTQ_format) and it can be difficult to guess them automatically.
 >
 > {% snippet faqs/galaxy/datasets_import_via_link.md format="fastqsanger.gz" %}
+>
+> {% snippet faqs/galaxy/datasets_change_datatype.md format="fastqsanger.gz" %}
 >
 > {% snippet topics/assembly/tutorials/vgp_genome_assembly/faqs/dataset_upload_fastqsanger_via_urls.md %}
 >
@@ -88,11 +97,11 @@ These datasets represent genomic DNA (enriched for mitochondria via a long range
 
 # Creating a paired dataset collection
 
-You can see that there are eight datasets forming four pairs. Obviously, we can manipulate them one-by-one (e.g., start four mapping jobs, call variants four times and so on), but this will unnecessarily tedious. Moreover, imagine if you have 100s or 1,000s of pairs: it will be impossible to process them individually.
+You can see that there are eight datasets forming four pairs. Obviously, we can manipulate them one-by-one (e.g. start four mapping jobs, call variants four times and so on), but this will unnecessarily tedious. Moreover, imagine if you have 100s or 1,000s of pairs: it will be impossible to process them individually.
 
 This is exactly why we developed collections. Dataset collections allow combining multiple datasets into a single entity. Thus instead of dealing with four, a hundred, or a thousand of individual datasets you have only one item in Galaxy history to deal with.
 
-Because our data is *paired* we need to create a hierarchical collection called **Paired Dataset Collection** or **Paired Collection**. In such collection there are two layers. The first layer corresponds to individual samples (e.g., `M117-bl`). The second layer represent `forward` and `reverse` reads corresponding to each sample:
+Because our data is *paired* we need to create a hierarchical collection called **Paired Dataset Collection** or **Paired Collection**. In such collections there are two layers. The first layer corresponds to individual samples (e.g., `M117-bl`). The second layer represent `forward` and `reverse` reads corresponding to each sample:
 
 
 ![paired collection](../../images/collections/paired_collection.svg "The logic of Paired Collection. Here <em>N</em> datasets are bundled into a paired collection with two layers. The first layer corresponds to samples and the second to forward and reverse reads within each sample.")
@@ -102,24 +111,45 @@ To begin creating a collection we need to select datasets we would like to bundl
 
 
 
-![selecting multiple datasets](../../images/collections/select_multiple_datasets.gif  "Selecting multiple datasets and creating a paired collection.")
+![selecting multiple datasets](../../images/collections/collections_select_datasets.gif  "Selecting multiple datasets and creating a paired collection.")
 
 
+After selecting the datasets to be included in the collection, there are two options for building the collection: (1) **Auto Build List** and (2) **Advanced Build List**. In the above process, the **Advanced Build List** option was selected, which opens the Galaxy collection wizard at the first step which shows all the collection builder options. In this case Galaxy has automatically identified that the selected datasets are paired-end as the dataset names contain the text `_1` or `_2` and has selected the **List of Paired Datasets** option. The selected option is indicated by the dark blue box. If the selected datasets are not recognised as paired-end by Galaxy, then the **Flat List** option will be selected by default.
 
 
-The above process ended with appearance of Galaxy collection wizard. In this case Galaxy automatically assigned pairs using the `_1` and `_2` endings of dataset names. Let's however pretend that this did not happen. Click on **Unpair all** (highlighted in red in the figure above) link and then on **Filters** link (see animation in Fig. 3). The interface will change into its unpaired state.
+> <comment-title>Collection/List Builder</comment-title>
+>
+> > <comment-title>A Note on Galaxy Terminology</comment-title>
+> >
+> > Within Galaxy the terms "Collection" and "List" are used interchangeably.
+> > 
+> {: .comment}
+>
+> There are six options for creating collections available through the Galaxy **List Builder**
+> - *Flat List*: This option creates a simple flat list of files. If your data isn't nested and does not contained paired datasets, this is the the option to choose.
+> - *List of Paired Datasets*: This option creates a list of paired datasets (e.g., paired-end data from Illumina and ElementBio), use this option if all of your data should be paired off.
+> - *Rule Builder*: The rule builder allows building arbitrarily nested collections of data with reproducible metadata parsing and other advanced features.
+> - *Mixed List of Paired and Unpaired Datasets*: For studies that have a mix of paired and unpaired data, this may be the right choice. Existing tools and workflows may have to be updated to allow this modality though.
+> - *Nested List of Datasets*: A nested list of datasets. This type of collection is a list where each element is in turn a list of datasets. The outer list identifier might group samples together by condition, sample type, etc..
+> - *Nested List of Dataset Pairs*: A nested list of datasets. This type of collection is a list where each element is in turn a list of pairs of datasets.
+>
+> The most commonly used options are *Flat List* and *List of Paired Datasets*.
+> 
+{: .comment}
 
-Here datasets containing the first (forward) and the second (reverse) read are differentiated by having `_1` and `_2` in the filename. We can use this feature in dataset collection wizard to pair our datasets.  Type `_1` in the left **Filter text** text box and `_2` in the right. You will see that the dataset collection wizard will automatically filter lists on each side of the interface. Now you can either click **Auto pair** if pairs look good to you (proper combinations of datasets are listed in each line) or pair each forward/reverse group individually by pressing **Pair these datasets** button separating each pair.
+The above process ended with appearance of Galaxy collection wizard. In this case Galaxy automatically assigned pairs using the `_1` and `_2` endings of dataset names. Let's however pretend that this did not happen. Delete the text in the two **Filter text** text boxes (free text boxes pre-filled with `_1` and `_2`). The interface will change into its unpaired state.
+
+Here datasets containing the first (forward) and the second (reverse) read are differentiated by having `_1` and `_2` in the filename. We can use this feature in dataset collection wizard to pair our datasets.  Type `_1` in the left **Filter text** text box and `_2` in the right. You will see that the dataset collection wizard will automatically pair the datasets once both filters are set. 
 
 Now it is time to name the collection: type `M117-collection` in **Name** text box and create the collection by clicking **Create collection**. A new item will appear in the history.
 
 
-![using collection wizard](../../images/collections/using_collection_wizard.gif "Working with collection wizard. Text above this figure explains each step.")
+![using collection wizard](../../images/collections/collections_create_collection.gif "Working with collection wizard. Text above this figure explains each step.")
 
 
 Clicking on collection will expand it to show four pairs it contains (panel **B**). Clicking individual pairs will expand them further to reveal **forward** and **reverse** datasets (panel **C**). Expanding these further will enable one to see individual datasets (panel **D**).
 
-![expanding collection](../../images/collections/expanding_collection.gif "To look what is inside a collection, just click on it.")
+![expanding collection](../../images/collections/collections_viewing_datasets.gif "To look what is inside a collection, just click on it.")
 
 # Processing data organized as a collection
 
